@@ -1,0 +1,59 @@
+---
+import Logo from './Logo.astro';
+import Checker from './Checker.astro';
+import site from '../data/site.json';
+
+const socials = site.socials.filter((s) => s.url);
+const year = new Date().getFullYear();
+---
+<footer class="footer">
+  <Checker pattern="k2yrkr3ykc2rk" height="36px" />
+  <div class="wrap footer__inner">
+    <div class="footer__brand">
+      <a href="/" aria-label={`${site.name} home`} style="text-decoration:none"><Logo size="56px" align="start" /></a>
+      <p class="footer__slogan display">Serious about fun<span class="dot">.</span></p>
+    </div>
+    <div class="footer__cols">
+      <div>
+        <p class="label">Studio</p>
+        <ul>
+          <li><a href="/games/">Games</a></li>
+          <li><a href="/#studio">About</a></li>
+          <li><a href="/news/">News</a></li>
+          <li><a href="/#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="label">Players</p>
+        <ul>
+          <li><a href="/support/">Support</a></li>
+          <li><a href="/privacy/">Privacy policy</a></li>
+          <li><a href="/terms/">Terms of use</a></li>
+        </ul>
+      </div>
+      {socials.length > 0 && (
+        <div>
+          <p class="label">Follow</p>
+          <ul>{socials.map((s) => <li><a href={s.url} rel="noopener" target="_blank">{s.label}</a></li>)}</ul>
+        </div>
+      )}
+    </div>
+  </div>
+  <div class="wrap footer__bottom">
+    <span>© {year} {site.name}. {site.location}.</span>
+    <span>Good games. Great breaks.</span>
+  </div>
+</footer>
+
+<style>
+  .footer { background: var(--cream); }
+  .footer__inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 40px; padding-block: 56px 40px; }
+  .footer__brand { display: flex; flex-direction: column; gap: 16px; }
+  .footer__slogan { font-size: 28px; }
+  .footer__cols { display: flex; flex-wrap: wrap; gap: 56px; }
+  .footer__cols .label { margin: 0 0 10px; font-size: 12px; }
+  .footer__cols ul { list-style: none; margin: 0; padding: 0; }
+  .footer__cols a { display: inline-flex; min-height: 36px; align-items: center; font-size: 15px; }
+  .footer__bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-block: 20px 28px; border-top: var(--rule); font-size: 14px; }
+  @media (max-width: 600px) { .footer__cols { gap: 28px 40px; } }
+</style>

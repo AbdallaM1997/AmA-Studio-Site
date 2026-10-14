@@ -1,0 +1,153 @@
+---
+import Base from '../../layouts/Base.astro';
+import GameCard from '../../components/GameCard.astro';
+import Checker from '../../components/Checker.astro';
+import site from '../../data/site.json';
+import games from '../../data/games.json';
+
+export function getStaticPaths() {
+  return games.map((game) => ({ params: { slug: game.slug }, props: { game } }));
+}
+
+const { game } = Astro.props;
+const others = games.filter((g) => g.slug !== game.slug);
+const statusLabel: Record<string, string> = { 'coming-soon': 'Coming soon', live: 'Out now', 'in-lab': 'In the lab' };
+const artBg = { red: 'var(--red)', yellow: 'var(--yellow)', black: 'var(--black)' }[game.theme] ?? 'var(--red)';
+const shots = game.screenshots.length ? game.screenshots : Array.from({ length: 5 }, () => '');
+const hasStores = game.stores.appStore || game.stores.googlePlay;
+---
+<Base title={game.title} description={`${game.title}: ${game.tagline}`}>
+  <section class="section" aria-labelledby="g-title">
+    <div class="g-hero">
+      <div class="g-hero__text">
+        <span class="label" data-reveal><a href="/games/" style="text-decoration:none">02 / Games</a> / {game.title}</span>
+        <h1 id="g-title" class="display g-title" data-reveal style="--d:.08s">{game.title}<span class="dot">.</span></h1>
+        <p class="lead" data-reveal style="--d:.16s">{game.tagline} {game.description}</p>
+        <ul class="tags" data-stagger="0.06">
+          <li data-reveal>{game.genre}</li>
+          {game.platforms.map((p) => <li data-reveal>{p}</li>)}
+          <li data-reveal>{game.price}</li>
+          <li class="tags__status" data-reveal>{statusLabel[game.status] ?? game.status}</li>
+        </ul>
+        <div class="stores" data-reveal style="--d:.3s">
+          {game.stores.appStore && <a class="btn" href={game.stores.appStore} target="_blank" rel="noopener">App Store</a>}
+          {game.stores.googlePlay && <a class="btn" href={game.stores.googlePlay} target="_blank" rel="noopener">Google Play</a>}
+          {!hasStores && <a class="btn btn--red" href="/#newsletter">Tell me when it's out</a>}
+        </div>
+      </div>
+      <div class="g-hero__art" style={`background:${artBg}`} data-parallax>
+        <span class="sq-wrap" data-depth="30" style="left:10%;top:12%"><span class="sq sq--yellow float" style="width:80px;height:80px;transform:rotate(16deg)"></span></span>
+        <span class="sq-wrap" data-depth="-24" style="right:12%;bottom:14%"><span class="sq sq--black float" style="width:60px;height:60px;transform:rotate(-10deg);--delay:-2s"></span></span>
+        <div class="phone" data-reveal="pop" style="--d:.2s">
+          <div class="phone__screen">
+            {game.trailer
+              ? <video src={game.trailer} autoplay muted loop playsinline aria-label={`${game.title} gameplay`}></video>
+              : game.keyArt ? <img src={game.keyArt} alt={`${game.title} key art`} /> : <span class="label">Gameplay video</span>}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="how-title">
+    <div class="wrap section__inner">
+      <h2 id="how-title" class="display h2" data-reveal>How to play<span class="dot">.</span></h2>
+      <div class="how" data-stagger="0.12">
+        {game.howToPlay.map((step, i) => (
+          <div class:list={['how__step', ['yellow', 'cream', 'dark'][i % 3]]} data-reveal>
+            <span class="display how__num">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="display how__h">{step.title}<span class="dot">.</span></h3>
+            <p>{step.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section yellow" aria-labelledby="shots-title">
+    <div class="wrap section__inner">
+      <h2 id="shots-title" class="display h2" data-reveal>Screenshots<span class="dot">.</span></h2>
+      <div class="shots" data-stagger="0.07">
+        {shots.map((src, i) => (
+          <div class="shot" data-reveal="pop">
+            <div class:list={['shot__screen', i % 2 ? 'red' : '']}>
+              {src ? <img src={src} alt={`${game.title} screenshot ${i + 1}`} loading="lazy" /> : <span class="label">Screen {i + 1}</span>}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {game.features.length > 0 && (
+    <section class="section" aria-labelledby="feat-title">
+      <div class="feat">
+        <div class="feat__left"><h2 id="feat-title" class="display h2" data-reveal>Why you'll<br />love it<span class="dot">.</span></h2></div>
+        <ul class="feat__list" data-stagger>
+          {game.features.map((f) => <li data-reveal="left"><span class="feat__sq" aria-hidden="true"></span>{f}</li>)}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <section class="section" aria-labelledby="more-title">
+    <div class="wrap section__inner more">
+      <div>
+        <h2 id="more-title" class="display more__title" data-reveal>{others.length ? 'More games' : 'More games soon'}<span class="dot">.</span></h2>
+        <p data-reveal style="--d:.08s">Need help with {game.title}? Visit support or read the privacy policy.</p>
+      </div>
+      <div class="more__btns" data-reveal style="--d:.12s">
+        <a href="/games/" class="btn">All games</a>
+        <a href="/support/" class="btn btn--ghost">Support</a>
+        <a href="/privacy/" class="btn btn--ghost">Privacy</a>
+      </div>
+    </div>
+    {others.length > 0 && (
+      <div class="wrap others" data-stagger>{others.slice(0, 3).map((g) => <div data-reveal><GameCard game={g} /></div>)}</div>
+    )}
+  </section>
+  <Checker pattern="k2yrkr3ykc2rk" height="40px" class="rule-b" />
+</Base>
+
+<style>
+  .g-hero { max-width: var(--max); margin: 0 auto; display: flex; flex-wrap: wrap; }
+  .g-hero__text { flex: 1.4 1 520px; min-width: 0; padding: clamp(44px, 6vw, 72px) var(--gutter); display: flex; flex-direction: column; gap: 22px; border-right: var(--rule); }
+  .g-hero__text p { margin: 0; max-width: 560px; }
+  .g-title { font-size: clamp(84px, 11.5vw, 180px); }
+  .tags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+  .tags li { border: var(--rule); padding: 8px 12px; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; }
+  .tags__status { background: var(--yellow); }
+  .stores { display: flex; flex-wrap: wrap; gap: 12px; }
+  .g-hero__art { flex: 1 1 440px; min-height: 540px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .phone { width: 250px; height: 500px; background: var(--black); border-radius: 36px; padding: 12px; position: relative; z-index: 1; }
+  .phone__screen { width: 100%; height: 100%; border-radius: 26px; background: var(--yellow); overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .phone__screen video, .phone__screen img { width: 100%; height: 100%; object-fit: cover; }
+  @media (max-width: 960px) { .g-hero__text { border-right: 0; border-bottom: var(--rule); } .g-hero__art { min-height: 460px; } }
+
+  .how { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; margin-top: 36px; }
+  .how__step { border: var(--rule); padding: 30px; display: flex; flex-direction: column; gap: 12px; }
+  .how__step p { margin: 0; }
+  .cream { background: var(--cream); }
+  .how__num { font-size: 64px; }
+  .how__step.cream .how__num { color: var(--red); }
+  .how__step.dark .how__num { color: var(--yellow); }
+  .how__h { font-size: 32px; }
+
+  .shots { display: flex; gap: 22px; overflow-x: auto; padding: 36px 4px 12px; scroll-snap-type: x mandatory; }
+  .shot { flex: 0 0 220px; height: 440px; background: var(--black); border-radius: 28px; padding: 10px; scroll-snap-align: start; }
+  .shot__screen { height: 100%; border-radius: 20px; background: var(--cream); overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .shot__screen img { width: 100%; height: 100%; object-fit: cover; }
+
+  .feat { max-width: var(--max); margin: 0 auto; display: flex; flex-wrap: wrap; }
+  .feat__left { flex: 1 1 380px; padding: clamp(48px, 7vw, 80px) var(--gutter); border-right: var(--rule); }
+  .feat__list { flex: 1 1 520px; list-style: none; margin: 0; padding: clamp(24px, 7vw, 80px) var(--gutter); }
+  .feat__list li { display: flex; gap: 18px; align-items: baseline; padding: 20px 0; border-bottom: var(--rule); font-size: 20px; font-weight: 700; }
+  .feat__sq { flex: 0 0 14px; height: 14px; background: var(--red); transform: rotate(-14deg); }
+  @media (max-width: 900px) { .feat__left { border-right: 0; padding-bottom: 0; } }
+
+  .more { display: flex; flex-wrap: wrap; gap: 28px; justify-content: space-between; align-items: center; }
+  .more p { margin: 10px 0 0; }
+  .more__title { font-size: clamp(48px, 5vw, 64px); }
+  .more__btns { display: flex; flex-wrap: wrap; gap: 12px; }
+  .others { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; padding-bottom: 72px; }
+</style>

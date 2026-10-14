@@ -1,0 +1,26 @@
+---
+import Base from '../../layouts/Base.astro';
+import GameCard from '../../components/GameCard.astro';
+import Checker from '../../components/Checker.astro';
+import site from '../../data/site.json';
+import games from '../../data/games.json';
+---
+<Base title="Games" description={`All games by ${site.name}.`}>
+  <section class="section">
+    <div class="wrap section__inner">
+      <span class="label" data-reveal>02 / Games</span>
+      <h1 class="display page-title" data-reveal style="--d:.08s">Our games<span class="dot">.</span></h1>
+      <p class="lead intro" data-reveal style="--d:.16s">Small, bright games for everyday breaks. Pick one up in a minute.</p>
+      <div class="list" data-stagger>
+        {games.map((g) => <div data-reveal><GameCard game={g} featured /></div>)}
+      </div>
+    </div>
+  </section>
+  <Checker pattern="r2kyc2krk3yr" height="40px" class="rule-b" />
+</Base>
+
+<style>
+  .page-title { font-size: clamp(72px, 10vw, 150px); margin-top: 14px; }
+  .intro { max-width: 620px; margin: 20px 0 48px; }
+  .list { display: flex; flex-direction: column; gap: 28px; }
+</style>

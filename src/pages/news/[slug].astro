@@ -1,0 +1,37 @@
+---
+import Base from '../../layouts/Base.astro';
+import Checker from '../../components/Checker.astro';
+import news from '../../data/news.json';
+
+export function getStaticPaths() {
+  return news.map((post) => ({ params: { slug: post.slug }, props: { post } }));
+}
+const { post } = Astro.props;
+const date = new Date(post.date + 'T12:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+const bg = { red: 'var(--red)', yellow: 'var(--yellow)', black: 'var(--black)' }[post.theme] ?? 'var(--yellow)';
+---
+<Base title={post.title} description={post.excerpt}>
+  <article>
+    <header class="section post-head" style={`background:${bg}`}>
+      <div class="wrap section__inner">
+        <span class="label" data-reveal><a href="/news/" style="text-decoration:none">05 / News</a> / {post.category} · <time datetime={post.date}>{date}</time></span>
+        <h1 class="display post-title" data-reveal style="--d:.08s">{post.title}<span class="dot">.</span></h1>
+      </div>
+    </header>
+    <div class="section">
+      <div class="wrap section__inner prose" data-stagger="0.06">
+        {post.image && <img src={post.image} alt="" data-reveal />}
+        {post.body.map((p) => <p data-reveal>{p}</p>)}
+        <a href="/news/" class="textlink" data-reveal>All posts <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </article>
+  <Checker pattern="k2yrkr3ykc2rk" height="40px" class="rule-b" />
+</Base>
+
+<style>
+  .post-head[style*="--black"] { color: var(--cream); }
+  .post-title { font-size: clamp(56px, 8vw, 120px); margin-top: 16px; max-width: 14ch; }
+  .prose { max-width: 760px; font-size: 19px; }
+  .prose p { margin: 0 0 1.2em; }
+</style>

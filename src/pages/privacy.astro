@@ -1,0 +1,34 @@
+---
+import Prose from '../layouts/Prose.astro';
+import site from '../data/site.json';
+---
+<Prose title="Privacy policy" label="Players / Privacy" updated="[DATE]" description={`How ${site.name} handles your data.`}>
+  <p class="note">Template: review and complete every [bracketed] part before publishing. This is a starting point, not legal advice. Make sure it matches the SDKs actually inside each game.</p>
+
+  <p>{site.name} ("we", "us") makes mobile games. This policy explains what data our games and this website collect, why, and the choices you have.</p>
+
+  <h2>What we collect</h2>
+  <ul>
+    <li><strong>Gameplay data:</strong> progress, levels and settings, stored on your device [and/or in cloud saves].</li>
+    <li><strong>Device and usage data:</strong> device model, system version, app version, crash reports and in-game events, used to fix bugs and improve the games.</li>
+    <li><strong>Advertising data:</strong> our free games show ads through [ad mediation provider, e.g. Unity LevelPlay] and its partner networks. They may collect your device's advertising ID, IP address and ad interactions to show and measure ads.</li>
+    <li><strong>Purchases:</strong> in-app purchases are processed by Apple or Google. We receive a confirmation of the purchase, never your payment details.</li>
+    <li><strong>Email:</strong> only if you contact us or join our newsletter.</li>
+  </ul>
+
+  <h2>Your choices</h2>
+  <ul>
+    <li>You can reset or limit your advertising ID in your device settings. On iOS, we ask for permission before tracking.</li>
+    <li>You can ask us to delete data linked to you by emailing <a href={`mailto:${site.email}`}>{site.email}</a>.</li>
+    <li>You can unsubscribe from the newsletter at any time using the link in every email.</li>
+  </ul>
+
+  <h2>Third-party services</h2>
+  <p>[List each SDK and link to its privacy policy, e.g. Unity, LevelPlay and each ad network, analytics, crash reporting.]</p>
+
+  <h2>Children</h2>
+  <p>Our games are made for a general audience and are not directed at children under [13 / the age required in your country]. [Adjust if a game targets children.]</p>
+
+  <h2>Contact</h2>
+  <p>{site.name}, {site.location}. Email: <a href={`mailto:${site.email}`}>{site.email}</a></p>
+</Prose>

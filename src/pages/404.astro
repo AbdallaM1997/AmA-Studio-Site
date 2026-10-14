@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Page not found">
+  <section class="section lost" data-toy data-parallax>
+    <span class="sq-wrap" data-depth="30" style="left:8%;top:16%"><span class="sq sq--red float" style="width:64px;height:64px;transform:rotate(18deg)"></span></span>
+    <span class="sq-wrap" data-depth="-20" style="right:10%;bottom:20%"><span class="sq sq--black float" style="width:44px;height:44px;--delay:-2s"></span></span>
+    <div class="wrap section__inner lost__inner">
+      <span class="label" data-reveal>404 / Lost</span>
+      <h1 class="display lost__title" data-reveal style="--d:.08s">Oops<span class="dot">.</span><br />Wrong level<span class="dot">.</span></h1>
+      <p class="lead" data-reveal style="--d:.16s">This page doesn't exist. Tap around for a quick play break, then head home.</p>
+      <div data-reveal style="--d:.24s"><a href="/" class="btn">Back home</a></div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .lost { background: var(--yellow); position: relative; overflow: hidden; min-height: 70vh; display: flex; align-items: center; cursor: crosshair; }
+  .lost__inner { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 20px; width: 100%; }
+  .lost__title { font-size: clamp(72px, 11vw, 170px); }
+  .lost .lead { margin: 0; max-width: 520px; }
+</style>

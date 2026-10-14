@@ -1,0 +1,33 @@
+---
+/**
+ * The AmA Studio logo, built from type so it stays sharp at any size.
+ *   size  – font size of the "AmA" word (any CSS length)
+ *   tone  – "dark" (black on light) or "light" (cream on dark)
+ *   studio – show the "STUDIO" line under the word
+ *   align – "center" (default) or "start"
+ */
+interface Props { size?: string; tone?: 'dark' | 'light'; studio?: boolean; align?: 'center' | 'start' }
+const { size = '42px', tone = 'dark', studio = true, align = 'center' } = Astro.props;
+---
+<span class:list={['logo', `logo--${tone}`, `logo--${align}`]} style={`--s:${size}`} aria-hidden="true">
+  <span class="logo__word">AmA<span class="logo__spark"></span></span>
+  {studio && <span class="logo__studio">Studio</span>}
+</span>
+
+<style>
+  .logo { display: inline-flex; flex-direction: column; align-items: center; line-height: 1; font-size: var(--s); color: var(--black); }
+  .logo--light { color: var(--cream); }
+  .logo--start { align-items: flex-start; }
+  .logo__word { position: relative; font-family: var(--font-display); letter-spacing: -.02em; }
+  .logo__spark {
+    position: absolute; right: -.13em; top: -.24em; width: .31em; height: .31em;
+    background: var(--red); transform: rotate(-14deg);
+    transition: transform .35s var(--ease-pop);
+  }
+  .logo__studio {
+    font-family: var(--font-label); font-size: .19em; letter-spacing: .7em; margin-right: -.7em;
+    margin-top: .14em; text-transform: uppercase;
+  }
+  .logo--start .logo__studio { margin-right: 0; }
+  :global(a:hover) > .logo .logo__spark { transform: rotate(-14deg) translateY(-.08em) rotate(28deg); }
+</style>

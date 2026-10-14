@@ -1,0 +1,242 @@
+---
+import Base from '../layouts/Base.astro';
+import Logo from '../components/Logo.astro';
+import Checker from '../components/Checker.astro';
+import SectionHead from '../components/SectionHead.astro';
+import GameCard from '../components/GameCard.astro';
+import NewsCard from '../components/NewsCard.astro';
+import site from '../data/site.json';
+import games from '../data/games.json';
+import news from '../data/news.json';
+
+const featured = games.find((g) => g.featured) ?? games[0];
+const others = games.filter((g) => g !== featured).slice(0, 2);
+const latest = [...news].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3);
+---
+<Base splash>
+  <!-- 01 / HOME -->
+  <section class="hero section" aria-labelledby="hero-title">
+    <div class="hero__grid">
+      <div class="hero__text wrap-left">
+        <span class="label" data-reveal>01 / Home</span>
+        <h1 id="hero-title" class="display hero__title" data-stagger="0.12">
+          {site.headline.map((line) => <span class="hero__line" data-reveal="left">{line}<span class="dot">.</span></span>)}
+        </h1>
+        <p class="lead hero__sub" data-reveal style="--d:.3s">{site.subline}</p>
+        <div class="hero__ctas" data-reveal style="--d:.42s">
+          <a href="/games/" class="btn">See our games</a>
+          <a href="#newsletter" class="btn btn--ghost">Get game news</a>
+        </div>
+      </div>
+
+      <div class="hero__toy" data-toy data-parallax>
+        <span class="sq-wrap" data-depth="34" style="left:12%;top:14%"><span class="sq sq--red float" style="width:70px;height:70px;transform:rotate(18deg);--dur:5s"></span></span>
+        <span class="sq-wrap" data-depth="-26" style="right:7%;top:9%"><span class="sq sq--black float" style="width:32px;height:32px;--dur:4.2s;--delay:-1s"></span></span>
+        <span class="sq-wrap" data-depth="22" style="right:9%;bottom:30%"><span class="sq sq--red float" style="width:48px;height:48px;transform:rotate(-22deg);--dur:6s;--delay:-2s"></span></span>
+        <span class="sq-wrap" data-depth="-14" style="left:20%;bottom:24%"><span class="sq sq--cream float" style="width:24px;height:24px;transform:rotate(10deg);--dur:4.6s"></span></span>
+        <div class="hero__logo" data-reveal="pop" style="--d:.2s"><Logo size="clamp(110px, 12vw, 170px)" /></div>
+        <button type="button" class="hero__hint" data-toy-btn>
+          <span class="label">Tap to take a play break</span>
+          <span class="hero__count"><span data-toy-count>0</span> squares</span>
+        </button>
+        <Checker pattern="k1r1c1k1r2k1c1r1" height="40px" class="hero__checker" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 / GAMES -->
+  <section id="games" class="section" aria-label="Our games">
+    <div class="wrap section__inner">
+      <SectionHead num="02" label="Games" title="Our games" link={{ href: '/games/', text: 'All games' }} />
+      <div class="games-grid">
+        <div class="games-grid__main" data-reveal><GameCard game={featured} featured /></div>
+        <div class="games-grid__side" data-stagger>
+          {others.map((g) => <div data-reveal><GameCard game={g} /></div>)}
+          {site.inTheLab.show && others.length < 2 && (
+            <div class="lab dark" data-reveal>
+              <span class="label lab__k">In the lab</span>
+              <span class="display lab__t">{site.inTheLab.title}<span class="dot">.</span></span>
+              <span>{site.inTheLab.text}</span>
+            </div>
+          )}
+          {others.length === 0 && (
+            <a href="#newsletter" class="slot" data-reveal>
+              <span class="label">Slot 03</span>
+              <span class="display lab__t">Your next favorite<span class="dot">.</span></span>
+              <span>Room for the next title on the shelf.</span>
+            </a>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Checker pattern="y2rkcr3ykc2ry" height="48px" />
+
+  <!-- 03 / PLAY DEPT. -->
+  <section class="dark" aria-labelledby="dept-title">
+    <div class="wrap section__inner dept">
+      <span class="label dept__label" data-reveal>03 / Play Dept.</span>
+      <h2 id="dept-title" class="display dept__title" data-reveal>{site.slogan.replace(/\.$/, '')}<span class="dot">.</span></h2>
+      <div class="dept__grid" data-stagger="0.12">
+        {site.principles.map((p, i) => (
+          <div class="dept__item" data-reveal>
+            <span class="label dept__num">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="display dept__h">{p.title}<span class="dot">.</span></h3>
+            <p>{p.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 / STUDIO -->
+  <section id="studio" class="section" aria-labelledby="studio-title">
+    <div class="wrap studio">
+      <div class="studio__left">
+        <span class="label" data-reveal>04 / Studio</span>
+        <h2 id="studio-title" class="display h2" data-reveal style="--d:.08s">AmA <span class="studio__eq">=</span><br />AmAzing<span class="dot">.</span></h2>
+      </div>
+      <div class="studio__right" data-stagger>
+        <p class="lead" data-reveal>{site.studio.intro}</p>
+        {site.studio.founderNote && <p data-reveal>{site.studio.founderNote}</p>}
+        <a href="#contact" class="textlink" data-reveal>Say hi <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 / NEWS -->
+  {latest.length > 0 && (
+    <section class="section" aria-label="News">
+      <div class="wrap section__inner">
+        <SectionHead num="05" label="News" title="From the lab" link={{ href: '/news/', text: 'All posts' }} />
+        <div class="news-grid" data-stagger>
+          {latest.map((post) => <div data-reveal><NewsCard post={post} /></div>)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- 06 / NEWSLETTER -->
+  {site.newsletter.enabled && (
+    <section id="newsletter" class="section" aria-labelledby="nl-title">
+      <div class="wrap section__inner nl">
+        <div class="nl__text">
+          <span class="label" data-reveal>06 / Newsletter</span>
+          <h2 id="nl-title" class="display nl__title" data-reveal style="--d:.08s">Take a<br />play break<span class="dot dot--black">.</span></h2>
+          <p data-reveal style="--d:.16s">{site.newsletter.text}</p>
+        </div>
+        <form class="nl__form" data-newsletter action={site.newsletter.formAction || undefined} method="post" data-reveal style="--d:.2s">
+          <label for="nl-email" class="label">Your email</label>
+          <div class="nl__row">
+            <input id="nl-email" name="email" type="email" required placeholder="you@email.com" autocomplete="email" />
+            <button type="submit" class="btn">Sign me up</button>
+          </div>
+          <p class="nl__note" data-note aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  )}
+
+  <!-- 07 / CONTACT (+ services when switched on in site.json) -->
+  <section id="contact" class="red contact" aria-labelledby="contact-title">
+    <div class="wrap contact__inner">
+      <div class="contact__text">
+        <span class="label" data-reveal>07 / Contact</span>
+        <h2 id="contact-title" class="display contact__title" data-reveal style="--d:.08s">Say hi<span class="dot dot--cream">.</span> Got an idea<span class="dot dot--cream">?</span></h2>
+        {!site.services.enabled && <p class="contact__teaser" data-reveal style="--d:.16s">{site.services.teaser}</p>}
+      </div>
+      <a href={`mailto:${site.email}`} class="btn contact__mail" data-reveal="pop" style="--d:.2s">{site.email}</a>
+    </div>
+    {site.services.enabled && (
+      <div class="wrap services" data-stagger>
+        {site.services.items.map((s) => (
+          <div class="services__item" data-reveal>
+            <h3 class="display">{s.title}<span class="dot dot--cream">.</span></h3>
+            <p>{s.text}</p>
+          </div>
+        ))}
+      </div>
+    )}
+  </section>
+</Base>
+
+<style>
+  /* Hero */
+  .hero__grid { max-width: var(--max); margin: 0 auto; display: flex; flex-wrap: wrap; }
+  .hero__text { flex: 1.5 1 560px; min-width: 0; padding: clamp(48px, 7vw, 88px) var(--gutter) clamp(44px, 6vw, 72px); display: flex; flex-direction: column; gap: 26px; border-right: var(--rule); }
+  .hero__title { font-size: clamp(72px, 9.6vw, 156px); display: flex; flex-direction: column; }
+  .hero__line { display: block; white-space: nowrap; }
+  @media (max-width: 600px) { .hero__title { font-size: 16.5vw; } }
+  .hero__sub { margin: 0; max-width: 540px; }
+  .hero__ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 6px; }
+
+  .hero__toy { flex: 1 1 440px; min-width: 0; min-height: 480px; position: relative; overflow: hidden; background: var(--yellow); display: flex; align-items: center; justify-content: center; cursor: crosshair; user-select: none; -webkit-user-select: none; }
+  .hero__logo { position: relative; z-index: 2; margin-bottom: 40px; pointer-events: none; }
+  .hero__hint { position: absolute; left: 0; right: 0; bottom: 52px; z-index: 2; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 20px; background: none; border: 0; color: var(--black); cursor: pointer; font: inherit; font-size: 14px; }
+  .hero__hint .label { font-size: 11px; }
+  .hero__count { font-weight: 700; }
+  :global(.hero__checker) { position: absolute; left: 0; right: 0; bottom: 0; }
+
+  @media (max-width: 960px) {
+    .hero__text { border-right: 0; border-bottom: var(--rule); }
+    .hero__toy { min-height: 340px; }
+  }
+
+  /* Games */
+  .games-grid { display: flex; flex-wrap: wrap; gap: 24px; }
+  .games-grid__main { flex: 2 1 560px; min-width: 0; display: flex; }
+  .games-grid__main > :global(*) { flex: 1; }
+  .games-grid__side { flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 24px; }
+  .lab, .slot { flex: 1; padding: 28px; display: flex; flex-direction: column; justify-content: space-between; gap: 20px; min-height: 200px; }
+  .lab__k { color: var(--yellow); font-size: 12px; }
+  .lab__t { font-size: 44px; line-height: 1; }
+  .slot { border: 2px dashed var(--black); text-decoration: none; transition: background .2s; }
+  .slot:hover { background: var(--yellow); color: var(--black); }
+  .slot .label { font-size: 12px; }
+
+  /* Play Dept */
+  .dept { display: flex; flex-direction: column; gap: clamp(32px, 5vw, 56px); }
+  .dept__label { color: var(--yellow); }
+  .dept__title { font-size: clamp(72px, 11vw, 176px); line-height: .88; }
+  .dept__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); border-top: 2px solid var(--cream); }
+  .dept__item { padding: 28px 28px 0 0; display: flex; flex-direction: column; gap: 10px; }
+  .dept__num { color: var(--red); }
+  .dept__h { font-size: 40px; }
+  .dept__item p { margin: 0; }
+
+  /* Studio */
+  .studio { display: flex; flex-wrap: wrap; padding-inline: 0; }
+  .studio__left { flex: 1 1 420px; padding: clamp(56px, 7vw, 88px) var(--gutter); display: flex; flex-direction: column; gap: 18px; border-right: var(--rule); }
+  .studio__eq { color: var(--red); }
+  .studio__right { flex: 1 1 480px; padding: clamp(40px, 7vw, 88px) var(--gutter); display: flex; flex-direction: column; justify-content: center; gap: 20px; }
+  .studio__right p { margin: 0; }
+  @media (max-width: 900px) { .studio__left { border-right: 0; padding-bottom: 0; } }
+
+  /* News */
+  .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+
+  /* Newsletter */
+  .nl { display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-end; }
+  .nl__text { flex: 999 1 520px; display: flex; flex-direction: column; gap: 14px; }
+  .nl__text p { margin: 0; max-width: 560px; }
+  .nl__title { font-size: clamp(64px, 8vw, 124px); color: var(--red); }
+  .nl__form { flex: 1 1 360px; display: flex; flex-direction: column; gap: 10px; }
+  .nl__form .label { font-size: 12px; }
+  .nl__row { display: flex; flex-wrap: wrap; }
+  .nl__row input { flex: 1 1 200px; min-width: 0; min-height: 56px; border: var(--rule); background: var(--cream); padding: 0 18px; font: inherit; font-size: 17px; }
+  .nl__row .btn { min-height: 56px; }
+  .nl__note { margin: 0; min-height: 1.5em; font-weight: 700; }
+  @media (max-width: 520px) { .nl__row .btn { flex: 1 1 100%; } }
+
+  /* Contact */
+  .contact { border-bottom: var(--rule); }
+  .contact__inner { display: flex; flex-wrap: wrap; gap: 28px; justify-content: space-between; align-items: center; padding-block: clamp(44px, 6vw, 64px); }
+  .contact__text { display: flex; flex-direction: column; gap: 10px; }
+  .contact__title { font-size: clamp(42px, 5vw, 64px); line-height: 1; }
+  .contact__teaser { margin: 0; font-weight: 700; }
+  .contact__mail { text-transform: none; letter-spacing: .02em; }
+  .services { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0; border-top: var(--rule); padding-block: 32px 48px; }
+  .services__item { padding-right: 24px; }
+  .services__item h3 { font-size: 34px; }
+</style>

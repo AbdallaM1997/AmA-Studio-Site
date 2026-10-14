@@ -1,0 +1,27 @@
+---
+/** Simple text page (support, privacy, terms). Write the content as normal HTML inside it. */
+import Base from './Base.astro';
+interface Props { title: string; label: string; description?: string; updated?: string }
+const { title, label, description, updated } = Astro.props;
+---
+<Base title={title} description={description}>
+  <section class="section">
+    <div class="wrap section__inner">
+      <span class="label" data-reveal>{label}</span>
+      <h1 class="display prose-title" data-reveal style="--d:.08s">{title}<span class="dot">.</span></h1>
+      {updated && <p class="updated" data-reveal style="--d:.12s">Last updated: {updated}</p>}
+      <div class="prose" data-reveal style="--d:.16s"><slot /></div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .prose-title { font-size: clamp(60px, 9vw, 130px); margin-top: 14px; }
+  .updated { font-weight: 700; margin: 18px 0 0; }
+  .prose { max-width: 780px; margin-top: 36px; }
+  .prose :global(h2) { font-family: var(--font-display); font-weight: 400; font-size: 38px; line-height: 1; margin: 1.6em 0 .5em; }
+  .prose :global(p), .prose :global(li) { font-size: 18px; }
+  .prose :global(ul) { padding-left: 1.2em; }
+  .prose :global(li::marker) { color: var(--red); }
+  .prose :global(.note) { background: var(--yellow); border: var(--rule); padding: 16px 20px; font-weight: 600; }
+</style>

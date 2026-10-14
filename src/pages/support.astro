@@ -1,0 +1,21 @@
+---
+import Prose from '../layouts/Prose.astro';
+import site from '../data/site.json';
+import games from '../data/games.json';
+---
+<Prose title="Support" label="Players / Support" description={`Help with ${site.name} games.`}>
+  <p>Stuck on a level, found a bug or have an idea? We read every message.</p>
+  <h2>Contact us</h2>
+  <p>Email <a href={`mailto:${site.email}`}>{site.email}</a> and tell us:</p>
+  <ul>
+    <li>Which game you're playing</li>
+    <li>Your device and its system version (for example, iPhone 15, iOS 19 or Samsung A54, Android 15)</li>
+    <li>What happened, and a screenshot if you can</li>
+  </ul>
+  <h2>Our games</h2>
+  <ul>
+    {games.map((g) => <li><a href={`/games/${g.slug}/`}>{g.title}</a>{g.supportEmail && <> · <a href={`mailto:${g.supportEmail}`}>{g.supportEmail}</a></>}</li>)}
+  </ul>
+  <h2>Purchases</h2>
+  <p>Purchases are handled by the App Store or Google Play. For refunds, contact the store you bought from. To restore purchases on a new device, use the Restore button in the game's settings.</p>
+</Prose>

@@ -1,0 +1,56 @@
+{
+  "name": "AmA Studio",
+  "nameMeaning": "AmA = AmAzing",
+  "slogan": "Serious about fun.",
+  "headline": ["Good games", "Great breaks"],
+  "subline": "Made for your everyday play. Small, bright games you can pick up in a minute and love for months.",
+  "description": "AmA Studio is a game studio based in Cairo, Egypt. We make small, bright games for everyday breaks.",
+  "location": "Cairo, Egypt",
+  "url": "https://example.com",
+  "email": "hello@example.com",
+  "splash": {
+    "enabled": true,
+    "variant": "pop",
+    "oncePerSession": true
+  },
+  "nav": [
+    { "label": "Games", "href": "/games/" },
+    { "label": "Studio", "href": "/#studio" },
+    { "label": "News", "href": "/news/" },
+    { "label": "Contact", "href": "/#contact" }
+  ],
+  "socials": [
+    { "label": "Instagram", "url": "" },
+    { "label": "TikTok", "url": "" },
+    { "label": "YouTube", "url": "" },
+    { "label": "LinkedIn", "url": "" }
+  ],
+  "studio": {
+    "intro": "AmA Studio is a game studio based in Cairo, Egypt. We make small, bright games for everyday breaks, built in Unity and tested until they feel just right.",
+    "founderNote": ""
+  },
+  "principles": [
+    { "title": "Small games", "text": "Easy to learn in a minute. Perfect for a coffee break, a bus ride or five minutes before bed." },
+    { "title": "Bigger breaks", "text": "Every game is built to give you a real moment of fun, then let you get back to your day." },
+    { "title": "Brighter days", "text": "Friendly worlds, clear colors and no dark tricks. Games that respect your time." }
+  ],
+  "inTheLab": {
+    "show": true,
+    "title": "Next game",
+    "text": "Something new is cooking. Get the news first."
+  },
+  "newsletter": {
+    "enabled": true,
+    "formAction": "",
+    "text": "New games, beta invites and devlogs. One short email when there's something worth playing."
+  },
+  "services": {
+    "enabled": false,
+    "teaser": "Players, press and partners welcome. Brand and event projects coming soon.",
+    "items": [
+      { "title": "Event games", "text": "Touch-screen and booth games for brand activations." },
+      { "title": "AR / VR", "text": "Immersive experiences for training, health and marketing." },
+      { "title": "Client games", "text": "Branded mobile and web games, from idea to launch." }
+    ]
+  }
+}

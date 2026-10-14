@@ -1,0 +1,27 @@
+[
+  {
+    "slug": "hello-from-ama-studio",
+    "title": "Hello from AmA Studio",
+    "date": "2026-10-14",
+    "category": "Studio",
+    "theme": "yellow",
+    "excerpt": "A new game studio from Cairo, serious about fun.",
+    "body": [
+      "AmA Studio is open. AmA stands for AmAzing, and that is the bar we set for every game we make.",
+      "We make small, bright games for everyday breaks: easy to learn in a minute, fun for months.",
+      "Our first game, Kinfold, is on its way. Join the newsletter to hear first when it lands."
+    ]
+  },
+  {
+    "slug": "kinfold-is-coming",
+    "title": "Kinfold is coming",
+    "date": "2026-10-14",
+    "category": "Games",
+    "theme": "red",
+    "excerpt": "Our first game: a bright category card puzzle set in Egypt.",
+    "body": [
+      "Kinfold is a category card puzzle with an Egyptian twist. Look at the cards, drop each one into its group, and clear the board.",
+      "It is coming to iOS and Android. More screenshots and a release date soon."
+    ]
+  }
+]

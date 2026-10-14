@@ -1,0 +1,14 @@
+---
+/**
+ * A strip of brand-colored blocks. Cells build up when they scroll into view.
+ *   pattern – one letter per cell: r = red, y = yellow, k = black, c = cream.
+ *             Add a digit after a letter to make that cell wider, e.g. "k2r3".
+ *   height  – strip height (CSS length)
+ */
+interface Props { pattern?: string; height?: string; class?: string }
+const { pattern = 'k2yrkcr3ykyr', height = '44px', class: cls } = Astro.props;
+const cells = [...pattern.matchAll(/([rykc])(\d*)/g)].map((m) => ({ c: m[1], f: m[2] || '1' }));
+---
+<div class:list={['checker', cls]} style={`--h:${height}`} data-reveal aria-hidden="true">
+  {cells.map((cell, i) => <span class={`c-${cell.c}`} style={`--f:${cell.f};--i:${i}`}></span>)}
+</div>

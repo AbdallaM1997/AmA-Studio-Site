@@ -1,0 +1,25 @@
+---
+import Base from '../../layouts/Base.astro';
+import NewsCard from '../../components/NewsCard.astro';
+import Checker from '../../components/Checker.astro';
+import news from '../../data/news.json';
+
+const posts = [...news].sort((a, b) => b.date.localeCompare(a.date));
+---
+<Base title="News" description="Devlogs, launches and studio news from AmA Studio.">
+  <section class="section">
+    <div class="wrap section__inner">
+      <span class="label" data-reveal>05 / News</span>
+      <h1 class="display page-title" data-reveal style="--d:.08s">From the lab<span class="dot">.</span></h1>
+      <div class="grid" data-stagger>
+        {posts.map((post) => <div data-reveal><NewsCard post={post} /></div>)}
+      </div>
+    </div>
+  </section>
+  <Checker pattern="yk2rcyrk3ckr" height="40px" class="rule-b" />
+</Base>
+
+<style>
+  .page-title { font-size: clamp(72px, 10vw, 150px); margin: 14px 0 48px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 24px; }
+</style>

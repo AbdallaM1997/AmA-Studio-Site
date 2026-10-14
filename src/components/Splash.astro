@@ -1,0 +1,150 @@
+---
+/**
+ * Brand splash intro. Three looks, picked in src/data/site.json → splash.variant:
+ *   "pop"    – yellow, letters bounce in, squares pop in the corners
+ *   "blocks" – red / yellow / black bars lift away, checker strip builds up
+ *   "night"  – dark, confetti squares spin in around a cream logo
+ * Preview any of them with ?splash=pop | blocks | night in the address bar.
+ * The timeline lives in src/scripts/splash.js; it is skipped for reduced motion.
+ */
+const confetti = [
+  { x: 9, y: 14, s: 34, c: 'red', r: 18 }, { x: 78, y: 8, s: 22, c: 'yellow', r: -20 },
+  { x: 88, y: 30, s: 14, c: 'cream', r: 12 }, { x: 18, y: 38, s: 12, c: 'yellow', r: 30 },
+  { x: 70, y: 22, s: 30, c: 'red', r: -16 }, { x: 30, y: 9, s: 10, c: 'cream', r: 8 },
+  { x: 6, y: 66, s: 26, c: 'yellow', r: -12 }, { x: 84, y: 64, s: 40, c: 'yellow', r: 20 },
+  { x: 62, y: 80, s: 16, c: 'cream', r: -8 }, { x: 22, y: 84, s: 32, c: 'red', r: 24 },
+  { x: 92, y: 86, s: 24, c: 'red', r: -24 }, { x: 44, y: 90, s: 12, c: 'yellow', r: 14 },
+  { x: 52, y: 6, s: 18, c: 'red', r: 22 }, { x: 36, y: 72, s: 10, c: 'cream', r: -30 },
+];
+const strip = 'kyrkcrykrykcrkyrkcyr'.split('');
+---
+<div class="splash" role="region" aria-label="AmA Studio intro">
+  <!-- blocks: three bars that lift away -->
+  <div class="splash__bars" aria-hidden="true"><span class="sq--red"></span><span class="sq--yellow"></span><span class="sq--black"></span></div>
+
+  <!-- night: confetti -->
+  <div class="splash__confetti" aria-hidden="true">
+    {confetti.map((q, i) => (
+      <i class={`sq--${q.c}`} style={`--x:${q.x}%;--y:${q.y}%;--sz:${q.s}px;--r:${q.r}deg;--i:${i}`}></i>
+    ))}
+  </div>
+
+  <!-- pop: corner squares -->
+  <div class="splash__corner" aria-hidden="true">
+    <i class="sq--black"></i><i class="sq--red"></i><i class="sq--cream"></i>
+  </div>
+  <i class="splash__big sq--red" aria-hidden="true"></i>
+
+  <div class="splash__stage" aria-hidden="true">
+    <div class="splash__word">
+      <span class="L">A</span><span class="L">m</span><span class="L">A</span><span class="splash__spark"></span>
+    </div>
+    <div class="splash__studio">{'STUDIO'.split('').map((ch, i) => <span style={`--i:${i}`}>{ch}</span>)}</div>
+    <div class="splash__tag"><span class="splash__type" data-text="Serious about fun"></span><span class="splash__dot">.</span><span class="splash__caret"></span></div>
+  </div>
+
+  <!-- blocks: checker strip building up at the bottom -->
+  <div class="splash__strip" aria-hidden="true">
+    {strip.map((c, i) => <span class={`c-${c}`} style={`--i:${i}`}></span>)}
+  </div>
+
+  <button type="button" class="splash__skip">Skip intro</button>
+</div>
+
+<style is:global>
+  .splash { display: none; }
+  html.splash-on { overflow: hidden; }
+  html.splash-on .splash {
+    display: block; position: fixed; inset: 0; z-index: 1000; overflow: hidden;
+    background: var(--yellow); color: var(--black);
+    --t-word: .25s;
+  }
+  html[data-splash="blocks"] .splash { background: var(--cream); --t-word: .75s; }
+  html[data-splash="night"] .splash { background: var(--black); color: var(--cream); --t-word: .45s; }
+
+  /* Only show the decorations that belong to the active look */
+  .splash__bars, .splash__confetti, .splash__corner, .splash__big, .splash__strip { display: none; }
+  html[data-splash="blocks"] .splash__bars, html[data-splash="blocks"] .splash__strip { display: flex; }
+  html[data-splash="night"] .splash__confetti { display: block; }
+  html[data-splash="pop"] .splash__corner, html[data-splash="pop"] .splash__big { display: block; }
+
+  /* ---------- Stage: logo + tagline ---------- */
+  .splash__stage { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; }
+  .splash__word { position: relative; font-family: var(--font-display); font-size: clamp(104px, 21vw, 230px); line-height: 1; letter-spacing: -.02em; display: flex; }
+  .splash__word .L { display: inline-block; opacity: 0; animation: L-pop .6s var(--ease-pop) forwards; }
+  .splash__word .L:nth-child(1) { animation-delay: var(--t-word); }
+  .splash__word .L:nth-child(2) { animation-delay: calc(var(--t-word) + .12s); }
+  .splash__word .L:nth-child(3) { animation-delay: calc(var(--t-word) + .24s); }
+  html[data-splash="blocks"] .splash__word .L { animation-name: L-rise; animation-timing-function: var(--ease-out); }
+  html[data-splash="night"] .splash__word .L { animation-name: L-slide; animation-timing-function: var(--ease-out); }
+
+  @keyframes L-pop { 0% { opacity: 0; transform: translateY(-60%) scale(.6) rotate(-8deg); } 60% { opacity: 1; } 100% { opacity: 1; transform: none; } }
+  @keyframes L-rise { 0% { opacity: 1; clip-path: inset(100% 0 0 0); transform: translateY(18%); } 100% { opacity: 1; clip-path: inset(0 0 0 0); transform: none; } }
+  @keyframes L-slide { 0% { opacity: 0; transform: translateX(-40%) skewX(-12deg); filter: blur(6px); } 100% { opacity: 1; transform: none; filter: none; } }
+
+  .splash__spark {
+    position: absolute; right: -.13em; top: -.24em; width: .31em; height: .31em; background: var(--red);
+    opacity: 0; animation: spark-drop .7s var(--ease-pop) forwards; animation-delay: calc(var(--t-word) + .6s);
+  }
+  @keyframes spark-drop {
+    0% { opacity: 0; transform: translateY(-160%) rotate(120deg) scale(.4); }
+    50% { opacity: 1; }
+    100% { opacity: 1; transform: rotate(-14deg); }
+  }
+
+  .splash__studio { font-family: var(--font-label); font-size: clamp(18px, 3.6vw, 40px); letter-spacing: .7em; margin-right: -.7em; margin-top: .2em; display: flex; }
+  .splash__studio span { opacity: 0; animation: studio-in .4s var(--ease-out) forwards; animation-delay: calc(var(--t-word) + .85s + var(--i) * 50ms); }
+  @keyframes studio-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+  .splash__tag { font-family: var(--font-display); font-size: clamp(30px, 5vw, 58px); margin-top: .45em; min-height: 1.2em; display: flex; align-items: center; }
+  .splash__dot { color: var(--red); opacity: 0; }
+  .splash.is-typed .splash__dot { animation: dot-pop .45s var(--ease-pop) forwards; }
+  @keyframes dot-pop { 0% { opacity: 0; transform: scale(0); } 100% { opacity: 1; transform: scale(1); } }
+  .splash__caret { width: .09em; height: .9em; background: var(--red); margin-left: .06em; opacity: 0; }
+  .splash.is-typing .splash__caret { opacity: 1; animation: blink .5s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* ---------- pop: corner squares ---------- */
+  .splash__corner { position: absolute; left: 7%; bottom: 9%; width: 120px; height: 110px; }
+  .splash__corner i { position: absolute; display: block; opacity: 0; animation: sq-pop .55s var(--ease-pop) forwards; }
+  .splash__corner i:nth-child(1) { width: 48px; height: 48px; left: 0; top: 0; --r: -14deg; animation-delay: .7s; }
+  .splash__corner i:nth-child(2) { width: 30px; height: 30px; left: 54px; top: 34px; --r: 12deg; animation-delay: .85s; }
+  .splash__corner i:nth-child(3) { width: 22px; height: 22px; left: 22px; top: 78px; --r: -10deg; animation-delay: 1s; }
+  .splash__big { position: absolute; right: -6vmin; bottom: -6vmin; width: 32vmin; height: 32vmin; opacity: 0; --r: 18deg; animation: sq-pop .8s var(--ease-pop) .9s forwards; }
+  @keyframes sq-pop { 0% { opacity: 0; transform: scale(0) rotate(calc(var(--r) - 90deg)); } 100% { opacity: 1; transform: scale(1) rotate(var(--r)); } }
+
+  /* ---------- blocks: bars + strip ---------- */
+  .splash__bars { position: absolute; inset: 0; z-index: 2; }
+  .splash__bars span { flex: 1; transform-origin: top; animation: bar-lift .6s cubic-bezier(.7, 0, .3, 1) forwards; }
+  .splash__bars span:nth-child(1) { animation-delay: .1s; }
+  .splash__bars span:nth-child(2) { animation-delay: .22s; }
+  .splash__bars span:nth-child(3) { animation-delay: .34s; }
+  @keyframes bar-lift { to { transform: scaleY(0); } }
+  .splash__strip { position: absolute; left: 0; right: 0; bottom: 0; height: clamp(48px, 9vmin, 90px); flex-wrap: wrap; }
+  .splash__strip span { width: 10%; height: 50%; transform: scaleY(0); transform-origin: bottom; animation: cell-up .4s var(--ease-pop) forwards; animation-delay: calc(1.5s + var(--i) * 35ms); }
+  .splash__strip .c-r { background: var(--red); } .splash__strip .c-y { background: var(--yellow); }
+  .splash__strip .c-k { background: var(--black); } .splash__strip .c-c { background: var(--cream); }
+  @keyframes cell-up { to { transform: scaleY(1); } }
+
+  /* ---------- night: confetti ---------- */
+  .splash__confetti { position: absolute; inset: 0; }
+  .splash__confetti i {
+    position: absolute; left: var(--x); top: var(--y); width: var(--sz); height: var(--sz); display: block; opacity: 0;
+    animation: conf-in .8s var(--ease-pop) forwards, conf-drift 4s ease-in-out infinite alternate;
+    animation-delay: calc(var(--i) * 60ms), calc(.8s + var(--i) * 60ms);
+  }
+  @keyframes conf-in { 0% { opacity: 0; transform: scale(0) rotate(calc(var(--r) + 270deg)); } 100% { opacity: 1; transform: scale(1) rotate(var(--r)); } }
+  @keyframes conf-drift { from { translate: 0 0; } to { translate: 0 -14px; } }
+  .sq--red { background: var(--red); } .sq--yellow { background: var(--yellow); } .sq--black { background: var(--black); } .sq--cream { background: var(--cream); }
+
+  /* ---------- skip + exit ---------- */
+  .splash__skip {
+    position: absolute; right: 16px; top: 16px; z-index: 5; min-height: 44px; padding: 0 16px;
+    font-family: var(--font-label); font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
+    background: transparent; color: inherit; border: 2px solid currentColor; cursor: pointer; opacity: .7;
+  }
+  .splash__skip:hover { opacity: 1; }
+  html.splash-on .splash.is-out { animation: splash-out .65s cubic-bezier(.7, 0, .3, 1) forwards; }
+  @keyframes splash-out { to { clip-path: inset(0 0 100% 0); } }
+  html.splash-on .splash { clip-path: inset(0 0 0 0); }
+</style>

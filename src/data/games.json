@@ -1,0 +1,33 @@
+[
+  {
+    "slug": "kinfold",
+    "title": "Kinfold",
+    "status": "coming-soon",
+    "featured": true,
+    "genre": "Puzzle",
+    "theme": "red",
+    "tagline": "A bright category card puzzle set in Egypt.",
+    "description": "Match every card to its group and clear the board. Each card shows something from Egypt, and every category slot shows its name and its latest card.",
+    "platforms": ["iOS", "Android"],
+    "price": "Free to play",
+    "releaseDate": "",
+    "keyArt": "",
+    "icon": "",
+    "trailer": "",
+    "screenshots": [],
+    "stores": {
+      "appStore": "",
+      "googlePlay": ""
+    },
+    "howToPlay": [
+      { "title": "Look at the cards", "text": "Each card shows something from Egypt. Spot what belongs together." },
+      { "title": "Drop them in groups", "text": "Place every card into its category slot. Each slot shows its name and latest card." },
+      { "title": "Clear the board", "text": "Finish every group to win the level and unlock the next one." }
+    ],
+    "features": [
+      "Egyptian themes, picture cards and bright, friendly art",
+      "Quick levels made for short breaks"
+    ],
+    "supportEmail": ""
+  }
+]
