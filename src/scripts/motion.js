@@ -136,6 +136,53 @@ function setupTheme() {
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => { if (!saved()) apply(e.matches ? 'dark' : 'light'); });
 }
 
+/* ---------- Brand cursor: square dot + trailing tilted frame (mouse only) ---------- */
+function setupCursor() {
+  if (!fine) return;
+  const el = document.createElement('div');
+  el.className = 'cursor';
+  el.setAttribute('aria-hidden', 'true');
+  el.innerHTML = '<span class="cursor__ring"></span><span class="cursor__dot"></span>';
+  document.body.append(el);
+  document.documentElement.classList.add('has-cursor');
+  const dot = el.firstElementChild.nextElementSibling;
+  const ring = el.firstElementChild;
+
+  let x = -100, y = -100, rx = x, ry = y, raf = 0;
+  const tick = () => {
+    // The frame eases after the pointer; with reduced motion it just sits on it
+    rx += (x - rx) * (reduce ? 1 : 0.22);
+    ry += (y - ry) * (reduce ? 1 : 0.22);
+    dot.style.transform = `translate(${x}px, ${y}px)`;
+    ring.style.transform = `translate(${rx}px, ${ry}px)`;
+    raf = Math.abs(x - rx) + Math.abs(y - ry) > 0.1 ? requestAnimationFrame(tick) : 0;
+  };
+  const kick = () => { if (!raf) raf = requestAnimationFrame(tick); };
+
+  document.addEventListener('pointermove', (e) => {
+    if (e.pointerType !== 'mouse') return;
+    x = e.clientX; y = e.clientY;
+    if (!el.classList.contains('is-on')) { rx = x; ry = y; el.classList.add('is-on'); }
+    kick();
+  });
+  document.addEventListener('mouseout', (e) => { if (!e.relatedTarget) el.classList.remove('is-on'); });
+  document.addEventListener('pointerdown', () => el.classList.add('is-down'));
+  document.addEventListener('pointerup', () => el.classList.remove('is-down'));
+
+  // Match what is under the pointer: links grow the frame, play areas close it,
+  // text fields get the normal I-beam, and colors follow the panel (yellow, red, dark)
+  document.addEventListener('pointerover', (e) => {
+    const t = e.target;
+    if (!(t instanceof Element)) return;
+    el.classList.toggle('is-text', !!t.closest('input, textarea, select, [contenteditable]'));
+    el.classList.toggle('is-link', !!t.closest('a, button, label, [role="button"]'));
+    el.classList.toggle('is-toy', !!t.closest('[data-toy]') && !t.closest('a, button'));
+    const ink = getComputedStyle(t).getPropertyValue('--ink').trim();
+    el.style.setProperty('--c-ink', ink);
+    el.style.setProperty('--c-ring', t.closest('.red, .btn--red') ? ink : 'var(--red)');
+  });
+}
+
 function setupNewsletter() {
   document.querySelectorAll('form[data-newsletter]').forEach((form) => {
     if (form.getAttribute('action')) return;
@@ -150,6 +197,7 @@ function setupNewsletter() {
 export function runMotion() {
   setupNav();
   setupTheme();
+  setupCursor();
   setupNewsletter();
   setupParallax();
   setupToy();

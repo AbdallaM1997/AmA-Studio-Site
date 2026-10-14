@@ -50,6 +50,7 @@ Use the project skills in `.claude/skills/` for common jobs: adding a game, addi
 
 - Elements animate in with `data-reveal` (`""`, `"left"`, `"pop"`). Put `data-stagger` on a parent to cascade its children. Delay a single element with `style="--d:.2s"`.
 - Floating squares: wrap in `<span class="sq-wrap" data-depth="20">` (pointer parallax) with an inner `<span class="sq sq--red float">`.
+- **Brand cursor** (mouse only, `setupCursor` in `motion.js`, styles at the end of `global.css`): a square dot plus a trailing tilted red frame. It grows over links and buttons, closes up over `data-toy` areas, pops on click, and takes its colors from the panel underneath (`--ink`). Touch devices and no-JS keep the normal cursor.
 - Any area with `data-toy` drops squares where it's clicked. Cards with `data-tilt` tilt toward the pointer.
 - Easing tokens: `--ease-pop` (bouncy, for squares and dots), `--ease-out` (smooth, for text).
 - **Every animation must respect `prefers-reduced-motion`** — the splash is skipped and reveals show instantly. Keep it that way when adding motion.
