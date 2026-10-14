@@ -46,7 +46,11 @@
 
 /* Panels that keep their colors in both modes: black ink on yellow, red and cream. */
 .yellow, .red, .cream, .on-light { --bg: var(--cream); --ink: var(--black); --rule: 2px solid var(--black); color: var(--ink); }
-.dark { --bg: var(--black); --ink: var(--cream); --rule: 2px solid var(--cream); }
+.dark { --bg: var(--black); --ink: var(--cream); --rule: 2px solid var(--cream); --hi: var(--yellow); }
+/* In dark mode the black panels flip to cream, so they still stand apart from the page.
+   --hi is the highlight for small labels: yellow on black, black on cream (yellow on cream is unreadable). */
+:root[data-theme="dark"] .dark { --bg: var(--cream); --ink: var(--black); --rule: 2px solid var(--black); --hi: var(--black); background: var(--cream); color: var(--black); }
+:root[data-theme="dark"] .dark a:hover { color: var(--red); }
 
 *, *::before, *::after { box-sizing: border-box; }
 
@@ -113,7 +117,7 @@ a:hover { color: var(--red); }
 .h2 { font-size: clamp(52px, 6.5vw, 92px); }
 
 .dark { background: var(--black); color: var(--cream); }
-.dark a:hover { color: var(--yellow); }
+.dark a:hover { color: var(--hi); }
 .yellow { background: var(--yellow); }
 .red { background: var(--red); }
 
