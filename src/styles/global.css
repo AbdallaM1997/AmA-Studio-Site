@@ -40,6 +40,10 @@
   :root:not([data-theme="light"]) { --bg: var(--black); --ink: var(--cream); color-scheme: dark; }
 }
 
+/* Mode switch: the new mode grows out of the toggle as a tilted square (motion.js → setupTheme).
+   Turn off the default cross-fade so the old mode stays put underneath. */
+::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+
 /* Panels that keep their colors in both modes: black ink on yellow, red and cream. */
 .yellow, .red, .cream, .on-light { --bg: var(--cream); --ink: var(--black); --rule: 2px solid var(--black); color: var(--ink); }
 .dark { --bg: var(--black); --ink: var(--cream); --rule: 2px solid var(--cream); }

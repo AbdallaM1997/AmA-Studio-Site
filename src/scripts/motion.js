@@ -127,10 +127,30 @@ function setupTheme() {
     btns.forEach((b) => b.setAttribute('aria-label', t === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'));
   };
   apply(root.dataset.theme === 'dark' ? 'dark' : 'light');
+  // The new mode pops out of the button as a tilted square that grows to fill the screen
+  const square = (cx, cy, s, deg) => {
+    const a = (deg * Math.PI) / 180;
+    const pts = [[-1, -1], [1, -1], [1, 1], [-1, 1]].map(([px, py]) =>
+      `${cx + s * (px * Math.cos(a) - py * Math.sin(a))}px ${cy + s * (px * Math.sin(a) + py * Math.cos(a))}px`);
+    return `polygon(${pts.join(', ')})`;
+  };
   btns.forEach((b) => b.addEventListener('click', () => {
     const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
-    apply(next);
-    try { localStorage.setItem('ama-theme', next); } catch (e) {}
+    const swap = () => {
+      apply(next);
+      try { localStorage.setItem('ama-theme', next); } catch (e) {}
+    };
+    if (reduce || !document.startViewTransition) return swap();
+    const r = b.getBoundingClientRect();
+    const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    // Half-size big enough that the square covers the farthest corner of the window
+    const s = Math.hypot(Math.max(cx, innerWidth - cx), Math.max(cy, innerHeight - cy)) + 20;
+    document.startViewTransition(swap).ready.then(() => {
+      root.animate(
+        { clipPath: [square(cx, cy, 0, 60), square(cx, cy, 30, 34), square(cx, cy, s, 14)], offset: [0, 0.18, 1] },
+        { duration: 750, easing: 'cubic-bezier(.65, 0, .35, 1)', pseudoElement: '::view-transition-new(root)' }
+      );
+    });
   }));
   // Follow the system setting until the visitor picks one
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => { if (!saved()) apply(e.matches ? 'dark' : 'light'); });
