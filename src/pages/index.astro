@@ -165,10 +165,10 @@ const latest = [...news].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3
 <style>
   /* Hero */
   .hero__grid { max-width: var(--max); margin: 0 auto; display: flex; flex-wrap: wrap; }
-  .hero__text { flex: 1.5 1 560px; min-width: 0; padding: clamp(48px, 7vw, 88px) var(--gutter) clamp(44px, 6vw, 72px); display: flex; flex-direction: column; gap: 26px; border-right: var(--rule); }
-  .hero__title { font-size: clamp(72px, 9.6vw, 156px); display: flex; flex-direction: column; }
+  .hero__text { flex: 1.5 1 560px; min-width: 0; container-type: inline-size; padding: clamp(48px, 7vw, 88px) var(--gutter) clamp(44px, 6vw, 72px); display: flex; flex-direction: column; gap: 26px; border-right: var(--rule); }
+  /* Sized to the text column (cqi), not the window, so the headline never runs into the yellow panel. */
+  .hero__title { font-size: clamp(44px, 18.5cqi, 156px); display: flex; flex-direction: column; }
   .hero__line { display: block; white-space: nowrap; }
-  @media (max-width: 600px) { .hero__title { font-size: 16.5vw; } }
   .hero__sub { margin: 0; max-width: 540px; }
   .hero__ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 6px; }
 
