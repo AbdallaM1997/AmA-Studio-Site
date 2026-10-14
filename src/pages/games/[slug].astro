@@ -42,7 +42,7 @@ const hasStores = game.stores.appStore || game.stores.googlePlay;
         <div class="phone" data-reveal="pop" style="--d:.2s">
           <div class="phone__screen on-light">
             {game.trailer
-              ? <video src={url(game.trailer)} autoplay muted loop playsinline aria-label={`${game.title} gameplay`}></video>
+              ? <video src={url(game.trailer)} poster={game.screenshots[1] ? url(game.screenshots[1]) : undefined} controls muted loop playsinline preload="metadata" aria-label={`${game.title} gameplay`}></video>
               : game.keyArt ? <img src={url(game.keyArt)} alt={`${game.title} key art`} /> : <span class="label">Gameplay video</span>}
           </div>
         </div>
@@ -122,7 +122,7 @@ const hasStores = game.stores.appStore || game.stores.googlePlay;
   .g-hero__art { flex: 1 1 440px; min-height: 540px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
   .phone { width: 250px; height: 500px; background: var(--black); border-radius: 36px; padding: 12px; position: relative; z-index: 1; }
   .phone__screen { width: 100%; height: 100%; border-radius: 26px; background: var(--yellow); overflow: hidden; display: flex; align-items: center; justify-content: center; }
-  .phone__screen video, .phone__screen img { width: 100%; height: 100%; object-fit: cover; }
+  .phone__screen video, .phone__screen img { width: 100%; height: 100%; object-fit: contain; background: var(--black); }
   @media (max-width: 960px) { .g-hero__text { border-right: 0; border-bottom: var(--rule); } .g-hero__art { min-height: 460px; } }
 
   .how { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; margin-top: 36px; }
@@ -137,7 +137,7 @@ const hasStores = game.stores.appStore || game.stores.googlePlay;
   .shots { display: flex; gap: 22px; overflow-x: auto; padding: 36px 4px 12px; scroll-snap-type: x mandatory; }
   .shot { flex: 0 0 220px; height: 440px; background: var(--black); border-radius: 28px; padding: 10px; scroll-snap-align: start; }
   .shot__screen { height: 100%; border-radius: 20px; background: var(--cream); overflow: hidden; display: flex; align-items: center; justify-content: center; }
-  .shot__screen img { width: 100%; height: 100%; object-fit: cover; }
+  .shot__screen img { width: 100%; height: 100%; object-fit: contain; background: var(--black); }
 
   .feat { max-width: var(--max); margin: 0 auto; display: flex; flex-wrap: wrap; }
   .feat__left { flex: 1 1 380px; padding: clamp(48px, 7vw, 80px) var(--gutter); border-right: var(--rule); }

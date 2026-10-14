@@ -13,8 +13,13 @@
     "releaseDate": "",
     "keyArt": "",
     "icon": "",
-    "trailer": "",
-    "screenshots": [],
+    "trailer": "/videos/kinfold/gameplay.mp4",
+    "screenshots": [
+      "/images/kinfold/map.webp",
+      "/images/kinfold/board.webp",
+      "/images/kinfold/categories.webp",
+      "/images/kinfold/win.webp"
+    ],
     "stores": {
       "appStore": "",
       "googlePlay": ""
