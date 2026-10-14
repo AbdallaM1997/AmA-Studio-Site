@@ -46,6 +46,11 @@ const hasStores = game.stores.appStore || game.stores.googlePlay;
               : game.keyArt ? <img src={url(game.keyArt)} alt={`${game.title} key art`} /> : <span class="label">Gameplay video</span>}
           </div>
         </div>
+        {game.trailer && (
+          <button type="button" class="btn btn--small phone__sound" data-sound-toggle aria-pressed="false">
+            <span class="phone__sound-sq" aria-hidden="true"></span><span data-sound-label>Sound on</span>
+          </button>
+        )}
       </div>
     </div>
   </section>
@@ -119,7 +124,12 @@ const hasStores = game.stores.appStore || game.stores.googlePlay;
   .tags li { border: var(--rule); padding: 8px 12px; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; }
   .tags__status { background: var(--yellow); }
   .stores { display: flex; flex-wrap: wrap; gap: 12px; }
-  .g-hero__art { flex: 1 1 440px; min-height: 540px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .g-hero__art { flex: 1 1 440px; min-height: 540px; position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 22px; align-items: center; justify-content: center; padding-block: 32px; }
+  /* Trailer autoplays muted (browsers require it); this turns the music on */
+  .phone__sound { position: relative; z-index: 1; }
+  .phone__sound-sq { width: 12px; height: 12px; background: var(--red); transform: rotate(-14deg); transition: transform .35s var(--ease-pop); }
+  .phone__sound[aria-pressed="true"] .phone__sound-sq { transform: rotate(31deg) scale(1.2); }
+  @media (prefers-reduced-motion: reduce) { .phone__sound-sq { transition: none; } }
   .phone { width: 250px; height: 500px; background: var(--black); border-radius: 36px; padding: 12px; position: relative; z-index: 1; }
   .phone__screen { width: 100%; height: 100%; border-radius: 26px; background: var(--yellow); overflow: hidden; display: flex; align-items: center; justify-content: center; }
   .phone__screen video, .phone__screen img { width: 100%; height: 100%; object-fit: cover; }
@@ -152,3 +162,17 @@ const hasStores = game.stores.appStore || game.stores.googlePlay;
   .more__btns { display: flex; flex-wrap: wrap; gap: 12px; }
   .others { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; padding-bottom: 72px; }
 </style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-sound-toggle]').forEach((btn) => {
+    const video = btn.parentElement?.querySelector('video');
+    const label = btn.querySelector('[data-sound-label]');
+    if (!video || !label) return;
+    btn.addEventListener('click', () => {
+      video.muted = !video.muted;
+      if (!video.muted) { video.currentTime = 0; video.play().catch(() => {}); }
+      btn.setAttribute('aria-pressed', String(!video.muted));
+      label.textContent = video.muted ? 'Sound on' : 'Sound off';
+    });
+  });
+</script>
