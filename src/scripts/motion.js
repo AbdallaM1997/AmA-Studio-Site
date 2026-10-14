@@ -145,12 +145,15 @@ function setupTheme() {
     const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
     // Half-size big enough that the square covers the farthest corner of the window
     const s = Math.hypot(Math.max(cx, innerWidth - cx), Math.max(cy, innerHeight - cy)) + 20;
-    document.startViewTransition(swap).ready.then(() => {
+    const vt = document.startViewTransition(swap);
+    // Safety net: if the browser can't start the animation quickly, just switch
+    setTimeout(() => { if (root.dataset.theme !== next) { vt.skipTransition(); swap(); } }, 400);
+    vt.ready.then(() => {
       root.animate(
         { clipPath: [square(cx, cy, 0, 60), square(cx, cy, 30, 34), square(cx, cy, s, 14)], offset: [0, 0.18, 1] },
         { duration: 750, easing: 'cubic-bezier(.65, 0, .35, 1)', pseudoElement: '::view-transition-new(root)' }
       );
-    });
+    }).catch(() => {});
   }));
   // Follow the system setting until the visitor picks one
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => { if (!saved()) apply(e.matches ? 'dark' : 'light'); });
