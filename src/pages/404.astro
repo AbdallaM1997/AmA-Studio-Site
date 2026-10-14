@@ -1,4 +1,5 @@
 ---
+import { url } from '../lib/url';
 import Base from '../layouts/Base.astro';
 ---
 <Base title="Page not found">
@@ -9,7 +10,7 @@ import Base from '../layouts/Base.astro';
       <span class="label" data-reveal>404 / Lost</span>
       <h1 class="display lost__title" data-reveal style="--d:.08s">Oops<span class="dot">.</span><br />Wrong level<span class="dot">.</span></h1>
       <p class="lead" data-reveal style="--d:.16s">This page doesn't exist. Tap around for a quick play break, then head home.</p>
-      <div data-reveal style="--d:.24s"><a href="/" class="btn">Back home</a></div>
+      <div data-reveal style="--d:.24s"><a href={url('/')} class="btn">Back home</a></div>
     </div>
   </section>
 </Base>

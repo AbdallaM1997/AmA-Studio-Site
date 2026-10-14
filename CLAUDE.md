@@ -29,6 +29,8 @@ Always run `npm run check:data && npm run build` before saying a change is done.
 | Pages | `src/pages/` (home, games, games/[slug], news, news/[slug], support, privacy, terms, 404) |
 | Images, videos, favicon | `public/` (reference as `/images/...`) |
 
+**Internal links and media paths:** wrap them in `url()` from `src/lib/url.ts` (e.g. `href={url("/games/")}`) so they work under the GitHub Pages sub-path. JSON keeps plain `/images/...` paths.
+
 **Content changes go in the JSON files, not in the page templates.** Pages read the data and render it.
 Use the project skills in `.claude/skills/` for common jobs: adding a game, adding a news post, launching a game, changing the splash.
 
@@ -66,3 +68,8 @@ Preview any look with `/?splash=pop`, `/?splash=blocks`, `/?splash=night`.
 ## Things still to fill in
 
 Search the data and pages for empty strings and `[` brackets: real email and domain (`site.json → email`, `url`), social links, key art / screenshots / trailer / store links for each game, and the `[bracketed]` parts of `privacy.astro` and `terms.astro` (templates, must be reviewed before publishing).
+
+## Deploying (GitHub Pages)
+
+Every push to `main` builds and deploys via `.github/workflows/deploy.yml` to https://abdallam1997.github.io/AmA-Studio-Site/.
+The workflow sets the base path automatically; with a custom domain later, add `public/CNAME` and update `site.json → url`.

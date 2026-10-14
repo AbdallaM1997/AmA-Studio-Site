@@ -1,4 +1,5 @@
 ---
+import { url } from '../lib/url';
 import Base from '../layouts/Base.astro';
 import Logo from '../components/Logo.astro';
 import Checker from '../components/Checker.astro';
@@ -24,7 +25,7 @@ const latest = [...news].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3
         </h1>
         <p class="lead hero__sub" data-reveal style="--d:.3s">{site.subline}</p>
         <div class="hero__ctas" data-reveal style="--d:.42s">
-          <a href="/games/" class="btn">See our games</a>
+          <a href={url('/games/')} class="btn">See our games</a>
           <a href="#newsletter" class="btn btn--ghost">Get game news</a>
         </div>
       </div>
@@ -47,7 +48,7 @@ const latest = [...news].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3
   <!-- 02 / GAMES -->
   <section id="games" class="section" aria-label="Our games">
     <div class="wrap section__inner">
-      <SectionHead num="02" label="Games" title="Our games" link={{ href: '/games/', text: 'All games' }} />
+      <SectionHead num="02" label="Games" title="Our games" link={{ href: url('/games/'), text: 'All games' }} />
       <div class="games-grid">
         <div class="games-grid__main" data-reveal><GameCard game={featured} featured /></div>
         <div class="games-grid__side" data-stagger>
@@ -109,7 +110,7 @@ const latest = [...news].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3
   {latest.length > 0 && (
     <section class="section" aria-label="News">
       <div class="wrap section__inner">
-        <SectionHead num="05" label="News" title="From the lab" link={{ href: '/news/', text: 'All posts' }} />
+        <SectionHead num="05" label="News" title="From the lab" link={{ href: url('/news/'), text: 'All posts' }} />
         <div class="news-grid" data-stagger>
           {latest.map((post) => <div data-reveal><NewsCard post={post} /></div>)}
         </div>

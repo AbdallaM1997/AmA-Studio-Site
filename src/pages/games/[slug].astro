@@ -1,4 +1,5 @@
 ---
+import { url } from '../../lib/url';
 import Base from '../../layouts/Base.astro';
 import GameCard from '../../components/GameCard.astro';
 import Checker from '../../components/Checker.astro';
@@ -20,7 +21,7 @@ const hasStores = game.stores.appStore || game.stores.googlePlay;
   <section class="section" aria-labelledby="g-title">
     <div class="g-hero">
       <div class="g-hero__text">
-        <span class="label" data-reveal><a href="/games/" style="text-decoration:none">02 / Games</a> / {game.title}</span>
+        <span class="label" data-reveal><a href={url('/games/')} style="text-decoration:none">02 / Games</a> / {game.title}</span>
         <h1 id="g-title" class="display g-title" data-reveal style="--d:.08s">{game.title}<span class="dot">.</span></h1>
         <p class="lead" data-reveal style="--d:.16s">{game.tagline} {game.description}</p>
         <ul class="tags" data-stagger="0.06">
@@ -32,7 +33,7 @@ const hasStores = game.stores.appStore || game.stores.googlePlay;
         <div class="stores" data-reveal style="--d:.3s">
           {game.stores.appStore && <a class="btn" href={game.stores.appStore} target="_blank" rel="noopener">App Store</a>}
           {game.stores.googlePlay && <a class="btn" href={game.stores.googlePlay} target="_blank" rel="noopener">Google Play</a>}
-          {!hasStores && <a class="btn btn--red" href="/#newsletter">Tell me when it's out</a>}
+          {!hasStores && <a class="btn btn--red" href={url('/#newsletter')}>Tell me when it's out</a>}
         </div>
       </div>
       <div class="g-hero__art" style={`background:${artBg}`} data-parallax>
@@ -41,8 +42,8 @@ const hasStores = game.stores.appStore || game.stores.googlePlay;
         <div class="phone" data-reveal="pop" style="--d:.2s">
           <div class="phone__screen">
             {game.trailer
-              ? <video src={game.trailer} autoplay muted loop playsinline aria-label={`${game.title} gameplay`}></video>
-              : game.keyArt ? <img src={game.keyArt} alt={`${game.title} key art`} /> : <span class="label">Gameplay video</span>}
+              ? <video src={url(game.trailer)} autoplay muted loop playsinline aria-label={`${game.title} gameplay`}></video>
+              : game.keyArt ? <img src={url(game.keyArt)} alt={`${game.title} key art`} /> : <span class="label">Gameplay video</span>}
           </div>
         </div>
       </div>
@@ -71,7 +72,7 @@ const hasStores = game.stores.appStore || game.stores.googlePlay;
         {shots.map((src, i) => (
           <div class="shot" data-reveal="pop">
             <div class:list={['shot__screen', i % 2 ? 'red' : '']}>
-              {src ? <img src={src} alt={`${game.title} screenshot ${i + 1}`} loading="lazy" /> : <span class="label">Screen {i + 1}</span>}
+              {src ? <img src={url(src)} alt={`${game.title} screenshot ${i + 1}`} loading="lazy" /> : <span class="label">Screen {i + 1}</span>}
             </div>
           </div>
         ))}
@@ -97,9 +98,9 @@ const hasStores = game.stores.appStore || game.stores.googlePlay;
         <p data-reveal style="--d:.08s">Need help with {game.title}? Visit support or read the privacy policy.</p>
       </div>
       <div class="more__btns" data-reveal style="--d:.12s">
-        <a href="/games/" class="btn">All games</a>
-        <a href="/support/" class="btn btn--ghost">Support</a>
-        <a href="/privacy/" class="btn btn--ghost">Privacy</a>
+        <a href={url('/games/')} class="btn">All games</a>
+        <a href={url('/support/')} class="btn btn--ghost">Support</a>
+        <a href={url('/privacy/')} class="btn btn--ghost">Privacy</a>
       </div>
     </div>
     {others.length > 0 && (

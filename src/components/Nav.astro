@@ -1,13 +1,14 @@
 ---
+import { url } from '../lib/url';
 import Logo from './Logo.astro';
 import site from '../data/site.json';
 
 const path = Astro.url.pathname;
-const isActive = (href: string) => !href.includes('#') && href !== '/' && path.startsWith(href);
+const isActive = (href: string) => !href.includes('#') && href !== '/' && path.startsWith(url(href));
 ---
 <header class="nav">
   <nav class="nav__bar wrap" aria-label="Main">
-    <a href="/" class="nav__logo" aria-label={`${site.name} home`}><Logo size="40px" /></a>
+    <a href={url('/')} class="nav__logo" aria-label={`${site.name} home`}><Logo size="40px" /></a>
 
     <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu">
       <span></span><span></span><span></span>
@@ -17,13 +18,13 @@ const isActive = (href: string) => !href.includes('#') && href !== '/' && path.s
       <ul class="nav__links">
         {site.nav.map((item, i) => (
           <li>
-            <a href={item.href} class:list={['nav__link', { 'is-active': isActive(item.href) }]}>
+            <a href={url(item.href)} class:list={['nav__link', { 'is-active': isActive(item.href) }]}>
               <span class="nav__num">{String(i + 1).padStart(2, '0')}</span> {item.label}
             </a>
           </li>
         ))}
       </ul>
-      <a href="/games/" class="btn btn--red btn--small">Play now</a>
+      <a href={url('/games/')} class="btn btn--red btn--small">Play now</a>
     </div>
   </nav>
 </header>

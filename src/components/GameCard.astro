@@ -1,4 +1,5 @@
 ---
+import { url } from '../lib/url';
 /** A game card. `featured` makes it the big split card used on the home page. */
 interface Game {
   slug: string; title: string; status: string; genre: string; theme: string; tagline: string;
@@ -10,10 +11,10 @@ const { game, featured = false } = Astro.props;
 const statusLabel: Record<string, string> = { 'coming-soon': 'Coming soon', live: 'Out now', 'in-lab': 'In the lab' };
 const artBg = { red: 'var(--red)', yellow: 'var(--yellow)', black: 'var(--black)' }[game.theme] ?? 'var(--red)';
 ---
-<a href={`/games/${game.slug}/`} class:list={['gcard', { 'gcard--featured': featured }]} data-tilt>
+<a href={url(`/games/${game.slug}/`)} class:list={['gcard', { 'gcard--featured': featured }]} data-tilt>
   <div class="gcard__art ph" style={`background:${artBg}`}>
     {game.keyArt
-      ? <img src={game.keyArt} alt={`${game.title} key art`} loading="lazy" />
+      ? <img src={url(game.keyArt)} alt={`${game.title} key art`} loading="lazy" />
       : <>
           <span class="sq sq--yellow gcard__s1" aria-hidden="true"></span>
           <span class="sq sq--black gcard__s2" aria-hidden="true"></span>

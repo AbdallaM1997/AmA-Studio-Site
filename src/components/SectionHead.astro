@@ -1,4 +1,5 @@
 ---
+import { url } from '../lib/url';
 /** Numbered section header in the "02 / PLAY DEPT." style. */
 interface Props { num: string; label: string; title: string; link?: { href: string; text: string }; tone?: 'dark' | 'light' }
 const { num, label, title, link } = Astro.props;
@@ -8,5 +9,5 @@ const { num, label, title, link } = Astro.props;
     <span class="label" data-reveal>{num} / {label}</span>
     <h2 class="display h2" data-reveal style="--d:.08s">{title}<span class="dot">.</span></h2>
   </div>
-  {link && <a href={link.href} class="textlink" data-reveal style="--d:.16s">{link.text} <span class="arrow">→</span></a>}
+  {link && <a href={url(link.href)} class="textlink" data-reveal style="--d:.16s">{link.text} <span class="arrow">→</span></a>}
 </div>
