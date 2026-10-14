@@ -42,7 +42,7 @@ const hasStores = game.stores.appStore || game.stores.googlePlay;
         <div class="phone" data-reveal="pop" style="--d:.2s">
           <div class="phone__screen on-light">
             {game.trailer
-              ? <video src={url(game.trailer)} autoplay muted loop playsinline aria-label={`${game.title} gameplay`}></video>
+              ? <video src={url(game.trailer)} poster={url(game.trailerPoster)} autoplay muted loop playsinline preload="metadata" aria-label={`${game.title} gameplay`}></video>
               : game.keyArt ? <img src={url(game.keyArt)} alt={`${game.title} key art`} /> : <span class="label">Gameplay video</span>}
           </div>
         </div>

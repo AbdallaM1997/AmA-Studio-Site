@@ -11,10 +11,17 @@
     "platforms": ["iOS", "Android"],
     "price": "Free to play",
     "releaseDate": "",
-    "keyArt": "",
-    "icon": "",
-    "trailer": "",
-    "screenshots": [],
+    "keyArt": "/images/games/kinfold/key-art.jpg",
+    "icon": "/images/games/kinfold/icon.png",
+    "trailer": "/videos/kinfold-trailer.mp4",
+    "trailerPoster": "/images/games/kinfold/trailer-poster.jpg",
+    "screenshots": [
+      "/images/games/kinfold/screenshot-01.jpg",
+      "/images/games/kinfold/screenshot-02.jpg",
+      "/images/games/kinfold/screenshot-03.jpg",
+      "/images/games/kinfold/screenshot-04.jpg",
+      "/images/games/kinfold/screenshot-05.jpg"
+    ],
     "stores": {
       "appStore": "",
       "googlePlay": ""
