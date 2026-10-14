@@ -30,7 +30,7 @@ const latest = [...news].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3
         </div>
       </div>
 
-      <div class="hero__toy" data-toy data-parallax>
+      <div class="hero__toy on-light" data-toy data-parallax>
         <span class="sq-wrap" data-depth="34" style="left:12%;top:14%"><span class="sq sq--red float" style="width:70px;height:70px;transform:rotate(18deg);--dur:5s"></span></span>
         <span class="sq-wrap" data-depth="-26" style="right:7%;top:9%"><span class="sq sq--black float" style="width:32px;height:32px;--dur:4.2s;--delay:-1s"></span></span>
         <span class="sq-wrap" data-depth="22" style="right:9%;bottom:30%"><span class="sq sq--red float" style="width:48px;height:48px;transform:rotate(-22deg);--dur:6s;--delay:-2s"></span></span>
@@ -192,7 +192,7 @@ const latest = [...news].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3
   .lab, .slot { flex: 1; padding: 28px; display: flex; flex-direction: column; justify-content: space-between; gap: 20px; min-height: 200px; }
   .lab__k { color: var(--yellow); font-size: 12px; }
   .lab__t { font-size: 44px; line-height: 1; }
-  .slot { border: 2px dashed var(--black); text-decoration: none; transition: background .2s; }
+  .slot { border: 2px dashed var(--ink); text-decoration: none; transition: background .2s; }
   .slot:hover { background: var(--yellow); color: var(--black); }
   .slot .label { font-size: 12px; }
 
@@ -225,7 +225,7 @@ const latest = [...news].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3
   .nl__form { flex: 1 1 360px; display: flex; flex-direction: column; gap: 10px; }
   .nl__form .label { font-size: 12px; }
   .nl__row { display: flex; flex-wrap: wrap; }
-  .nl__row input { flex: 1 1 200px; min-width: 0; min-height: 56px; border: var(--rule); background: var(--cream); padding: 0 18px; font: inherit; font-size: 17px; }
+  .nl__row input { flex: 1 1 200px; min-width: 0; min-height: 56px; border: var(--rule); background: var(--cream); color: var(--black); padding: 0 18px; font: inherit; font-size: 17px; }
   .nl__row .btn { min-height: 56px; }
   .nl__note { margin: 0; min-height: 1.5em; font-weight: 700; }
   @media (max-width: 520px) { .nl__row .btn { flex: 1 1 100%; } }

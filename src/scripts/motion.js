@@ -118,6 +118,24 @@ function setupNav() {
 }
 
 /* ---------- Newsletter (until a sign-up service is connected) ---------- */
+function setupTheme() {
+  const root = document.documentElement;
+  const btns = document.querySelectorAll('[data-theme-toggle]');
+  const saved = () => { try { return localStorage.getItem('ama-theme'); } catch (e) { return null; } };
+  const apply = (t) => {
+    root.dataset.theme = t;
+    btns.forEach((b) => b.setAttribute('aria-label', t === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'));
+  };
+  apply(root.dataset.theme === 'dark' ? 'dark' : 'light');
+  btns.forEach((b) => b.addEventListener('click', () => {
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    apply(next);
+    try { localStorage.setItem('ama-theme', next); } catch (e) {}
+  }));
+  // Follow the system setting until the visitor picks one
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => { if (!saved()) apply(e.matches ? 'dark' : 'light'); });
+}
+
 function setupNewsletter() {
   document.querySelectorAll('form[data-newsletter]').forEach((form) => {
     if (form.getAttribute('action')) return;
@@ -131,6 +149,7 @@ function setupNewsletter() {
 
 export function runMotion() {
   setupNav();
+  setupTheme();
   setupNewsletter();
   setupParallax();
   setupToy();

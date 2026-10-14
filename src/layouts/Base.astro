@@ -26,6 +26,15 @@ const splashCfg = JSON.stringify({ on: splash && site.splash.enabled, variant: s
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
+    <!-- Pick light or dark before first paint: a saved choice, else the system setting -->
+    <script is:inline>
+      (function () {
+        var t = null;
+        try { t = localStorage.getItem('ama-theme'); } catch (e) {}
+        if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = t;
+      })();
+    </script>
     <!-- Decide before first paint whether the splash plays (no flash of content) -->
     <script is:inline define:vars={{ splashCfg }}>
       (function () {

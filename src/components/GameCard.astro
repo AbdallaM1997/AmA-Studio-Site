@@ -11,7 +11,7 @@ const { game, featured = false } = Astro.props;
 const statusLabel: Record<string, string> = { 'coming-soon': 'Coming soon', live: 'Out now', 'in-lab': 'In the lab' };
 const artBg = { red: 'var(--red)', yellow: 'var(--yellow)', black: 'var(--black)' }[game.theme] ?? 'var(--red)';
 ---
-<a href={url(`/games/${game.slug}/`)} class:list={['gcard', { 'gcard--featured': featured }]} data-tilt>
+<a href={url(`/games/${game.slug}/`)} class:list={['gcard', 'on-light', { 'gcard--featured': featured }]} data-tilt>
   <div class="gcard__art ph" style={`background:${artBg}`}>
     {game.keyArt
       ? <img src={url(game.keyArt)} alt={`${game.title} key art`} loading="lazy" />
@@ -36,7 +36,7 @@ const artBg = { red: 'var(--red)', yellow: 'var(--yellow)', black: 'var(--black)
     display: flex; flex-direction: column; text-decoration: none; color: var(--black);
     background: var(--yellow); border: var(--rule); transition: transform .3s var(--ease-out), box-shadow .3s var(--ease-out);
   }
-  .gcard:hover { color: var(--black); box-shadow: 8px 8px 0 var(--black); }
+  .gcard:hover { color: var(--black); box-shadow: 8px 8px 0 var(--ink-page); }
   .gcard--featured { flex-direction: row; flex-wrap: wrap; }
   .gcard__art { min-height: 260px; flex: 1 1 280px; }
   .gcard__art img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }

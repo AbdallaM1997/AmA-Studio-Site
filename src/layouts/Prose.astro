@@ -23,5 +23,5 @@ const { title, label, description, updated } = Astro.props;
   .prose :global(p), .prose :global(li) { font-size: 18px; }
   .prose :global(ul) { padding-left: 1.2em; }
   .prose :global(li::marker) { color: var(--red); }
-  .prose :global(.note) { background: var(--yellow); border: var(--rule); padding: 16px 20px; font-weight: 600; }
+  .prose :global(.note) { background: var(--yellow); --ink: var(--black); --rule: 2px solid var(--black); color: var(--black); border: var(--rule); padding: 16px 20px; font-weight: 600; }
 </style>

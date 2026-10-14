@@ -28,7 +28,7 @@ const hasStores = game.stores.appStore || game.stores.googlePlay;
           <li data-reveal>{game.genre}</li>
           {game.platforms.map((p) => <li data-reveal>{p}</li>)}
           <li data-reveal>{game.price}</li>
-          <li class="tags__status" data-reveal>{statusLabel[game.status] ?? game.status}</li>
+          <li class="tags__status on-light" data-reveal>{statusLabel[game.status] ?? game.status}</li>
         </ul>
         <div class="stores" data-reveal style="--d:.3s">
           {game.stores.appStore && <a class="btn" href={game.stores.appStore} target="_blank" rel="noopener">App Store</a>}
@@ -40,7 +40,7 @@ const hasStores = game.stores.appStore || game.stores.googlePlay;
         <span class="sq-wrap" data-depth="30" style="left:10%;top:12%"><span class="sq sq--yellow float" style="width:80px;height:80px;transform:rotate(16deg)"></span></span>
         <span class="sq-wrap" data-depth="-24" style="right:12%;bottom:14%"><span class="sq sq--black float" style="width:60px;height:60px;transform:rotate(-10deg);--delay:-2s"></span></span>
         <div class="phone" data-reveal="pop" style="--d:.2s">
-          <div class="phone__screen">
+          <div class="phone__screen on-light">
             {game.trailer
               ? <video src={url(game.trailer)} autoplay muted loop playsinline aria-label={`${game.title} gameplay`}></video>
               : game.keyArt ? <img src={url(game.keyArt)} alt={`${game.title} key art`} /> : <span class="label">Gameplay video</span>}

@@ -10,6 +10,12 @@
   --black: #181818;
   --cream: #F8F5EC;
 
+  /* Theme roles: page background + ink (text, rules). Dark mode swaps them below.
+     Use these for page surfaces; use the brand colors directly on yellow/red panels. */
+  --bg: var(--cream);
+  --ink: var(--black);
+  --ink-page: var(--ink); /* page ink even inside panels, e.g. for hover shadows on the page */
+
   /* Type */
   --font-display: 'Anton', 'Impact', sans-serif;          /* big headlines */
   --font-label: 'Archivo Black', 'Arial Black', sans-serif; /* labels, buttons, STUDIO */
@@ -19,12 +25,24 @@
   /* Layout */
   --max: 1360px;
   --gutter: clamp(20px, 3vw, 32px);
-  --rule: 2px solid var(--black);
+  --rule: 2px solid var(--ink);
 
   /* Motion */
   --ease-pop: cubic-bezier(.34, 1.56, .64, 1);
   --ease-out: cubic-bezier(.16, 1, .3, 1);
 }
+
+/* ---------- Dark mode ----------
+   Follows the system setting; the nav toggle stores a choice in data-theme on <html>.
+   Only the four brand colors: black page, cream ink. */
+:root[data-theme="dark"] { --bg: var(--black); --ink: var(--cream); color-scheme: dark; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg: var(--black); --ink: var(--cream); color-scheme: dark; }
+}
+
+/* Panels that keep their colors in both modes: black ink on yellow, red and cream. */
+.yellow, .red, .cream, .on-light { --bg: var(--cream); --ink: var(--black); --rule: 2px solid var(--black); color: var(--ink); }
+.dark { --bg: var(--black); --ink: var(--cream); --rule: 2px solid var(--cream); }
 
 *, *::before, *::after { box-sizing: border-box; }
 
@@ -33,8 +51,8 @@ html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
-  background: var(--cream);
-  color: var(--black);
+  background: var(--bg);
+  color: var(--ink);
   font-family: var(--font-body);
   font-stretch: var(--body-width);
   font-size: 17px;
@@ -55,7 +73,7 @@ a:hover { color: var(--red); }
 .label { font-family: var(--font-label); font-size: 13px; letter-spacing: .12em; text-transform: uppercase; }
 .dot { color: var(--red); display: inline-block; }
 .dot--cream { color: var(--cream); }
-.dot--black { color: var(--black); }
+.dot--black { color: var(--ink); }
 .lead { font-size: clamp(18px, 1.6vw, 23px); font-weight: 500; line-height: 1.5; }
 
 /* ---------- Buttons ---------- */
@@ -63,17 +81,17 @@ a:hover { color: var(--red); }
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
   min-height: 52px; padding: 0 26px;
   font-family: var(--font-label); font-size: 14px; letter-spacing: .08em; text-transform: uppercase;
-  text-decoration: none; border: 2px solid var(--black); cursor: pointer;
-  background: var(--black); color: var(--cream);
-  box-shadow: 0 0 0 var(--black);
+  text-decoration: none; border: 2px solid var(--ink); cursor: pointer;
+  background: var(--ink); color: var(--bg);
+  box-shadow: 0 0 0 var(--ink);
   transition: transform .18s var(--ease-out), box-shadow .18s var(--ease-out), background .18s;
 }
-.btn:hover { color: var(--cream); transform: translate(-3px, -3px); box-shadow: 5px 5px 0 var(--red); }
+.btn:hover { color: var(--bg); transform: translate(-3px, -3px); box-shadow: 5px 5px 0 var(--red); }
 .btn:active { transform: translate(0, 0); box-shadow: 0 0 0 var(--red); }
 .btn--red { background: var(--red); color: var(--black); }
-.btn--red:hover { color: var(--black); box-shadow: 5px 5px 0 var(--black); }
-.btn--ghost { background: transparent; color: var(--black); }
-.btn--ghost:hover { color: var(--black); background: var(--yellow); box-shadow: 5px 5px 0 var(--black); }
+.btn--red:hover { color: var(--black); box-shadow: 5px 5px 0 var(--ink); }
+.btn--ghost { background: transparent; color: var(--ink); }
+.btn--ghost:hover { color: var(--black); background: var(--yellow); box-shadow: 5px 5px 0 var(--ink); }
 .btn--small { min-height: 44px; padding: 0 18px; font-size: 13px; }
 
 .textlink {
@@ -112,8 +130,8 @@ a:hover { color: var(--red); }
 .checker span { flex: var(--f, 1); transform-origin: bottom; }
 .checker .c-r { background: var(--red); }
 .checker .c-y { background: var(--yellow); }
-.checker .c-k { background: var(--black); }
-.checker .c-c { background: var(--cream); }
+.checker .c-k { background: var(--ink); }
+.checker .c-c { background: var(--bg); }
 
 /* ---------- Placeholder art (shown until real images are added) ---------- */
 .ph {
