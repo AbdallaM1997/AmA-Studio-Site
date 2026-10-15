@@ -1,23 +1,74 @@
 ---
 import { url } from '../lib/url';
 import Base from '../layouts/Base.astro';
+import Checker from '../components/Checker.astro';
 ---
 <Base title="Page not found">
-  <section class="section lost on-light" data-toy data-parallax>
-    <span class="sq-wrap" data-depth="30" style="left:8%;top:16%"><span class="sq sq--red float" style="width:64px;height:64px;transform:rotate(18deg)"></span></span>
-    <span class="sq-wrap" data-depth="-20" style="right:10%;bottom:20%"><span class="sq sq--black float" style="width:44px;height:44px;--delay:-2s"></span></span>
-    <div class="wrap section__inner lost__inner">
-      <span class="label" data-reveal>404 / Lost</span>
-      <h1 class="display lost__title" data-reveal style="--d:.08s">Oops<span class="dot">.</span><br />Wrong level<span class="dot">.</span></h1>
-      <p class="lead" data-reveal style="--d:.16s">This page doesn't exist. Tap around for a quick play break, then head home.</p>
-      <div data-reveal style="--d:.24s"><a href={url('/')} class="btn">Back home</a></div>
+  <section class="lost">
+    <div class="lost__grid">
+      <!-- Text on the page column -->
+      <div class="lost__text">
+        <span class="label" data-reveal>404 / Lost</span>
+        <h1 class="display lost__title" data-reveal style="--d:.08s">Oops<span class="dot">.</span><br />Wrong level<span class="dot">.</span></h1>
+        <p class="lead lost__lead" data-reveal style="--d:.16s">This page doesn't exist. Tap around for a quick play break, then head home.</p>
+        <div class="lost__ctas" data-reveal style="--d:.24s">
+          <a href={url('/')} class="btn">Back home</a>
+          <a href={url('/games/')} class="btn btn--ghost">Our games</a>
+          <a href={url('/news/')} class="btn btn--ghost">News</a>
+        </div>
+      </div>
+
+      <!-- Play panel: runs to the right edge, tap to drop squares -->
+      <div class="lost__play yellow" data-toy data-parallax data-reveal="wipe">
+        <span class="sq-wrap" data-depth="30" style="left:8%;top:12%"><span class="sq sq--red float" style="width:60px;height:60px;transform:rotate(18deg)"></span></span>
+        <span class="sq-wrap" data-depth="-20" style="right:9%;top:16%"><span class="sq sq--black float" style="width:34px;height:34px;--delay:-2s"></span></span>
+        <span class="sq-wrap" data-depth="16" style="left:16%;bottom:22%"><span class="sq sq--cream float" style="width:24px;height:24px;transform:rotate(10deg);--delay:-1s"></span></span>
+        <div class="big404" aria-hidden="true" data-depth="10">
+          <span class="display">4</span><span class="big404__sq"></span><span class="display">4</span>
+        </div>
+        <button type="button" class="lost__hint" data-toy-btn>
+          <span class="label">Tap to take a play break</span>
+          <span class="lost__count"><span data-toy-count>0</span> squares</span>
+        </button>
+        <Checker pattern="k1r1c1k1r2k1c1r1" height="40px" class="lost__checker" />
+      </div>
     </div>
   </section>
 </Base>
 
 <style>
-  .lost { background: var(--yellow); position: relative; overflow: hidden; min-height: 70vh; display: flex; align-items: center; cursor: crosshair; }
-  .lost__inner { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 20px; width: 100%; }
-  .lost__title { font-size: clamp(72px, 11vw, 170px); }
-  .lost .lead { margin: 0; max-width: 520px; }
+  .lost { border-bottom: var(--rule); }
+  .lost__grid { --side: max(0px, (100% - var(--max)) / 2); display: flex; flex-wrap: wrap; min-height: calc(100vh - 78px); }
+  .lost__text {
+    flex: 0 1 calc(var(--side) + min(100%, var(--max)) * .5); min-width: 0; container-type: inline-size;
+    padding: clamp(48px, 7vw, 96px) var(--gutter) clamp(40px, 5vw, 64px) calc(var(--side) + var(--gutter));
+    display: flex; flex-direction: column; justify-content: center; gap: 22px; border-right: var(--rule);
+  }
+  .lost__title { font-size: clamp(64px, 16cqi, 160px); line-height: .9; }
+  .lost__lead { margin: 0; max-width: 480px; }
+  .lost__ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+
+  .lost__play {
+    flex: 1 1 420px; min-width: 0; min-height: 480px; position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center; cursor: crosshair; user-select: none; -webkit-user-select: none;
+  }
+  /* Giant 404: the 0 is the brand's tilted square, spinning slowly */
+  .big404 { position: relative; z-index: 2; display: flex; align-items: center; gap: .06em; font-size: clamp(140px, 17vw, 260px); line-height: .85; color: var(--black); pointer-events: none; margin-bottom: 60px; transition: translate .5s var(--ease-out); }
+  .big404__sq { width: .62em; height: .62em; border: .13em solid var(--red); transform: rotate(-14deg); animation: spin404 9s linear infinite; }
+  @keyframes spin404 { to { transform: rotate(346deg); } }
+  .lost__hint { position: absolute; left: 0; right: 0; bottom: 52px; z-index: 2; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 20px; background: none; border: 0; color: var(--black); cursor: pointer; font: inherit; font-size: 14px; }
+  .lost__hint .label { font-size: 11px; }
+  .lost__count { font-weight: 700; }
+  :global(.lost__checker) { position: absolute; left: 0; right: 0; bottom: 0; }
+
+  @media (max-width: 960px) {
+    .lost__grid { min-height: 0; }
+    .lost__text { flex-basis: 100%; border-right: 0; border-bottom: var(--rule); }
+    .lost__play { min-height: 400px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .big404__sq { animation: none; }
+    .big404 { transition: none; }
+  }
 </style>
