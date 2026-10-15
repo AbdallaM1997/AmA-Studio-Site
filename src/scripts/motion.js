@@ -92,13 +92,18 @@ function setupToy() {
 function setupTilt() {
   if (reduce || !fine) return;
   document.querySelectorAll('[data-tilt]').forEach((card) => {
+    let raf = 0, x = 0, y = 0;
+    const apply = () => {
+      raf = 0;
+      card.style.transform = `perspective(900px) rotateY(${(x * 5).toFixed(2)}deg) rotateX(${(-y * 5).toFixed(2)}deg) translateY(-4px)`;
+    };
     card.addEventListener('pointermove', (e) => {
       const r = card.getBoundingClientRect();
-      const x = (e.clientX - r.left) / r.width - 0.5;
-      const y = (e.clientY - r.top) / r.height - 0.5;
-      card.style.transform = `perspective(900px) rotateY(${x * 5}deg) rotateX(${-y * 5}deg) translateY(-4px)`;
+      x = (e.clientX - r.left) / r.width - 0.5;
+      y = (e.clientY - r.top) / r.height - 0.5;
+      if (!raf) raf = requestAnimationFrame(apply);
     });
-    card.addEventListener('pointerleave', () => { card.style.transform = ''; });
+    card.addEventListener('pointerleave', () => { cancelAnimationFrame(raf); raf = 0; card.style.transform = ''; });
   });
 }
 
