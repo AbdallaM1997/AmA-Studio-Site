@@ -298,7 +298,7 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
   .hero__text { flex: 0 1 calc(var(--side) + min(100%, var(--max)) * .57); min-width: 0; container-type: inline-size; padding: clamp(48px, 7vw, 88px) var(--gutter) clamp(44px, 6vw, 72px) calc(var(--side) + var(--gutter)); display: flex; flex-direction: column; justify-content: center; gap: 26px; border-right: var(--rule); }
   /* Sized to the text column (cqi), not the window, so the headline never runs into the yellow panel. */
   .hero__title { font-size: clamp(44px, 18.5cqi, 156px); display: flex; flex-direction: column; }
-  .hero__line { display: block; white-space: nowrap; }
+  .hero__line { display: block; white-space: nowrap; line-height: 1.02; }
   .hero__sub { margin: 0; max-width: 540px; }
   .hero__ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 6px; }
 
