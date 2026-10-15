@@ -1,11 +1,12 @@
 ---
+import { postsNewestFirst } from '../../lib/news';
 import { url } from '../../lib/url';
 import Base from '../../layouts/Base.astro';
 import Checker from '../../components/Checker.astro';
 import Logo from '../../components/Logo.astro';
 import news from '../../data/news.json';
 
-const posts = [...news].sort((a, b) => b.date.localeCompare(a.date));
+const posts = postsNewestFirst;
 const latest = posts[0];
 const categories = [...new Set(posts.map((p) => p.category))];
 const fmt = (d: string, month: 'short' | 'long' = 'short') =>

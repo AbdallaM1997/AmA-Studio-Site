@@ -1,4 +1,5 @@
 ---
+import { postsNewestFirst } from '../lib/news';
 import { url } from '../lib/url';
 import Base from '../layouts/Base.astro';
 import Logo from '../components/Logo.astro';
@@ -12,7 +13,7 @@ import news from '../data/news.json';
 
 const featured = games.find((g) => g.featured) ?? games[0];
 const others = games.filter((g) => g !== featured).slice(0, 2);
-const latest = [...news].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3);
+const latest = postsNewestFirst.slice(0, 3);
 ---
 <Base splash>
   <!-- 01 / HOME -->
