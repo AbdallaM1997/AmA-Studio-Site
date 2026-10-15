@@ -232,3 +232,9 @@ html.splash-on .pager { display: none; }
   .snap-sec.is-arriving > .snap-bar { animation: none; }
   .pager__sq, .pager__label { transition: none; }
 }
+
+/* Small fact labels (dt): black text for contrast, a tilted red square for the brand accent */
+.facts-dt, .hfacts dt, .post-meta dt, .ghero__facts dt, .phero__facts dt { display: flex; align-items: center; gap: 7px; }
+.hfacts dt::before, .post-meta dt::before, .ghero__facts dt::before, .phero__facts dt::before {
+  content: ''; flex: none; width: 7px; height: 7px; background: var(--red); transform: rotate(-14deg);
+}

@@ -83,7 +83,7 @@ const squares = (t: string) => (t === 'red' ? ['yellow', 'black'] : t === 'black
     display: inline-flex; align-items: center; gap: 10px;
     transition: transform .18s var(--ease-out), box-shadow .18s var(--ease-out), background .18s;
   }
-  .nfilter__btn span { color: var(--red); }
+  .nfilter__btn span { opacity: .75; }
   .nfilter__btn:hover { transform: translate(-3px, -3px); box-shadow: 5px 5px 0 var(--ink); }
   .nfilter__btn[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
 

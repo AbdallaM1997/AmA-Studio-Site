@@ -353,7 +353,7 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
   .hmark { border-bottom: var(--rule); overflow: hidden; padding: clamp(28px, 3vw, 48px) var(--gutter) clamp(12px, 1.5vw, 24px); }
   .hbig { font-size: calc((100cqi - 2 * var(--gutter)) / var(--fit, 5)); line-height: .9; margin: 0; white-space: nowrap; text-align: center; letter-spacing: -.01em; }
   :global(.js) .hbig[data-reveal] { opacity: 1; transform: none; }
-  :global(.js) .hbig .fw > span:first-child { transform: translateY(105%); transition: transform .8s var(--ease-out); transition-delay: calc(var(--i) * 110ms + .05s); }
+  :global(.js) .hbig .fw > span:first-child { transform: translateY(135%); transition: transform .8s var(--ease-out); transition-delay: calc(var(--i) * 110ms + .05s); }
   :global(.js) .hbig.is-in .fw > span:first-child { transform: none; }
   .hbar { display: flex; align-items: stretch; min-height: 64px; }
   .hbar__label { display: flex; align-items: center; padding: 0 clamp(18px, 2.5vw, 36px) 0 calc(max(0px, (100cqi - var(--max)) / 2) + var(--gutter)); border-right: var(--rule); }
@@ -414,10 +414,10 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
   .hstudio__mark { border-bottom: var(--rule); overflow: hidden; padding: clamp(28px, 3vw, 48px) var(--gutter) clamp(12px, 1.5vw, 24px); }
   .hstudio__big { font-size: calc((100cqi - 2 * var(--gutter)) / 5.9); line-height: .9; margin: 0; white-space: nowrap; text-align: center; letter-spacing: -.01em; }
   .studio__eq { color: var(--red); }
-  .fw { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .04em; margin-bottom: -.04em; }
+  .fw { display: inline-block; overflow: hidden; vertical-align: top; padding: .12em 0 .26em; margin: -.12em 0 -.26em; }
   .fw > span:first-child { display: inline-block; }
   :global(.js) .hstudio__big[data-reveal] { opacity: 1; transform: none; }
-  :global(.js) .hstudio__big .fw > span:first-child { transform: translateY(105%); transition: transform .8s var(--ease-out); transition-delay: calc(var(--i) * 110ms + .05s); }
+  :global(.js) .hstudio__big .fw > span:first-child { transform: translateY(135%); transition: transform .8s var(--ease-out); transition-delay: calc(var(--i) * 110ms + .05s); }
   :global(.js) .hstudio__big.is-in .fw > span:first-child { transform: none; }
 
   .hstudio__left { justify-content: center; }
@@ -432,7 +432,7 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
   .hfacts__cell + .hfacts__cell { border-left: var(--rule); }
   .hfacts__cell:first-child { padding-left: calc(max(0px, (100cqi - var(--max)) / 2) + var(--gutter)); }
   .hfacts__cell:last-child { padding-right: calc(max(0px, (100cqi - var(--max)) / 2) + var(--gutter)); }
-  .hfacts dt { font-size: 11px; color: var(--red); }
+  .hfacts dt { font-size: 11px; }
   .hfacts dd { margin: 0; font-size: clamp(28px, 2.8vw, 44px); line-height: 1; }
 
   @media (max-width: 960px) {
@@ -455,7 +455,7 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
   .hnl__mark { border-bottom: var(--rule); overflow: hidden; padding: clamp(28px, 3vw, 48px) var(--gutter) clamp(12px, 1.5vw, 24px); }
   .hnl__big { font-size: calc((100cqi - 2 * var(--gutter)) / 7.4); line-height: .9; margin: 0; white-space: nowrap; text-align: center; letter-spacing: -.01em; color: var(--red); }
   :global(.js) .hnl__big[data-reveal] { opacity: 1; transform: none; }
-  :global(.js) .hnl__big .fw > span:first-child { transform: translateY(105%); transition: transform .8s var(--ease-out); transition-delay: calc(var(--i) * 90ms + .05s); }
+  :global(.js) .hnl__big .fw > span:first-child { transform: translateY(135%); transition: transform .8s var(--ease-out); transition-delay: calc(var(--i) * 90ms + .05s); }
   :global(.js) .hnl__big.is-in .fw > span:first-child { transform: none; }
 
   .hnl__left { justify-content: center; }

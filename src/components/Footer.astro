@@ -72,10 +72,10 @@ const sloganWords = site.slogan.replace(/\.$/, '').split(/\s+/);
   /* Giant slogan: "Serious about fun." is about 7.1em wide in Anton, so this fills the footer edge to edge */
   .footer__mark { border-bottom: var(--rule); overflow: hidden; padding: clamp(24px, 3vw, 44px) var(--gutter) clamp(12px, 1.5vw, 24px); }
   .footer__big { font-size: calc((100cqi - 2 * var(--gutter)) / 7.3); line-height: .9; margin: 0; white-space: nowrap; text-align: center; letter-spacing: -.01em; }
-  .fw { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .04em; margin-bottom: -.04em; }
+  .fw { display: inline-block; overflow: hidden; vertical-align: top; padding: .12em 0 .26em; margin: -.12em 0 -.26em; }
   .fw > span:first-child { display: inline-block; }
   :global(.js) .footer__big[data-reveal] { opacity: 1; transform: none; }
-  :global(.js) .fw > span:first-child { transform: translateY(105%); transition: transform .8s var(--ease-out); transition-delay: calc(var(--i) * 80ms + .05s); }
+  :global(.js) .fw > span:first-child { transform: translateY(135%); transition: transform .8s var(--ease-out); transition-delay: calc(var(--i) * 80ms + .05s); }
   :global(.js) .is-in .fw > span:first-child { transform: none; }
 
   /* Columns run edge to edge; the first and last line up with the page column */

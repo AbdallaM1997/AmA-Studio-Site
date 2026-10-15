@@ -119,14 +119,14 @@ const squares = post.theme === 'red' ? ['yellow', 'black'] : post.theme === 'bla
 
   /* Title words rise out of a mask one by one, then the red full stop pops */
   :global(.js) .post-hero__title[data-reveal] { opacity: 1; transform: none; }
-  .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .04em; margin-bottom: -.04em; }
+  .w { display: inline-block; overflow: hidden; vertical-align: top; padding: .12em 0 .26em; margin: -.12em 0 -.26em; }
   .w > span { display: inline-block; }
-  :global(.js) .w > span { transform: translateY(105%); transition: transform .75s var(--ease-out); transition-delay: calc(var(--i) * 70ms + .1s); }
+  :global(.js) .w > span { transform: translateY(135%); transition: transform .75s var(--ease-out); transition-delay: calc(var(--i) * 70ms + .1s); }
   :global(.js) .is-in .w > span { transform: none; }
 
   .post-meta { display: flex; flex-wrap: wrap; gap: 12px; margin: 8px 0 0; }
   .post-meta > div { border: var(--rule); padding: 10px 16px; display: flex; flex-direction: column; gap: 4px; min-width: 120px; }
-  .post-meta dt { font-size: 11px; color: var(--red); }
+  .post-meta dt { font-size: 11px; }
   .post-meta dd { margin: 0; font-weight: 700; }
 
   .post-hero__art { flex: 1 1 420px; min-width: 0; min-height: clamp(340px, 42vw, 620px); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }

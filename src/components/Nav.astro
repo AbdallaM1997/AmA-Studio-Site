@@ -50,7 +50,7 @@ const isActive = (href: string) => !href.includes('#') && href !== '/' && path.s
     padding: 0 clamp(14px, 1.6vw, 26px); border-left: var(--rule); overflow: hidden;
   }
   .nav__link > * { position: relative; }
-  .nav__num { color: var(--red); }
+  .nav__num { opacity: .6; }
   /* Hover: yellow rises up through the cell */
   .nav__link::before { content: ''; position: absolute; inset: 0; background: var(--yellow); clip-path: inset(100% 0 0 0); transition: clip-path .3s var(--ease-out); }
   .nav__link:hover { color: var(--black); }
