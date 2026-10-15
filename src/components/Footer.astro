@@ -6,55 +6,126 @@ import site from '../data/site.json';
 
 const socials = site.socials.filter((s) => s.url);
 const year = new Date().getFullYear();
+const sloganWords = site.slogan.replace(/\.$/, '').split(/\s+/);
 ---
 <footer class="footer">
   <Checker pattern="k2yrkr3ykc2rk" height="36px" />
-  <div class="wrap footer__inner">
-    <div class="footer__brand">
-      <a href={url('/')} aria-label={`${site.name} home`} style="text-decoration:none"><Logo size="56px" align="start" /></a>
-      <p class="footer__slogan display">Serious about fun<span class="dot">.</span></p>
+
+  <!-- Giant slogan, sized to the full width; words rise in one by one -->
+  <div class="footer__mark" aria-hidden="true">
+    <p class="display footer__big" data-reveal style={`--d:${(sloganWords.length * 0.08 + 0.1).toFixed(2)}s`}>
+      {sloganWords.map((w, i) => <>{i > 0 && ' '}<span class="fw"><span style={`--i:${i}`}>{w}</span>{i === sloganWords.length - 1 && <span class="dot">.</span>}</span></>)}
+    </p>
+  </div>
+
+  <!-- Edge-to-edge columns -->
+  <div class="footer__cols" data-stagger="0.08">
+    <div class="footer__col footer__brand" data-reveal>
+      <a href={url('/')} aria-label={`${site.name} home`} class="footer__logo"><Logo size="64px" align="start" /></a>
+      <p class="footer__where">Made in {site.location}.</p>
+      <a href={`mailto:${site.email}`} class="footer__email">{site.email}</a>
     </div>
-    <div class="footer__cols">
-      <div>
-        <p class="label">Studio</p>
-        <ul>
-          <li><a href={url('/games/')}>Games</a></li>
-          <li><a href={url('/#studio')}>About</a></li>
-          <li><a href={url('/news/')}>News</a></li>
-          <li><a href={url('/#contact')}>Contact</a></li>
-        </ul>
-      </div>
-      <div>
-        <p class="label">Players</p>
-        <ul>
-          <li><a href={url('/support/')}>Support</a></li>
-          <li><a href={url('/privacy/')}>Privacy policy</a></li>
-          <li><a href={url('/terms/')}>Terms of use</a></li>
-        </ul>
-      </div>
-      {socials.length > 0 && (
-        <div>
+    <nav class="footer__col" aria-label="Studio" data-reveal>
+      <p class="label">Studio</p>
+      <ul>
+        <li><a href={url('/games/')}>Games <span class="arrow">→</span></a></li>
+        <li><a href={url('/#studio')}>About <span class="arrow">→</span></a></li>
+        <li><a href={url('/news/')}>News <span class="arrow">→</span></a></li>
+        <li><a href={url('/#contact')}>Contact <span class="arrow">→</span></a></li>
+      </ul>
+    </nav>
+    <nav class="footer__col" aria-label="Players" data-reveal>
+      <p class="label">Players</p>
+      <ul>
+        <li><a href={url('/support/')}>Support <span class="arrow">→</span></a></li>
+        <li><a href={url('/privacy/')}>Privacy policy <span class="arrow">→</span></a></li>
+        <li><a href={url('/terms/')}>Terms of use <span class="arrow">→</span></a></li>
+      </ul>
+    </nav>
+    {socials.length > 0
+      ? (
+        <nav class="footer__col" aria-label="Follow" data-reveal>
           <p class="label">Follow</p>
-          <ul>{socials.map((s) => <li><a href={s.url} rel="noopener" target="_blank">{s.label}</a></li>)}</ul>
+          <ul>{socials.map((s) => <li><a href={s.url} rel="noopener" target="_blank">{s.label} <span class="arrow">→</span></a></li>)}</ul>
+        </nav>
+      )
+      : (
+        <div class="footer__col footer__top-col" data-reveal>
+          <p class="label">Back up</p>
+          <a href="#main" class="footer__top" data-to-top>
+            <span class="footer__top-sq" aria-hidden="true"></span>
+            <span>To the top</span>
+          </a>
         </div>
       )}
-    </div>
   </div>
-  <div class="wrap footer__bottom">
+
+  <div class="footer__bottom">
     <span>© {year} {site.name}. {site.location}.</span>
     <span>Good games. Great breaks.</span>
   </div>
 </footer>
 
 <style>
-  .footer { background: var(--bg); }
-  .footer__inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 40px; padding-block: 56px 40px; }
-  .footer__brand { display: flex; flex-direction: column; gap: 16px; }
-  .footer__slogan { font-size: 28px; }
-  .footer__cols { display: flex; flex-wrap: wrap; gap: 56px; }
-  .footer__cols .label { margin: 0 0 10px; font-size: 12px; }
-  .footer__cols ul { list-style: none; margin: 0; padding: 0; }
-  .footer__cols a { display: inline-flex; min-height: 36px; align-items: center; font-size: 15px; }
-  .footer__bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-block: 20px 28px; border-top: var(--rule); font-size: 14px; }
-  @media (max-width: 600px) { .footer__cols { gap: 28px 40px; } }
+  .footer { background: var(--bg); container-type: inline-size; }
+
+  /* Giant slogan: about 11.2% of the footer width per em keeps "Serious about fun." on one line, edge to edge */
+  .footer__mark { border-bottom: var(--rule); overflow: hidden; padding: clamp(24px, 3vw, 44px) var(--gutter) clamp(12px, 1.5vw, 24px); }
+  .footer__big { font-size: 11.2cqi; line-height: .9; margin: 0; white-space: nowrap; text-align: center; letter-spacing: -.01em; }
+  .fw { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .04em; margin-bottom: -.04em; }
+  .fw > span:first-child { display: inline-block; }
+  :global(.js) .footer__big[data-reveal] { opacity: 1; transform: none; }
+  :global(.js) .fw > span:first-child { transform: translateY(105%); transition: transform .8s var(--ease-out); transition-delay: calc(var(--i) * 80ms + .05s); }
+  :global(.js) .is-in .fw > span:first-child { transform: none; }
+
+  /* Columns run edge to edge; the first and last line up with the page column */
+  .footer__cols { --side: max(0px, (100cqi - var(--max)) / 2); display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; border-bottom: var(--rule); }
+  .footer__col { padding: clamp(32px, 4vw, 56px) clamp(20px, 2.5vw, 40px); display: flex; flex-direction: column; gap: 12px; }
+  .footer__col + .footer__col { border-left: var(--rule); }
+  .footer__col:first-child { padding-left: calc(var(--side) + var(--gutter)); }
+  .footer__col:last-child { padding-right: calc(var(--side) + var(--gutter)); }
+  .footer__col .label { margin: 0 0 4px; font-size: 12px; }
+  .footer__col ul { list-style: none; margin: 0; padding: 0; }
+  .footer__col li a { display: flex; justify-content: space-between; align-items: center; min-height: 44px; font-size: 16px; font-weight: 700; text-decoration: none; }
+  .footer__col li a .arrow { font-family: var(--font-label); opacity: 0; transform: translateX(-8px); transition: transform .25s var(--ease-pop), opacity .2s; }
+  .footer__col li a:hover { color: var(--red); }
+  .footer__col li a:hover .arrow { opacity: 1; transform: none; }
+
+  .footer__logo { text-decoration: none; align-self: flex-start; }
+  .footer__where { margin: 6px 0 0; font-weight: 700; }
+  .footer__email { font-size: 15px; }
+
+  .footer__top { display: inline-flex; align-items: center; gap: 14px; text-decoration: none; font-family: var(--font-label); font-size: 14px; letter-spacing: .08em; text-transform: uppercase; margin-top: 4px; }
+  .footer__top-sq { width: 44px; height: 44px; border: var(--rule); position: relative; transform: rotate(-12deg); transition: transform .4s var(--ease-pop), background .2s; }
+  .footer__top-sq::before { content: ''; position: absolute; left: 50%; top: 54%; width: 12px; height: 12px; border-left: 3px solid var(--ink); border-top: 3px solid var(--ink); transform: translate(-50%, -50%) rotate(45deg); }
+  .footer__top:hover .footer__top-sq { transform: rotate(0) translateY(-6px); background: var(--yellow); }
+  .footer__top:hover .footer__top-sq::before { border-color: var(--black); }
+
+  .footer__bottom { --side: max(0px, (100cqi - var(--max)) / 2); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding: 20px calc(var(--side) + var(--gutter)) 28px; font-size: 14px; }
+
+  @media (max-width: 960px) {
+    .footer__cols { grid-template-columns: 1fr 1fr; }
+    .footer__col, .footer__col:first-child, .footer__col:last-child { padding: 32px var(--gutter); }
+    .footer__brand { grid-column: 1 / -1; }
+    .footer__col + .footer__col { border-left: 0; border-top: var(--rule); }
+    .footer__col:nth-child(3) { border-left: var(--rule); }
+  }
+  @media (max-width: 520px) {
+    .footer__cols { grid-template-columns: 1fr; }
+    .footer__col:nth-child(3) { border-left: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(.js) .fw > span:first-child { transform: none; transition: none; }
+    .footer__col li a .arrow, .footer__top-sq { transition: none; }
+  }
 </style>
+
+<script>
+  // Smooth back-to-top (the CSS scroll-behavior already respects reduced motion)
+  document.querySelectorAll<HTMLAnchorElement>('[data-to-top]').forEach((a) => a.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0 });
+    document.querySelector<HTMLElement>('#main')?.focus({ preventScroll: true });
+  }));
+</script>
