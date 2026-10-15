@@ -17,6 +17,7 @@ const confetti = [
   { x: 52, y: 6, s: 18, c: 'red', r: 22 }, { x: 36, y: 72, s: 10, c: 'cream', r: -30 },
 ];
 const strip = 'kyrkcrykrykcrkyrkcyr'.split('');
+const ticker = ['Serious about fun', 'Good games', 'Great breaks', 'Made in Cairo'];
 ---
 <div class="splash" role="region" aria-label="AmA Studio intro">
   <!-- blocks: three bars that lift away -->
@@ -48,7 +49,17 @@ const strip = 'kyrkcrykrykcrkyrkcyr'.split('');
     {strip.map((c, i) => <span class={`c-${c}`} style={`--i:${i}`}></span>)}
   </div>
 
-  <button type="button" class="splash__skip">Skip intro</button>
+  <!-- full-width frame: top bar of cells + ticker along the bottom -->
+  <div class="splash__ticker" aria-hidden="true">
+    <div class="splash__ticker-track">
+      {[0, 1].map(() => ticker.concat(ticker).map((t) => <span class="splash__tick">{t}<i class="splash__tick-sq"></i></span>))}
+    </div>
+  </div>
+  <div class="splash__top">
+    <span class="splash__cell" aria-hidden="true">AmA Studio</span>
+    <span class="splash__cell splash__cell--mid" aria-hidden="true">Game studio · Cairo, Egypt</span>
+    <button type="button" class="splash__skip splash__cell">Skip intro</button>
+  </div>
 </div>
 
 <style is:global>
@@ -70,7 +81,8 @@ const strip = 'kyrkcrykrykcrkyrkcyr'.split('');
 
   /* ---------- Stage: logo + tagline ---------- */
   .splash__stage { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; }
-  .splash__word { position: relative; font-family: var(--font-display); font-size: clamp(104px, 21vw, 230px); line-height: 1; letter-spacing: -.02em; display: flex; }
+  .splash { --wsz: min(44vw, 50vh); }
+  .splash__word { position: relative; font-family: var(--font-display); font-size: var(--wsz); line-height: 1; letter-spacing: -.02em; display: flex; }
   .splash__word .L { display: inline-block; opacity: 0; animation: L-pop .6s var(--ease-pop) forwards; }
   .splash__word .L:nth-child(1) { animation-delay: var(--t-word); }
   .splash__word .L:nth-child(2) { animation-delay: calc(var(--t-word) + .12s); }
@@ -92,11 +104,11 @@ const strip = 'kyrkcrykrykcrkyrkcyr'.split('');
     100% { opacity: 1; transform: rotate(-14deg); }
   }
 
-  .splash__studio { font-family: var(--font-label); font-size: clamp(18px, 3.6vw, 40px); letter-spacing: .7em; margin-right: -.7em; margin-top: .2em; display: flex; }
+  .splash__studio { font-family: var(--font-label); font-size: calc(var(--wsz) * .15); letter-spacing: .7em; margin-right: -.7em; margin-top: .2em; display: flex; }
   .splash__studio span { opacity: 0; animation: studio-in .4s var(--ease-out) forwards; animation-delay: calc(var(--t-word) + .85s + var(--i) * 50ms); }
   @keyframes studio-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
-  .splash__tag { font-family: var(--font-display); font-size: clamp(30px, 5vw, 58px); margin-top: .45em; min-height: 1.2em; display: flex; align-items: center; }
+  .splash__tag { font-family: var(--font-display); font-size: calc(var(--wsz) * .21); margin-top: .45em; min-height: 1.2em; display: flex; align-items: center; }
   .splash__dot { color: var(--red); opacity: 0; }
   .splash.is-typed .splash__dot { animation: dot-pop .45s var(--ease-pop) forwards; }
   @keyframes dot-pop { 0% { opacity: 0; transform: scale(0); } 100% { opacity: 1; transform: scale(1); } }
@@ -105,7 +117,7 @@ const strip = 'kyrkcrykrykcrkyrkcyr'.split('');
   @keyframes blink { 50% { opacity: 0; } }
 
   /* ---------- pop: corner squares ---------- */
-  .splash__corner { position: absolute; left: 7%; bottom: 9%; width: 120px; height: 110px; }
+  .splash__corner { position: absolute; left: 7%; bottom: calc(9% + 64px); width: 120px; height: 110px; }
   .splash__corner i { position: absolute; display: block; opacity: 0; animation: sq-pop .55s var(--ease-pop) forwards; }
   .splash__corner i:nth-child(1) { width: 48px; height: 48px; left: 0; top: 0; --r: -14deg; animation-delay: .7s; }
   .splash__corner i:nth-child(2) { width: 30px; height: 30px; left: 54px; top: 34px; --r: 12deg; animation-delay: .85s; }
@@ -138,12 +150,27 @@ const strip = 'kyrkcrykrykcrkyrkcyr'.split('');
   .sq--red { background: var(--red); } .sq--yellow { background: var(--yellow); } .sq--black { background: var(--black); } .sq--cream { background: var(--cream); }
 
   /* ---------- skip + exit ---------- */
-  .splash__skip {
-    position: absolute; right: 16px; top: 16px; z-index: 5; min-height: 44px; padding: 0 16px;
-    font-family: var(--font-label); font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
-    background: transparent; color: inherit; border: 2px solid currentColor; cursor: pointer; opacity: .7;
+  /* ---------- full-width frame ---------- */
+  .splash__top {
+    position: absolute; left: 0; right: 0; top: 0; z-index: 5; display: flex; min-height: 64px;
+    border-bottom: 2px solid currentColor; background: inherit; opacity: 0; animation: frame-in .45s var(--ease-out) .15s forwards;
   }
-  .splash__skip:hover { opacity: 1; }
+  .splash__cell { display: flex; align-items: center; padding: 0 clamp(16px, 2.5vw, 32px); font-family: var(--font-label); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
+  .splash__cell + .splash__cell { border-left: 2px solid currentColor; }
+  .splash__cell--mid { flex: 1; justify-content: center; }
+  .splash__skip { background: transparent; color: inherit; border-top: 0; border-right: 0; border-bottom: 0; cursor: pointer; min-height: 64px; transition: background .2s, color .2s; }
+  .splash__skip:hover, .splash__skip:focus-visible { background: var(--red); color: var(--cream); }
+  .splash__ticker {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 4; height: 64px; overflow: hidden; display: flex; align-items: center;
+    border-top: 2px solid currentColor; background: inherit; opacity: 0; animation: frame-in .45s var(--ease-out) .3s forwards;
+  }
+  .splash__ticker-track { display: flex; white-space: nowrap; animation: tick 16s linear infinite; }
+  .splash__tick { display: inline-flex; align-items: center; gap: 28px; padding-right: 28px; font-family: var(--font-display); font-size: 30px; text-transform: uppercase; }
+  .splash__tick-sq { width: 14px; height: 14px; background: var(--red); transform: rotate(-14deg); }
+  @keyframes frame-in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes tick { to { transform: translateX(-50%); } }
+  html[data-splash="blocks"] .splash__ticker { display: none; }
+  @media (max-width: 600px) { .splash__cell--mid { display: none; } .splash__cell:last-child { margin-left: auto; } .splash__tick { font-size: 24px; } }
   html.splash-on .splash.is-out { animation: splash-out .65s cubic-bezier(.7, 0, .3, 1) forwards; }
   @keyframes splash-out { to { clip-path: inset(0 0 100% 0); } }
   html.splash-on .splash { clip-path: inset(0 0 0 0); }
