@@ -200,3 +200,39 @@ a:hover { color: var(--red); }
 .cursor.is-down .cursor__ring::before { transform: rotate(-14deg) scale(.75); transition-duration: .12s; }
 .cursor.is-text { opacity: 0; }
 @media (prefers-reduced-motion: reduce) { .cursor__ring::before { transition: none; } }
+
+/* ---------- Section-by-section scrolling (see setupSections in src/scripts/motion.js) ----------
+   Desktop with a mouse/trackpad only: the page settles on one full section at a time.
+   Sections taller than the screen still scroll normally inside. Off for touch and reduced motion. */
+@media (min-width: 961px) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  html.has-snap { scroll-snap-type: y mandatory; scroll-padding-top: 78px; }
+  html.has-snap .snap-sec { scroll-snap-align: start; }
+}
+html.splash-on.has-snap { scroll-snap-type: none; }
+
+/* Red bar that sweeps across the top of a section each time it arrives */
+.snap-sec { position: relative; }
+.snap-bar { position: absolute; left: 0; right: 0; top: 0; height: 5px; z-index: 6; background: var(--red); transform: scaleX(0); transform-origin: left; pointer-events: none; }
+.snap-sec.is-arriving > .snap-bar { animation: snap-bar 1s var(--ease-out) forwards; }
+@keyframes snap-bar { 0% { transform: scaleX(0); opacity: 1; } 60% { transform: scaleX(1); opacity: 1; } 100% { transform: scaleX(1); opacity: 0; } }
+
+/* Section pager: tilted squares on the right edge */
+.pager { position: fixed; right: 18px; top: 50%; z-index: 40; translate: 0 -50%; display: none; flex-direction: column; gap: 6px; }
+@media (min-width: 961px) { .pager { display: flex; } }
+.pager__btn { position: relative; display: grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 0; background: none; cursor: pointer; color: var(--ink); }
+.pager__sq { width: 10px; height: 10px; border: 2px solid var(--ink-page); background: var(--bg); transform: rotate(-14deg); transition: transform .35s var(--ease-pop), background .2s, width .25s var(--ease-out), height .25s var(--ease-out); }
+.pager__btn:hover .pager__sq { transform: rotate(31deg) scale(1.2); }
+.pager__btn.is-current .pager__sq { width: 14px; height: 14px; background: var(--red); border-color: var(--red); transform: rotate(31deg); }
+.pager__label {
+  position: absolute; right: 34px; top: 50%; translate: 0 -50%; white-space: nowrap; padding: 6px 10px;
+  font-family: var(--font-label); font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  background: var(--ink-page); color: var(--bg); border: 0; pointer-events: none;
+  opacity: 0; transform: translateX(8px); transition: opacity .2s, transform .25s var(--ease-out);
+}
+.pager__btn:hover .pager__label, .pager__btn:focus-visible .pager__label { opacity: 1; transform: none; }
+html.splash-on .pager { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .snap-sec.is-arriving > .snap-bar { animation: none; }
+  .pager__sq, .pager__label { transition: none; }
+}

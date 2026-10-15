@@ -206,6 +206,66 @@ function setupCursor() {
   });
 }
 
+/* ---------- Sections: snap scrolling, arrival bar, right-edge pager ---------- */
+function setupSections() {
+  const main = document.getElementById('main');
+  if (!main) return;
+  const isSection = (el) => el.offsetHeight > 160 && !el.classList.contains('checker') && getComputedStyle(el).position !== 'fixed';
+  let secs = [...main.children].filter(isSection);
+  // A single wrapper (e.g. a news post <article>) counts as its parts
+  secs = secs.flatMap((el) => (el.tagName === 'ARTICLE' ? [...el.children].filter(isSection) : [el]));
+  const footer = document.querySelector('.footer');
+  if (footer) secs.push(footer);
+  if (secs.length < 2) return;
+
+  const nameOf = (el) => {
+    const label = el.getAttribute('aria-label') || el.querySelector('.label')?.textContent || el.querySelector('h1, h2')?.textContent || '';
+    return label.replace(/\s+/g, ' ').trim().slice(0, 32) || 'Section';
+  };
+
+  const pager = document.createElement('nav');
+  pager.className = 'pager';
+  pager.setAttribute('aria-label', 'Page sections');
+  const btns = secs.map((sec, i) => {
+    sec.classList.add('snap-sec');
+    const bar = document.createElement('span');
+    bar.className = 'snap-bar';
+    bar.setAttribute('aria-hidden', 'true');
+    sec.prepend(bar);
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'pager__btn';
+    b.innerHTML = `<span class="pager__sq"></span><span class="pager__label"></span>`;
+    b.querySelector('.pager__label').textContent = i === secs.length - 1 && sec === footer ? 'Footer' : nameOf(sec);
+    b.setAttribute('aria-label', `Go to ${b.textContent}`);
+    b.addEventListener('click', () => sec.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }));
+    pager.append(b);
+    return b;
+  });
+  document.body.append(pager);
+  document.documentElement.classList.add('has-snap');
+
+  // The section crossing the middle of the screen is the current one
+  let current = -1;
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (!e.isIntersecting) return;
+      const i = secs.indexOf(e.target);
+      if (i === current) return;
+      current = i;
+      btns.forEach((b, j) => {
+        b.classList.toggle('is-current', j === i);
+        if (j === i) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current');
+      });
+      const sec = secs[i];
+      sec.classList.remove('is-arriving');
+      void sec.offsetWidth; // restart the bar sweep
+      sec.classList.add('is-arriving');
+    });
+  }, { rootMargin: '-45% 0px -45% 0px' });
+  secs.forEach((s) => io.observe(s));
+}
+
 function setupNewsletter() {
   document.querySelectorAll('form[data-newsletter]').forEach((form) => {
     if (form.getAttribute('action')) return;
@@ -221,6 +281,7 @@ export function runMotion() {
   setupNav();
   setupTheme();
   setupCursor();
+  setupSections();
   setupNewsletter();
   setupParallax();
   setupToy();
