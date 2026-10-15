@@ -254,11 +254,9 @@ function setupSections() {
 
   // Gentle settle: when scrolling stops near a section start, glide it into place
   const settleOn = window.matchMedia('(min-width: 961px) and (pointer: fine)');
-  let selfScroll = false;
   let timer = 0;
   const settle = () => {
     if (reduce || !settleOn.matches || document.documentElement.classList.contains('splash-on')) return;
-    if (selfScroll) { selfScroll = false; return; }
     const y = window.scrollY;
     const maxY = document.documentElement.scrollHeight - window.innerHeight;
     if (y <= 2 || y >= maxY - 2) return;
@@ -270,7 +268,7 @@ function setupSections() {
       if (Math.abs(d) < reach && (best === null || Math.abs(d) < Math.abs(best - y))) best = t;
     });
     if (best === null || Math.abs(best - y) < 2) return;
-    selfScroll = true;
+    // Already in place after our own glide, so this never loops
     window.scrollTo({ top: best, behavior: 'smooth' });
   };
   if ('onscrollend' in window) {
