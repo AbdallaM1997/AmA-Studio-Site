@@ -4,6 +4,7 @@ import { url } from '../../lib/url';
 import Base from '../../layouts/Base.astro';
 import Checker from '../../components/Checker.astro';
 import Logo from '../../components/Logo.astro';
+import NewsRow from '../../components/NewsRow.astro';
 import news from '../../data/news.json';
 
 const posts = postsNewestFirst;
@@ -55,29 +56,7 @@ const squares = (t: string) => (t === 'red' ? ['yellow', 'black'] : t === 'black
   <!-- Every post as a full-width row -->
   <section class="nlist" aria-label="All posts">
     <ol class="nlist__rows" data-stagger="0.08">
-      {posts.map((post, i) => (
-        <li class="nrow-wrap" data-category={post.category} data-reveal>
-          <a href={url(`/news/${post.slug}/`)} class="nrow">
-            <span class="wrap nrow__inner">
-              <span class="display nrow__num">{String(posts.length - i).padStart(2, '0')}</span>
-              <span class="nrow__meta">
-                <span class="label">{post.category}</span>
-                <time class="nrow__date" datetime={post.date}>{fmt(post.date)}</time>
-              </span>
-              <span class="nrow__main">
-                <span class="display nrow__title">{post.title}<span class="dot">.</span></span>
-                <span class="nrow__ex">{post.excerpt}</span>
-              </span>
-              <span class="nrow__thumb" style={`background:${themeBg(post.theme)}`} aria-hidden="true">
-                {post.image
-                  ? <img src={url(post.image)} alt="" loading="lazy" />
-                  : <span class={`sq sq--${squares(post.theme)[0]} nrow__sq`}></span>}
-              </span>
-              <span class="nrow__arrow" aria-hidden="true">→</span>
-            </span>
-          </a>
-        </li>
-      ))}
+      {posts.map((post, i) => <NewsRow post={post} num={posts.length - i} />)}
     </ol>
     <p class="wrap nlist__empty" data-empty hidden>No posts here yet.</p>
   </section>
@@ -122,48 +101,15 @@ const squares = (t: string) => (t === 'red' ? ['yellow', 'black'] : t === 'black
   .nhero__feat-title { font-size: clamp(36px, 3.6vw, 56px); line-height: 1; }
   .nhero__feat:hover .arrow { transform: translateX(6px); }
 
-  /* List rows: full-width bands, content on the page column */
   .nlist__rows { list-style: none; margin: 0; padding: 0; }
-  .nrow-wrap { border-bottom: var(--rule); }
-  .nrow { display: block; text-decoration: none; color: var(--ink); position: relative; overflow: hidden; }
-  /* Yellow fill wipes in from the left on hover */
-  .nrow::before { content: ''; position: absolute; inset: 0; background: var(--yellow); clip-path: inset(0 100% 0 0); transition: clip-path .45s var(--ease-out); }
-  .nrow:hover, .nrow:focus-visible { color: var(--black); }
-  .nrow:hover::before, .nrow:focus-visible::before { clip-path: inset(0 0 0 0); }
-  .nrow__inner {
-    position: relative; display: grid; align-items: center; gap: clamp(16px, 3vw, 40px);
-    grid-template-columns: 90px 150px minmax(0, 1fr) clamp(140px, 18vw, 260px) 40px;
-    padding-block: clamp(24px, 3vw, 36px);
-  }
-  .nrow__num { font-size: clamp(40px, 4vw, 64px); color: var(--red); line-height: 1; }
-  .nrow__meta { display: flex; flex-direction: column; gap: 6px; }
-  .nrow__meta .label { font-size: 12px; }
-  .nrow__date { font-size: 15px; font-weight: 600; }
-  .nrow__main { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-  .nrow__title { font-size: clamp(34px, 4vw, 60px); line-height: 1; }
-  .nrow__ex { font-size: 17px; max-width: 620px; }
-  .nrow__thumb { position: relative; aspect-ratio: 16 / 10; border: 2px solid var(--black); overflow: hidden; transition: transform .45s var(--ease-pop); }
-  .nrow:hover .nrow__thumb { transform: rotate(-3deg) scale(1.04); }
-  .nrow__thumb img { width: 100%; height: 100%; object-fit: cover; }
-  .nrow__sq { width: 42px; height: 42px; left: 20px; bottom: 18px; transform: rotate(14deg); transition: transform .5s var(--ease-pop); }
-  .nrow:hover .nrow__sq { transform: rotate(104deg) translate(8px, -10px); }
-  .nrow__arrow { font-family: var(--font-label); font-size: 28px; transition: transform .3s var(--ease-pop); }
-  .nrow:hover .nrow__arrow { transform: translateX(8px); }
-  .nrow-wrap[hidden] { display: none; }
   .nlist__empty { padding-block: 48px; font-weight: 700; }
 
   @media (max-width: 960px) {
     .nhero__text { flex-basis: 100%; border-right: 0; border-bottom: var(--rule); }
-    .nrow__inner { grid-template-columns: 56px minmax(0, 1fr) 120px; grid-template-areas: 'num meta thumb' 'main main main'; }
-    .nrow__num { grid-area: num; }
-    .nrow__meta { grid-area: meta; }
-    .nrow__thumb { grid-area: thumb; }
-    .nrow__main { grid-area: main; }
-    .nrow__arrow { display: none; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .nrow::before, .nrow__thumb, .nrow__sq, .nrow__arrow, .nhero__img, .nhero__card, .nfilter__btn { transition: none; }
+    .nhero__img, .nhero__card, .nfilter__btn { transition: none; }
   }
 </style>
 

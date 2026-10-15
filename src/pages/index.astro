@@ -5,15 +5,15 @@ import Base from '../layouts/Base.astro';
 import Logo from '../components/Logo.astro';
 import Checker from '../components/Checker.astro';
 import SectionHead from '../components/SectionHead.astro';
-import GameCard from '../components/GameCard.astro';
-import NewsCard from '../components/NewsCard.astro';
+import NewsRow from '../components/NewsRow.astro';
 import site from '../data/site.json';
 import games from '../data/games.json';
-import news from '../data/news.json';
 
 const featured = games.find((g) => g.featured) ?? games[0];
 const others = games.filter((g) => g !== featured).slice(0, 2);
 const latest = postsNewestFirst.slice(0, 3);
+const statusLabel: Record<string, string> = { 'coming-soon': 'Coming soon', live: 'Out now', 'in-lab': 'In the lab' };
+const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', black: 'var(--black)' } as Record<string, string>)[t] ?? 'var(--red)';
 ---
 <Base splash>
   <!-- 01 / HOME -->
@@ -46,96 +46,130 @@ const latest = postsNewestFirst.slice(0, 3);
     </div>
   </section>
 
-  <!-- 02 / GAMES -->
-  <section id="games" class="section" aria-label="Our games">
-    <div class="wrap section__inner">
+  <!-- 02 / GAMES: featured game as a full-width band, art runs to the left edge -->
+  <section id="games" class="hgames" aria-labelledby="games-title">
+    <div class="wrap hsec-head">
       <SectionHead num="02" label="Games" title="Our games" link={{ href: '/games/', text: 'All games' }} />
-      <div class="games-grid">
-        <div class="games-grid__main" data-reveal><GameCard game={featured} featured /></div>
-        <div class="games-grid__side" data-stagger>
-          {others.map((g) => <div data-reveal><GameCard game={g} /></div>)}
-          {site.inTheLab.show && others.length < 2 && (
-            <div class="lab dark" data-reveal>
-              <span class="label lab__k">In the lab</span>
-              <span class="display lab__t">{site.inTheLab.title}<span class="dot">.</span></span>
-              <span>{site.inTheLab.text}</span>
-            </div>
-          )}
-          {others.length === 0 && (
-            <a href="#newsletter" class="slot" data-reveal>
-              <span class="label">Slot 03</span>
-              <span class="display lab__t">Your next favorite<span class="dot">.</span></span>
-              <span>Room for the next title on the shelf.</span>
-            </a>
-          )}
+    </div>
+    {featured && (
+      <div class="hband">
+        <a href={url(`/games/${featured.slug}/`)} class="hband__art on-light" style={`background:${themeBg(featured.theme)}`} data-reveal="wipe" data-parallax tabindex="-1" aria-hidden="true">
+          {featured.trailer
+            ? <video class="hband__media" src={url(featured.trailer)} poster={url(('trailerPoster' in featured && featured.trailerPoster) || featured.keyArt)} autoplay muted loop playsinline preload="metadata" data-depth="-10"></video>
+            : featured.keyArt && <img class="hband__media" src={url(featured.keyArt)} alt="" loading="lazy" data-depth="-10" />}
+          <span class="sq-wrap" data-depth="26" style="right:8%;top:10%"><span class="sq sq--yellow float" style="width:54px;height:54px;transform:rotate(16deg)"></span></span>
+        </a>
+        <div class="hband__text">
+          <ul class="hband__tags" data-stagger="0.06">
+            <li class="hband__status on-light" data-reveal="pop">{statusLabel[featured.status] ?? featured.status}</li>
+            <li data-reveal="pop">{featured.genre}</li>
+            {featured.platforms.map((p) => <li data-reveal="pop">{p}</li>)}
+          </ul>
+          <h3 id="games-title" class="display hband__title" data-reveal style="--d:.08s">{featured.title}<span class="dot">.</span></h3>
+          <p class="lead hband__tagline" data-reveal style="--d:.14s">{featured.tagline}</p>
+          <p class="hband__desc" data-reveal style="--d:.2s">{featured.description}</p>
+          <div class="hband__ctas" data-reveal style="--d:.26s">
+            <a href={url(`/games/${featured.slug}/`)} class="btn">See the game</a>
+            {!featured.stores.appStore && !featured.stores.googlePlay && <a class="btn btn--ghost" href="#newsletter">Tell me when it's out</a>}
+          </div>
         </div>
       </div>
+    )}
+    <!-- Next on the shelf: edge-to-edge columns -->
+    <div class="hshelf" data-stagger="0.1">
+      {others.map((g) => (
+        <a href={url(`/games/${g.slug}/`)} class="hshelf__item" data-reveal>
+          <span class="label">{statusLabel[g.status] ?? g.status}</span>
+          <span class="display hshelf__t">{g.title}<span class="dot">.</span></span>
+          <span>{g.tagline}</span>
+        </a>
+      ))}
+      {site.inTheLab.show && others.length < 2 && (
+        <div class="hshelf__item dark" data-reveal>
+          <span class="label hshelf__k">In the lab</span>
+          <span class="display hshelf__t">{site.inTheLab.title}<span class="dot">.</span></span>
+          <span>{site.inTheLab.text}</span>
+        </div>
+      )}
+      {others.length === 0 && (
+        <a href="#newsletter" class="hshelf__item hshelf__slot" data-reveal>
+          <span class="label">Slot 03</span>
+          <span class="display hshelf__t">Your next favorite<span class="dot">.</span></span>
+          <span>Room for the next title on the shelf.</span>
+        </a>
+      )}
     </div>
   </section>
 
   <Checker pattern="y2rkcr3ykc2ry" height="48px" />
 
-  <!-- 03 / PLAY DEPT. -->
-  <section class="dark" aria-labelledby="dept-title">
-    <div class="wrap section__inner dept">
+  <!-- 03 / PLAY DEPT.: principles as edge-to-edge columns -->
+  <section class="dark hdept" aria-labelledby="dept-title">
+    <div class="wrap dept">
       <span class="label dept__label" data-reveal>03 / Play Dept.</span>
       <h2 id="dept-title" class="display dept__title" data-reveal>{site.slogan.replace(/\.$/, '')}<span class="dot">.</span></h2>
-      <div class="dept__grid" data-stagger="0.12">
-        {site.principles.map((p, i) => (
-          <div class="dept__item" data-reveal>
-            <span class="label dept__num">{String(i + 1).padStart(2, '0')}</span>
-            <h3 class="display dept__h">{p.title}<span class="dot">.</span></h3>
-            <p>{p.text}</p>
-          </div>
-        ))}
-      </div>
+    </div>
+    <div class="dept__grid" data-stagger="0.12">
+      {site.principles.map((p, i) => (
+        <div class="dept__item" data-reveal>
+          <span class="display dept__num">{String(i + 1).padStart(2, '0')}</span>
+          <h3 class="display dept__h">{p.title}<span class="dot">.</span></h3>
+          <p>{p.text}</p>
+        </div>
+      ))}
     </div>
   </section>
 
-  <!-- 04 / STUDIO -->
-  <section id="studio" class="section" aria-labelledby="studio-title">
-    <div class="wrap studio">
-      <div class="studio__left">
+  <!-- 04 / STUDIO: title on the page column, the yellow panel runs to the right edge -->
+  <section id="studio" class="hstudio" aria-labelledby="studio-title">
+    <div class="hsplit">
+      <div class="hsplit__left">
         <span class="label" data-reveal>04 / Studio</span>
-        <h2 id="studio-title" class="display h2" data-reveal style="--d:.08s">AmA <span class="studio__eq">=</span><br />AmAzing<span class="dot">.</span></h2>
+        <h2 id="studio-title" class="display hstudio__title" data-reveal style="--d:.08s">AmA <span class="studio__eq">=</span><br />AmAzing<span class="dot">.</span></h2>
       </div>
-      <div class="studio__right" data-stagger>
-        <p class="lead" data-reveal>{site.studio.intro}</p>
-        {site.studio.founderNote && <p data-reveal>{site.studio.founderNote}</p>}
-        <a href="#contact" class="textlink" data-reveal>Say hi <span class="arrow">→</span></a>
-      </div>
-    </div>
-  </section>
-
-  <!-- 05 / NEWS -->
-  {latest.length > 0 && (
-    <section class="section" aria-label="News">
-      <div class="wrap section__inner">
-        <SectionHead num="05" label="News" title="From the lab" link={{ href: '/news/', text: 'All posts' }} />
-        <div class="news-grid" data-stagger>
-          {latest.map((post) => <div data-reveal><NewsCard post={post} /></div>)}
+      <div class="hsplit__right yellow hstudio__panel" data-reveal="wipe" data-parallax>
+        <span class="sq-wrap" data-depth="24" style="right:7%;top:12%"><span class="sq sq--red float" style="width:50px;height:50px;transform:rotate(18deg)"></span></span>
+        <span class="sq-wrap" data-depth="-16" style="right:16%;bottom:14%"><span class="sq sq--black float" style="width:28px;height:28px;transform:rotate(-12deg);--delay:-1.5s"></span></span>
+        <div class="hstudio__copy" data-stagger>
+          <p class="lead" data-reveal>{site.studio.intro}</p>
+          {site.studio.founderNote && <p data-reveal>{site.studio.founderNote}</p>}
+          <a href="#contact" class="textlink" data-reveal>Say hi <span class="arrow">→</span></a>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- 05 / NEWS: full-width rows -->
+  {latest.length > 0 && (
+    <section class="hnews" aria-label="News">
+      <div class="wrap hsec-head">
+        <SectionHead num="05" label="News" title="From the lab" link={{ href: '/news/', text: 'All posts' }} />
+      </div>
+      <ol class="hnews__rows" data-stagger="0.08">
+        {latest.map((post, i) => <NewsRow post={post} num={latest.length - i} />)}
+      </ol>
     </section>
   )}
 
-  <!-- 06 / NEWSLETTER -->
+  <!-- 06 / NEWSLETTER: text on the page column, the form panel runs to the right edge -->
   {site.newsletter.enabled && (
-    <section id="newsletter" class="section" aria-labelledby="nl-title">
-      <div class="wrap section__inner nl">
-        <div class="nl__text">
+    <section id="newsletter" class="hnl" aria-labelledby="nl-title">
+      <div class="hsplit">
+        <div class="hsplit__left">
           <span class="label" data-reveal>06 / Newsletter</span>
           <h2 id="nl-title" class="display nl__title" data-reveal style="--d:.08s">Take a<br />play break<span class="dot dot--black">.</span></h2>
-          <p data-reveal style="--d:.16s">{site.newsletter.text}</p>
+          <p class="nl__lead" data-reveal style="--d:.16s">{site.newsletter.text}</p>
         </div>
-        <form class="nl__form" data-newsletter action={site.newsletter.formAction || undefined} method="post" data-reveal style="--d:.2s">
-          <label for="nl-email" class="label">Your email</label>
-          <div class="nl__row">
-            <input id="nl-email" name="email" type="email" required placeholder="you@email.com" autocomplete="email" />
-            <button type="submit" class="btn">Sign me up</button>
-          </div>
-          <p class="nl__note" data-note aria-live="polite"></p>
-        </form>
+        <div class="hsplit__right dark hnl__panel" data-reveal="wipe">
+          <form class="nl__form" data-newsletter action={site.newsletter.formAction || undefined} method="post" data-reveal style="--d:.3s">
+            <label for="nl-email" class="label">Your email</label>
+            <div class="nl__row">
+              <input id="nl-email" name="email" type="email" required placeholder="you@email.com" autocomplete="email" />
+              <button type="submit" class="btn btn--red">Sign me up</button>
+            </div>
+            <p class="nl__note" data-note aria-live="polite"></p>
+          </form>
+        </div>
       </div>
     </section>
   )}
@@ -186,51 +220,96 @@ const latest = postsNewestFirst.slice(0, 3);
     .hero__toy { min-height: 340px; }
   }
 
+  /* Shared full-bleed split: left column lines up with the page, right panel runs to the edge */
+  .hsplit, .hband { --side: max(0px, (100% - var(--max)) / 2); display: flex; flex-wrap: wrap; }
+  .hsplit__left {
+    flex: 0 1 calc(var(--side) + min(100%, var(--max)) * .42); min-width: 0;
+    padding: clamp(56px, 7vw, 96px) var(--gutter) clamp(40px, 6vw, 80px) calc(var(--side) + var(--gutter));
+    display: flex; flex-direction: column; gap: 18px; border-right: var(--rule);
+  }
+  .hsplit__right { flex: 1 1 440px; min-width: 0; position: relative; overflow: hidden; display: flex; align-items: center; padding: clamp(40px, 6vw, 88px) calc(var(--side) + var(--gutter)) clamp(40px, 6vw, 88px) clamp(28px, 4vw, 64px); }
+  .hsec-head { padding-block: clamp(56px, 7vw, 96px) clamp(28px, 3vw, 40px); }
+  .hsec-head :global(.section-head) { margin-bottom: 0; }
+
   /* Games */
-  .games-grid { display: flex; flex-wrap: wrap; gap: 24px; }
-  .games-grid__main { flex: 2 1 560px; min-width: 0; display: flex; }
-  .games-grid__main > :global(*) { flex: 1; }
-  .games-grid__side { flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 24px; }
-  .lab, .slot { flex: 1; padding: 28px; display: flex; flex-direction: column; justify-content: space-between; gap: 20px; min-height: 200px; }
-  .lab__k { color: var(--hi); font-size: 12px; }
-  .lab__t { font-size: 44px; line-height: 1; }
-  .slot { border: 2px dashed var(--ink); text-decoration: none; transition: background .2s; }
-  .slot:hover { background: var(--yellow); color: var(--black); }
-  .slot .label { font-size: 12px; }
+  .hband { border-top: var(--rule); border-bottom: var(--rule); }
+  .hband__art { flex: 1 1 440px; min-width: 0; min-height: clamp(420px, 44vw, 660px); position: relative; overflow: hidden; display: block; border-right: var(--rule); }
+  .hband__media { position: absolute; inset: -20px; width: calc(100% + 40px); height: calc(100% + 40px); max-width: none; object-fit: cover; transition: translate .5s var(--ease-out); }
+  .hband__text {
+    flex: 0 1 calc(var(--side) + min(100%, var(--max)) * .5); min-width: 0;
+    padding: clamp(40px, 6vw, 88px) calc(var(--side) + var(--gutter)) clamp(40px, 6vw, 88px) clamp(28px, 4vw, 64px);
+    display: flex; flex-direction: column; gap: 16px; justify-content: center;
+  }
+  .hband__tags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .hband__tags li { font-family: var(--font-label); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; border: var(--rule); padding: 7px 12px; }
+  .hband__status { background: var(--yellow); }
+  .hband__title { font-size: clamp(64px, 8vw, 128px); line-height: .9; }
+  .hband__tagline, .hband__desc { margin: 0; }
+  .hband__desc { max-width: 560px; font-size: 17px; }
+  .hband__ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 8px; }
+
+  .hshelf { --side: max(0px, (100% - var(--max)) / 2); display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); border-bottom: var(--rule); }
+  .hshelf__item { min-height: 240px; padding: clamp(28px, 4vw, 48px) clamp(24px, 3vw, 48px); display: flex; flex-direction: column; justify-content: space-between; gap: 18px; text-decoration: none; }
+  .hshelf__item:first-child { padding-left: calc(var(--side) + var(--gutter)); }
+  .hshelf__item:last-child { padding-right: calc(var(--side) + var(--gutter)); }
+  .hshelf__item + .hshelf__item { border-left: var(--rule); }
+  .hshelf__k { color: var(--hi); font-size: 12px; }
+  .hshelf__t { font-size: clamp(40px, 4vw, 60px); line-height: 1; }
+  .hshelf__slot { outline: 2px dashed var(--ink); outline-offset: -14px; transition: background .2s; }
+  .hshelf__slot:hover { background: var(--yellow); color: var(--black); outline-color: var(--black); }
 
   /* Play Dept */
-  .dept { display: flex; flex-direction: column; gap: clamp(32px, 5vw, 56px); }
+  .hdept { --side: max(0px, (100% - var(--max)) / 2); border-bottom: var(--rule); }
+  .dept { display: flex; flex-direction: column; gap: clamp(24px, 4vw, 44px); padding-block: clamp(56px, 7vw, 96px) clamp(40px, 5vw, 64px); }
   .dept__label { color: var(--hi); }
   .dept__title { font-size: clamp(72px, 11vw, 176px); line-height: .88; }
-  .dept__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); border-top: var(--rule); }
-  .dept__item { padding: 28px 28px 0 0; display: flex; flex-direction: column; gap: 10px; }
-  .dept__num { color: var(--red); }
-  .dept__h { font-size: 40px; }
-  .dept__item p { margin: 0; }
+  .dept__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); border-top: var(--rule); }
+  .dept__item { padding: clamp(32px, 4vw, 56px) clamp(24px, 3vw, 48px) clamp(40px, 5vw, 72px); display: flex; flex-direction: column; gap: 12px; }
+  .dept__item:first-child { padding-left: calc(var(--side) + var(--gutter)); }
+  .dept__item:last-child { padding-right: calc(var(--side) + var(--gutter)); }
+  .dept__item + .dept__item { border-left: var(--rule); }
+  .dept__num { color: var(--red); font-size: clamp(64px, 7vw, 104px); line-height: .9; }
+  .dept__h { font-size: clamp(36px, 3.4vw, 48px); }
+  .dept__item p { margin: 0; font-size: 18px; max-width: 380px; }
 
   /* Studio */
-  .studio { display: flex; flex-wrap: wrap; padding-inline: 0; }
-  .studio__left { flex: 1 1 420px; padding: clamp(56px, 7vw, 88px) var(--gutter); display: flex; flex-direction: column; gap: 18px; border-right: var(--rule); }
+  .hstudio { border-bottom: var(--rule); }
+  .hstudio__title { font-size: clamp(72px, 8vw, 132px); line-height: .9; }
   .studio__eq { color: var(--red); }
-  .studio__right { flex: 1 1 480px; padding: clamp(40px, 7vw, 88px) var(--gutter); display: flex; flex-direction: column; justify-content: center; gap: 20px; }
-  .studio__right p { margin: 0; }
-  @media (max-width: 900px) { .studio__left { border-right: 0; padding-bottom: 0; } }
+  .hstudio__panel { min-height: clamp(360px, 34vw, 520px); }
+  .hstudio__copy { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 20px; max-width: 640px; }
+  .hstudio__copy p { margin: 0; }
 
   /* News */
-  .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+  .hnews__rows { list-style: none; margin: 0; padding: 0; border-top: var(--rule); }
 
   /* Newsletter */
-  .nl { display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-end; }
-  .nl__text { flex: 999 1 520px; display: flex; flex-direction: column; gap: 14px; }
-  .nl__text p { margin: 0; max-width: 560px; }
+  .hnl { border-bottom: var(--rule); }
   .nl__title { font-size: clamp(64px, 8vw, 124px); color: var(--red); }
-  .nl__form { flex: 1 1 360px; display: flex; flex-direction: column; gap: 10px; }
+  .nl__lead { margin: 0; max-width: 520px; }
+  .hnl__panel { min-height: clamp(300px, 28vw, 420px); }
+  .nl__form { width: 100%; max-width: 640px; display: flex; flex-direction: column; gap: 12px; }
   .nl__form .label { font-size: 12px; }
   .nl__row { display: flex; flex-wrap: wrap; }
-  .nl__row input { flex: 1 1 200px; min-width: 0; min-height: 56px; border: var(--rule); background: var(--cream); color: var(--black); padding: 0 18px; font: inherit; font-size: 17px; }
-  .nl__row .btn { min-height: 56px; }
+  .nl__row input { flex: 1 1 220px; min-width: 0; min-height: 64px; border: 2px solid var(--cream); background: var(--cream); color: var(--black); padding: 0 20px; font: inherit; font-size: 18px; }
+  .nl__row .btn { min-height: 64px; }
   .nl__note { margin: 0; min-height: 1.5em; font-weight: 700; }
   @media (max-width: 520px) { .nl__row .btn { flex: 1 1 100%; } }
+
+  @media (max-width: 960px) {
+    .hsplit__left { flex-basis: 100%; border-right: 0; border-bottom: var(--rule); }
+    .hsplit__right { padding: 40px var(--gutter); }
+    .hband__art { flex-basis: 100%; border-right: 0; border-bottom: var(--rule); min-height: 360px; }
+    .hband__text { flex-basis: 100%; padding: 40px var(--gutter) 48px; }
+    .hshelf__item, .hshelf__item:first-child, .hshelf__item:last-child { padding: 32px var(--gutter); }
+    .hshelf__item + .hshelf__item { border-left: 0; border-top: var(--rule); }
+    .dept__item, .dept__item:first-child, .dept__item:last-child { padding: 32px var(--gutter); }
+    .dept__item + .dept__item { border-left: 0; border-top: var(--rule); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hband__media, .hshelf__slot { transition: none; }
+  }
 
   /* Contact */
   .contact { border-bottom: var(--rule); }
@@ -243,3 +322,10 @@ const latest = postsNewestFirst.slice(0, 3);
   .services__item { padding-right: 24px; }
   .services__item h3 { font-size: 34px; }
 </style>
+
+<script>
+  // Respect reduced motion: hold the looping trailer on its poster frame
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll<HTMLVideoElement>('.hband__media').forEach((v) => { v.removeAttribute('autoplay'); v.pause(); });
+  }
+</script>
