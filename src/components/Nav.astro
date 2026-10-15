@@ -7,7 +7,7 @@ const path = Astro.url.pathname;
 const isActive = (href: string) => !href.includes('#') && href !== '/' && path.startsWith(url(href));
 ---
 <header class="nav">
-  <nav class="nav__bar wrap" aria-label="Main">
+  <nav class="nav__bar" aria-label="Main">
     <a href={url('/')} class="nav__logo" aria-label={`${site.name} home`}><Logo size="40px" /></a>
 
     <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu">
@@ -28,47 +28,67 @@ const isActive = (href: string) => !href.includes('#') && href !== '/' && path.s
           </li>
         ))}
       </ul>
-      <a href={url('/games/')} class="btn btn--red btn--small">Play now</a>
+      <div class="nav__cta"><a href={url('/games/')} class="btn btn--red btn--small">Play now</a></div>
     </div>
   </nav>
 </header>
 
 <style>
+  /* Edge-to-edge bar of cells split by rules. The logo and the last cell line up with the page column. */
   .nav { border-bottom: var(--rule); background: var(--bg); position: sticky; top: 0; z-index: 50; }
-  .nav__bar { display: flex; align-items: center; gap: 20px; min-height: 76px; }
-  .nav__logo { text-decoration: none; display: inline-flex; padding: 10px 0; }
-  .nav__menu { display: flex; align-items: center; gap: 28px; margin-left: auto; order: 1; }
-  .nav__links { list-style: none; margin: 0; padding: 0; display: flex; gap: 26px; }
+  .nav__bar { --side: max(0px, (100% - var(--max)) / 2); display: flex; align-items: stretch; min-height: 76px; }
+  .nav__logo {
+    text-decoration: none; display: inline-flex; align-items: center;
+    padding: 10px clamp(20px, 2.5vw, 36px) 10px calc(var(--side) + var(--gutter)); border-right: var(--rule);
+  }
+  .nav__menu { display: flex; align-items: stretch; margin-left: auto; order: 1; }
+  .nav__links { list-style: none; margin: 0; padding: 0; display: flex; }
+  .nav__links li { display: flex; }
   .nav__link {
     font-family: var(--font-label); font-size: 13px; letter-spacing: .08em; text-transform: uppercase;
     text-decoration: none; display: inline-flex; gap: 6px; align-items: center; min-height: 44px; position: relative;
+    padding: 0 clamp(14px, 1.6vw, 26px); border-left: var(--rule); overflow: hidden;
   }
+  .nav__link > * { position: relative; }
   .nav__num { color: var(--red); }
+  /* Hover: yellow rises up through the cell */
+  .nav__link::before { content: ''; position: absolute; inset: 0; background: var(--yellow); clip-path: inset(100% 0 0 0); transition: clip-path .3s var(--ease-out); }
+  .nav__link:hover { color: var(--black); }
+  .nav__link:hover::before { clip-path: inset(0 0 0 0); }
+  /* Current page: a red bar along the bottom of its cell */
   .nav__link::after {
-    content: ''; position: absolute; left: 0; right: 0; bottom: 8px; height: 3px; background: var(--red);
+    content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 5px; background: var(--red);
     transform: scaleX(0); transform-origin: left; transition: transform .25s var(--ease-out);
   }
-  .nav__link:hover::after, .nav__link.is-active::after { transform: scaleX(1); }
+  .nav__link.is-active::after { transform: scaleX(1); }
+  .nav__cta { display: flex; align-items: center; padding: 0 clamp(14px, 1.6vw, 24px); border-left: var(--rule); }
 
-  .nav__toggle { display: none; width: 46px; height: 46px; border: var(--rule); background: var(--bg); cursor: pointer; padding: 0; flex-direction: column; order: 3; align-items: center; justify-content: center; gap: 5px; }
-  .nav__toggle span { width: 20px; height: 2.5px; background: var(--ink); transition: transform .25s var(--ease-out), opacity .2s; }
+  .nav__toggle { display: none; width: 68px; border: 0; border-left: var(--rule); background: var(--bg); cursor: pointer; padding: 0 var(--gutter) 0 0; flex-direction: column; order: 3; align-items: center; justify-content: center; gap: 5px; }
+  .nav__toggle span { width: 22px; height: 2.5px; background: var(--ink); transition: transform .25s var(--ease-out), opacity .2s; }
   /* Theme toggle: a tilted square, half ink half page. It flips a half turn when the mode changes. */
-  .nav__theme { order: 2; width: 46px; height: 46px; flex: none; border: var(--rule); background: var(--bg); cursor: pointer; padding: 0; display: grid; place-items: center; }
+  .nav__theme {
+    order: 2; flex: none; border: 0; border-left: var(--rule); background: var(--bg); cursor: pointer;
+    padding: 0 calc(var(--side) + var(--gutter)) 0 clamp(18px, 2vw, 28px); display: grid; place-items: center; transition: background .2s;
+  }
   .nav__theme:hover { background: var(--yellow); }
   .nav__theme:hover .nav__theme-sq { border-color: var(--black); --fill: var(--black); }
-  .nav__theme-sq { position: relative; width: 18px; height: 18px; border: 2px solid var(--ink); --fill: var(--ink); transform: rotate(-14deg); transition: transform .45s var(--ease-pop); }
+  .nav__theme-sq { position: relative; width: 20px; height: 20px; border: 2px solid var(--ink); --fill: var(--ink); transform: rotate(-14deg); transition: transform .45s var(--ease-pop); }
   .nav__theme-sq::after { content: ""; position: absolute; inset: 0; background: var(--fill); clip-path: polygon(0 0, 100% 0, 0 100%); }
   :global([data-theme="dark"]) .nav__theme-sq { transform: rotate(166deg); }
-  @media (prefers-reduced-motion: reduce) { .nav__theme-sq { transition: none; } }
 
   .nav__toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
   .nav__toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
   .nav__toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
 
+  @media (max-width: 1100px) and (min-width: 861px) {
+    .nav__num { display: none; }
+  }
+
   @media (max-width: 860px) {
     .nav__bar { min-height: 68px; }
+    .nav__logo { padding-left: var(--gutter); border-right: 0; }
     .nav__toggle { display: flex; }
-    .nav__theme { margin-left: auto; }
+    .nav__theme { margin-left: auto; padding: 0 22px; }
     .nav__menu {
       position: absolute; top: 100%; left: 0; right: 0; background: var(--yellow); border-bottom: var(--rule);
       --bg: var(--cream); --ink: var(--black); --rule: 2px solid var(--black); color: var(--black);
@@ -77,9 +97,14 @@ const isActive = (href: string) => !href.includes('#') && href !== '/' && path.s
     }
     .nav__menu.is-open { clip-path: inset(0 0 0 0); visibility: visible; transition: clip-path .35s var(--ease-out); }
     .nav__links { flex-direction: column; gap: 0; }
-    .nav__link { font-family: var(--font-display); font-size: 40px; letter-spacing: 0; text-transform: none; min-height: 64px; border-bottom: var(--rule); width: 100%; gap: 14px; }
-    .nav__link::after { display: none; }
+    .nav__link { font-family: var(--font-display); font-size: 40px; letter-spacing: 0; text-transform: none; min-height: 64px; border-left: 0; border-bottom: var(--rule); width: 100%; gap: 14px; padding: 0; }
+    .nav__link::before, .nav__link::after { display: none; }
     .nav__num { font-family: var(--font-label); font-size: 13px; }
-    .nav__menu .btn { margin-top: 20px; min-height: 54px; }
+    .nav__cta { border-left: 0; padding: 0; }
+    .nav__cta .btn { margin-top: 20px; min-height: 54px; width: 100%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav__theme-sq, .nav__link::before, .nav__link::after { transition: none; }
   }
 </style>
