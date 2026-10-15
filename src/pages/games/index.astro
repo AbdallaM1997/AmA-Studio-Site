@@ -1,26 +1,186 @@
 ---
+import { url } from '../../lib/url';
 import Base from '../../layouts/Base.astro';
-import GameCard from '../../components/GameCard.astro';
 import Checker from '../../components/Checker.astro';
+import Logo from '../../components/Logo.astro';
 import site from '../../data/site.json';
 import games from '../../data/games.json';
+
+const statusLabel: Record<string, string> = { 'coming-soon': 'Coming soon', live: 'Out now', 'in-lab': 'In the lab' };
+const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', black: 'var(--black)' } as Record<string, string>)[t] ?? 'var(--red)';
+const featured = games.find((g) => g.featured) ?? games[0];
+const platforms = [...new Set(games.flatMap((g) => g.platforms))];
 ---
 <Base title="Games" description={`All games by ${site.name}.`}>
-  <section class="section">
-    <div class="wrap section__inner">
-      <span class="label" data-reveal>02 / Games</span>
-      <h1 class="display page-title" data-reveal style="--d:.08s">Our games<span class="dot">.</span></h1>
-      <p class="lead intro" data-reveal style="--d:.16s">Small, bright games for everyday breaks. Pick one up in a minute.</p>
-      <div class="list" data-stagger>
-        {games.map((g) => <div data-reveal><GameCard game={g} featured /></div>)}
+  <!-- Hero: title on the left, the featured game runs to the right edge -->
+  <header class="ghero">
+    <div class="ghero__grid">
+      <div class="ghero__text">
+        <span class="label" data-reveal>02 / Games</span>
+        <h1 class="display ghero__title" data-reveal style="--d:.08s">Our games<span class="dot">.</span></h1>
+        <p class="lead ghero__lead" data-reveal style="--d:.2s">Small, bright games for everyday breaks. Pick one up in a minute.</p>
+        <dl class="ghero__facts" data-stagger="0.08">
+          <div data-reveal="pop"><dt class="label">Games</dt><dd>{games.length}</dd></div>
+          <div data-reveal="pop"><dt class="label">Platforms</dt><dd>{platforms.join(' & ')}</dd></div>
+          <div data-reveal="pop"><dt class="label">Made in</dt><dd>{site.location}</dd></div>
+        </dl>
       </div>
+
+      {featured && (
+        <a href={url(`/games/${featured.slug}/`)} class="ghero__feat on-light" style={`background:${themeBg(featured.theme)}`} data-reveal="wipe" data-parallax>
+          {featured.keyArt
+            ? <img class="ghero__img" src={url(featured.keyArt)} alt="" data-depth="-14" />
+            : <span class="ghero__logo" data-depth="10"><Logo size="clamp(100px, 10vw, 150px)" /></span>}
+          <span class="sq-wrap" data-depth="30" style="left:6%;top:9%"><span class="sq sq--yellow float" style="width:60px;height:60px;transform:rotate(16deg)"></span></span>
+          <span class="sq-wrap" data-depth="-22" style="right:7%;top:14%"><span class="sq sq--black float" style="width:34px;height:34px;transform:rotate(-12deg);--delay:-2s"></span></span>
+          <span class="ghero__card">
+            <span class="label ghero__tag">Featured · {statusLabel[featured.status] ?? featured.status}</span>
+            <span class="display ghero__feat-title">{featured.title}<span class="dot">.</span></span>
+            <span class="ghero__feat-tag">{featured.tagline}</span>
+            <span class="textlink">See the game <span class="arrow">→</span></span>
+          </span>
+        </a>
+      )}
     </div>
-  </section>
+  </header>
+
   <Checker pattern="r2kyc2krk3yr" height="40px" class="rule-b" />
+
+  <!-- Every game as a full-width band; the art alternates sides -->
+  {games.map((g, i) => (
+    <section class:list={['gband', { 'gband--flip': i % 2 === 1 }]} aria-labelledby={`g-${g.slug}`}>
+      <div class="gband__grid">
+        <a href={url(`/games/${g.slug}/`)} class="gband__art on-light" style={`background:${themeBg(g.theme)}`} data-reveal="wipe" data-parallax tabindex="-1" aria-hidden="true">
+          {g.trailer
+            ? <video class="gband__media" src={url(g.trailer)} poster={url(('trailerPoster' in g && g.trailerPoster) || g.keyArt)} autoplay muted loop playsinline preload="metadata" data-depth="-10"></video>
+            : g.keyArt
+              ? <img class="gband__media" src={url(g.keyArt)} alt="" loading="lazy" data-depth="-10" />
+              : <span class="ghero__logo" data-depth="10"><Logo size="clamp(90px, 9vw, 130px)" /></span>}
+        </a>
+        <div class="gband__text">
+          <span class="display gband__num" data-reveal>{String(i + 1).padStart(2, '0')}</span>
+          <ul class="gband__tags" data-stagger="0.06">
+            <li class="gband__status on-light" data-reveal="pop">{statusLabel[g.status] ?? g.status}</li>
+            <li data-reveal="pop">{g.genre}</li>
+            {g.platforms.map((p) => <li data-reveal="pop">{p}</li>)}
+            {g.price && <li data-reveal="pop">{g.price}</li>}
+          </ul>
+          <h2 id={`g-${g.slug}`} class="display gband__title" data-reveal style="--d:.08s">{g.title}<span class="dot">.</span></h2>
+          <p class="lead gband__tagline" data-reveal style="--d:.14s">{g.tagline}</p>
+          <p class="gband__desc" data-reveal style="--d:.2s">{g.description}</p>
+          {g.screenshots.length > 0 && (
+            <div class="gband__shots" data-stagger="0.06" aria-hidden="true">
+              {g.screenshots.slice(0, 4).map((s) => <span class="gband__shot" data-reveal="pop"><img src={url(s)} alt="" loading="lazy" /></span>)}
+            </div>
+          )}
+          <div class="gband__ctas" data-reveal style="--d:.26s">
+            <a href={url(`/games/${g.slug}/`)} class="btn">See the game</a>
+            {g.stores.appStore && <a class="btn btn--ghost" href={g.stores.appStore} target="_blank" rel="noopener">App Store</a>}
+            {g.stores.googlePlay && <a class="btn btn--ghost" href={g.stores.googlePlay} target="_blank" rel="noopener">Google Play</a>}
+            {!g.stores.appStore && !g.stores.googlePlay && <a class="btn btn--red" href={url('/#newsletter')}>Tell me when it's out</a>}
+          </div>
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <!-- In the lab: a play area, tap to drop squares -->
+  {site.inTheLab.show && (
+    <section class="glab yellow" aria-labelledby="glab-title" data-toy>
+      <span class="sq-wrap" data-depth="24" style="left:8%;top:18%"><span class="sq sq--red float" style="width:54px;height:54px;transform:rotate(18deg)"></span></span>
+      <span class="sq-wrap" data-depth="-18" style="right:10%;bottom:20%"><span class="sq sq--black float" style="width:36px;height:36px;transform:rotate(-10deg);--delay:-1.5s"></span></span>
+      <div class="wrap glab__inner">
+        <span class="label" data-reveal>In the lab</span>
+        <h2 id="glab-title" class="display glab__title" data-reveal style="--d:.08s">{site.inTheLab.title}<span class="dot">.</span></h2>
+        <p class="lead glab__text" data-reveal style="--d:.16s">{site.inTheLab.text}</p>
+        <div data-reveal style="--d:.24s"><a href={url('/#newsletter')} class="btn">Get game news</a></div>
+        <span class="label glab__hint" data-reveal style="--d:.32s">Tap anywhere to take a play break</span>
+      </div>
+    </section>
+  )}
+
+  <Checker pattern="k2yrkr3ykc2rk" height="40px" class="rule-b" />
 </Base>
 
 <style>
-  .page-title { font-size: clamp(72px, 10vw, 150px); margin-top: 14px; }
-  .intro { max-width: 620px; margin: 20px 0 48px; }
-  .list { display: flex; flex-direction: column; gap: 28px; }
+  /* Hero (same full-bleed grid as the home, news and post pages) */
+  .ghero { border-bottom: var(--rule); }
+  .ghero__grid, .gband__grid { --side: max(0px, (100% - var(--max)) / 2); display: flex; flex-wrap: wrap; }
+  .ghero__text {
+    flex: 0 1 calc(var(--side) + min(100%, var(--max)) * .5); min-width: 0; container-type: inline-size;
+    padding: clamp(48px, 7vw, 96px) var(--gutter) clamp(40px, 5vw, 64px) calc(var(--side) + var(--gutter));
+    display: flex; flex-direction: column; gap: 22px; border-right: var(--rule);
+  }
+  .ghero__title { font-size: clamp(64px, 17cqi, 160px); line-height: .9; }
+  .ghero__lead { margin: 0; max-width: 480px; }
+  .ghero__facts { display: flex; flex-wrap: wrap; gap: 12px; margin: 8px 0 0; }
+  .ghero__facts > div { border: var(--rule); padding: 10px 16px; display: flex; flex-direction: column; gap: 4px; min-width: 110px; }
+  .ghero__facts dt { font-size: 11px; color: var(--red); }
+  .ghero__facts dd { margin: 0; font-weight: 700; }
+
+  .ghero__feat { flex: 1 1 420px; min-width: 0; min-height: clamp(380px, 42vw, 620px); position: relative; overflow: hidden; display: flex; align-items: flex-end; text-decoration: none; color: var(--black); }
+  .ghero__img { position: absolute; inset: -24px; width: calc(100% + 48px); height: calc(100% + 48px); max-width: none; object-fit: cover; transition: translate .5s var(--ease-out), scale .6s var(--ease-out); }
+  .ghero__feat:hover .ghero__img { scale: 1.04; }
+  .ghero__logo { position: absolute; inset: 0; display: grid; place-items: center; transition: translate .5s var(--ease-out); }
+  .ghero__card {
+    position: relative; z-index: 2; margin: 0 var(--gutter) var(--gutter); max-width: 520px;
+    background: var(--cream); border: 2px solid var(--black); padding: 20px 24px 22px;
+    display: flex; flex-direction: column; gap: 8px; transition: transform .3s var(--ease-out), box-shadow .3s var(--ease-out);
+  }
+  .ghero__feat:hover .ghero__card { transform: translate(-4px, -4px); box-shadow: 8px 8px 0 var(--black); }
+  .ghero__tag { font-size: 11px; }
+  .ghero__feat-title { font-size: clamp(40px, 4vw, 64px); line-height: 1; }
+  .ghero__feat-tag { font-size: 17px; }
+  .ghero__feat:hover .arrow { transform: translateX(6px); }
+
+  /* Game bands: art bleeds to one edge, text sits on the page column */
+  .gband { border-bottom: var(--rule); }
+  .gband__art { flex: 1 1 440px; min-width: 0; min-height: clamp(420px, 46vw, 700px); position: relative; overflow: hidden; display: block; border-right: var(--rule); }
+  .gband__media { position: absolute; inset: -20px; width: calc(100% + 40px); height: calc(100% + 40px); max-width: none; object-fit: cover; transition: translate .5s var(--ease-out); }
+  .gband__text {
+    flex: 0 1 calc(var(--side) + min(100%, var(--max)) * .52); min-width: 0;
+    padding: clamp(40px, 6vw, 88px) calc(var(--side) + var(--gutter)) clamp(40px, 6vw, 88px) clamp(28px, 4vw, 64px);
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .gband--flip .gband__art { order: 2; border-right: 0; border-left: var(--rule); }
+  .gband--flip .gband__text { padding: clamp(40px, 6vw, 88px) clamp(28px, 4vw, 64px) clamp(40px, 6vw, 88px) calc(var(--side) + var(--gutter)); }
+  .gband__num { font-size: clamp(56px, 6vw, 96px); color: var(--red); line-height: 1; }
+  .gband__tags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .gband__tags li { font-family: var(--font-label); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; border: var(--rule); padding: 7px 12px; }
+  .gband__status { background: var(--yellow); }
+  .gband__title { font-size: clamp(64px, 8vw, 128px); line-height: .9; }
+  .gband__tagline { margin: 0; }
+  .gband__desc { margin: 0; max-width: 600px; font-size: 17px; }
+  .gband__shots { display: flex; gap: 12px; margin-top: 8px; }
+  .gband__shot { width: clamp(64px, 7vw, 96px); aspect-ratio: 9 / 16; border: 2px solid var(--black); border-radius: 12px; overflow: hidden; background: var(--black); transition: transform .35s var(--ease-pop); }
+  .gband__shot:nth-child(odd) { transform: rotate(-4deg); }
+  .gband__shot:nth-child(even) { transform: rotate(3deg) translateY(8px); }
+  .gband__shot:hover { transform: rotate(0) translateY(-6px) scale(1.06); }
+  .gband__shot img { width: 100%; height: 100%; object-fit: cover; }
+  .gband__ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 10px; }
+
+  /* In the lab */
+  .glab { position: relative; overflow: hidden; border-bottom: var(--rule); cursor: crosshair; user-select: none; -webkit-user-select: none; }
+  .glab__inner { position: relative; z-index: 2; padding-block: clamp(64px, 9vw, 130px); display: flex; flex-direction: column; align-items: flex-start; gap: 18px; pointer-events: none; }
+  .glab__inner a { pointer-events: auto; }
+  .glab__title { font-size: clamp(72px, 11vw, 170px); line-height: .9; }
+  .glab__text { margin: 0; max-width: 520px; }
+  .glab__hint { font-size: 11px; margin-top: 18px; }
+
+  @media (max-width: 960px) {
+    .ghero__text { flex-basis: 100%; border-right: 0; border-bottom: var(--rule); }
+    .gband__art, .gband--flip .gband__art { order: 0; flex-basis: 100%; border: 0; border-bottom: var(--rule); min-height: 360px; }
+    .gband__text, .gband--flip .gband__text { flex-basis: 100%; padding: 40px var(--gutter) 48px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ghero__img, .ghero__logo, .ghero__card, .gband__media, .gband__shot { transition: none; }
+  }
 </style>
+
+<script>
+  // Respect reduced motion: hold the looping trailers on their poster frame
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll<HTMLVideoElement>('.gband__media').forEach((v) => { v.removeAttribute('autoplay'); v.pause(); });
+  }
+</script>
