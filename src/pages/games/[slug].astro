@@ -17,7 +17,7 @@ const artBg = { red: 'var(--red)', yellow: 'var(--yellow)', black: 'var(--black)
 const shots = game.screenshots.length ? game.screenshots : Array.from({ length: 5 }, () => '');
 const hasStores = game.stores.appStore || game.stores.googlePlay;
 ---
-<Base title={game.title} description={`${game.title}: ${game.tagline}`}>
+<Base title={game.title} description={`${game.title}: ${game.tagline}`} image={game.keyArt || undefined}>
   <section class="section" aria-labelledby="g-title">
     <div class="g-hero">
       <div class="g-hero__text">

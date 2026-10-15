@@ -11,7 +11,7 @@ const { post } = Astro.props;
 const date = new Date(post.date + 'T12:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 const bg = { red: 'var(--red)', yellow: 'var(--yellow)', black: 'var(--black)' }[post.theme] ?? 'var(--yellow)';
 ---
-<Base title={post.title} description={post.excerpt}>
+<Base title={post.title} description={post.excerpt} image={post.image || undefined}>
   <article>
     <header class="section post-head" style={`background:${bg}`}>
       <div class="wrap section__inner">
