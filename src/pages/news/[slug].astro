@@ -35,7 +35,7 @@ const squares = post.theme === 'red' ? ['yellow', 'black'] : post.theme === 'bla
         <div class="post-hero__text">
           <span class="label" data-reveal><a href={url('/news/')} class="post-hero__crumb">05 / News</a> / {post.category}</span>
           <h1 class="display post-hero__title" data-reveal style={`--d:${(words.length * 0.07 + 0.1).toFixed(2)}s`}>
-            {words.map((w, i) => <><span class="w"><span style={`--i:${i}`}>{w}</span></span>{' '}</>)}<span class="dot">.</span>
+            {words.map((w, i) => <>{i > 0 && ' '}<span class="w"><span style={`--i:${i}`}>{w}</span>{i === words.length - 1 && <span class="dot">.</span>}</span></>)}
           </h1>
           <p class="lead post-hero__lead" data-reveal style="--d:.35s">{post.excerpt}</p>
           <dl class="post-meta" data-stagger="0.08">
