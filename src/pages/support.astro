@@ -1,22 +1,226 @@
 ---
 import { url } from '../lib/url';
-import Prose from '../layouts/Prose.astro';
+import Base from '../layouts/Base.astro';
+import Checker from '../components/Checker.astro';
 import site from '../data/site.json';
 import games from '../data/games.json';
+
+const statusLabel: Record<string, string> = { 'coming-soon': 'Coming soon', live: 'Out now', 'in-lab': 'In the lab' };
+const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', black: 'var(--black)' } as Record<string, string>)[t] ?? 'var(--red)';
+const steps = [
+  { title: 'Which game', text: "Tell us the game you're playing and the level you're on." },
+  { title: 'Your device', text: 'The phone and its system version. For example iPhone 15, iOS 19 or Samsung A54, Android 15.' },
+  { title: 'What happened', text: 'What you did, what you expected and what you saw. A screenshot helps a lot.' },
+];
+const faqs = [
+  { q: 'Who handles purchases?', a: 'Purchases are handled by the App Store or Google Play.' },
+  { q: 'How do I get a refund?', a: 'Refunds are handled by the store you bought from. Contact the App Store or Google Play.' },
+  { q: 'How do I restore purchases on a new device?', a: "Use the Restore button in the game's settings." },
+  { q: 'I found a bug. What now?', a: 'Email us with the game, your device and what happened. A screenshot or short screen recording helps us fix it faster.' },
+];
 ---
-<Prose title="Support" label="Players / Support" description={`Help with ${site.name} games.`}>
-  <p>Stuck on a level, found a bug or have an idea? We read every message.</p>
-  <h2>Contact us</h2>
-  <p>Email <a href={`mailto:${site.email}`}>{site.email}</a> and tell us:</p>
-  <ul>
-    <li>Which game you're playing</li>
-    <li>Your device and its system version (for example, iPhone 15, iOS 19 or Samsung A54, Android 15)</li>
-    <li>What happened, and a screenshot if you can</li>
-  </ul>
-  <h2>Our games</h2>
-  <ul>
-    {games.map((g) => <li><a href={url(`/games/${g.slug}/`)}>{g.title}</a>{g.supportEmail && <> · <a href={`mailto:${g.supportEmail}`}>{g.supportEmail}</a></>}</li>)}
-  </ul>
-  <h2>Purchases</h2>
-  <p>Purchases are handled by the App Store or Google Play. For refunds, contact the store you bought from. To restore purchases on a new device, use the Restore button in the game's settings.</p>
-</Prose>
+<Base title="Support" description={`Help with ${site.name} games.`}>
+  <!-- Hero: title on the left, the contact panel runs to the right edge -->
+  <header class="shero">
+    <div class="shero__grid">
+      <div class="shero__text">
+        <span class="label" data-reveal>Players / Support</span>
+        <h1 class="display shero__title" data-reveal style="--d:.08s">Support<span class="dot">.</span></h1>
+        <p class="lead shero__lead" data-reveal style="--d:.18s">Stuck on a level, found a bug or have an idea? We read every message.</p>
+        <div class="shero__ctas" data-reveal style="--d:.28s">
+          <a href="#send" class="btn">What to send</a>
+          <a href="#faq" class="btn btn--ghost">Good to know</a>
+        </div>
+      </div>
+
+      <div class="shero__panel red" data-reveal="wipe" data-parallax>
+        <span class="sq-wrap" data-depth="30" style="left:8%;top:12%"><span class="sq sq--yellow float" style="width:64px;height:64px;transform:rotate(16deg)"></span></span>
+        <span class="sq-wrap" data-depth="-22" style="right:9%;bottom:14%"><span class="sq sq--black float" style="width:40px;height:40px;transform:rotate(-12deg);--delay:-2s"></span></span>
+        <div class="shero__card" data-depth="8">
+          <span class="label">Email us</span>
+          <a href={`mailto:${site.email}`} class="display shero__email">{site.email}</a>
+          <div class="shero__card-btns">
+            <a href={`mailto:${site.email}?subject=${encodeURIComponent('Game support')}`} class="btn">Write to us</a>
+            <button type="button" class="btn btn--ghost" data-copy-email={site.email}>Copy address</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <Checker pattern="k2yrkr3ykc2rk" height="40px" class="rule-b" />
+
+  <!-- What to send: edge-to-edge color columns -->
+  <section id="send" class="send-sec" aria-labelledby="send-title">
+    <div class="wrap sec-head">
+      <span class="label" data-reveal>01 / Contact us</span>
+      <h2 id="send-title" class="display h2" data-reveal style="--d:.08s">What to send<span class="dot">.</span></h2>
+    </div>
+    <ol class="send" data-stagger="0.12">
+      {steps.map((s, i) => (
+        <li class:list={['send__step', ['yellow', 'cream', 'dark'][i % 3]]} data-reveal>
+          <span class="display send__num">{String(i + 1).padStart(2, '0')}</span>
+          <h3 class="display send__h">{s.title}<span class="dot">.</span></h3>
+          <p>{s.text}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- Our games: one full-width row per game -->
+  <section class="sgames-sec" aria-labelledby="sgames-title">
+    <div class="wrap sec-head">
+      <span class="label" data-reveal>02 / Our games</span>
+      <h2 id="sgames-title" class="display h2" data-reveal style="--d:.08s">Our games<span class="dot">.</span></h2>
+    </div>
+    <ul class="sgames" data-stagger="0.08">
+      {games.map((g) => (
+        <li class="sgame-wrap" data-reveal>
+          <a href={url(`/games/${g.slug}/`)} class="sgame">
+            <span class="wrap sgame__inner">
+              <span class="sgame__thumb" style={`background:${themeBg(g.theme)}`} aria-hidden="true">
+                {(g.icon || g.keyArt) && <img src={url(g.icon || g.keyArt)} alt="" loading="lazy" />}
+              </span>
+              <span class="sgame__main">
+                <span class="display sgame__title">{g.title}<span class="dot">.</span></span>
+                <span class="sgame__tag">{g.tagline}</span>
+              </span>
+              <span class="label sgame__status">{statusLabel[g.status] ?? g.status}</span>
+              <span class="sgame__help">{g.supportEmail || site.email}</span>
+              <span class="sgame__arrow" aria-hidden="true">→</span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- Good to know -->
+  <section id="faq" class="faq-sec" aria-labelledby="faq-title">
+    <div class="faq">
+      <div class="faq__left">
+        <span class="label" data-reveal>03 / Purchases & bugs</span>
+        <h2 id="faq-title" class="display faq__title" data-reveal style="--d:.08s">Good to<br />know<span class="dot">.</span></h2>
+      </div>
+      <div class="faq__list" data-stagger="0.08">
+        {faqs.map((f) => (
+          <details class="faq__item" data-reveal="left">
+            <summary><span class="faq__q">{f.q}</span><span class="faq__icon" aria-hidden="true"></span></summary>
+            <p class="faq__a">{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <Checker pattern="yk2rcyrk3ckr" height="40px" class="rule-b" />
+</Base>
+
+<style>
+  /* Hero (same full-bleed grid as the other pages) */
+  .shero { border-bottom: var(--rule); }
+  .shero__grid, .faq { --side: max(0px, (100% - var(--max)) / 2); display: flex; flex-wrap: wrap; }
+  .shero__text {
+    flex: 0 1 calc(var(--side) + min(100%, var(--max)) * .5); min-width: 0; container-type: inline-size;
+    padding: clamp(48px, 7vw, 96px) var(--gutter) clamp(40px, 5vw, 64px) calc(var(--side) + var(--gutter));
+    display: flex; flex-direction: column; gap: 22px; border-right: var(--rule);
+  }
+  .shero__title { font-size: clamp(64px, 20cqi, 180px); line-height: .9; }
+  .shero__lead { margin: 0; max-width: 500px; }
+  .shero__ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+
+  .shero__panel { flex: 1 1 420px; min-width: 0; min-height: clamp(380px, 38vw, 560px); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 40px var(--gutter); }
+  .shero__card {
+    position: relative; z-index: 2; background: var(--cream); border: 2px solid var(--black); box-shadow: 10px 10px 0 var(--black);
+    padding: clamp(24px, 3vw, 40px); display: flex; flex-direction: column; gap: 14px; max-width: 560px; width: 100%;
+    transition: translate .5s var(--ease-out);
+  }
+  .shero__email { font-size: clamp(30px, 3.4vw, 52px); line-height: 1; text-decoration: none; overflow-wrap: anywhere; }
+  .shero__email:hover { color: var(--red); }
+  .shero__card-btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
+
+  .sec-head { padding-block: clamp(48px, 6vw, 80px) clamp(28px, 3vw, 40px); display: flex; flex-direction: column; gap: 12px; }
+
+  /* What to send */
+  .send-sec { border-bottom: var(--rule); }
+  .send { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); border-top: var(--rule); }
+  .send__step { padding: clamp(32px, 4vw, 56px) clamp(24px, 3vw, 48px) clamp(40px, 5vw, 72px); display: flex; flex-direction: column; gap: 14px; min-height: 320px; border-right: var(--rule); }
+  .send__step:last-child { border-right: 0; }
+  .send__step p { margin: 0; font-size: 18px; max-width: 380px; }
+  .cream { background: var(--cream); }
+  .send__num { font-size: clamp(72px, 8vw, 120px); line-height: .9; }
+  .send__step.cream .send__num, .send__step.yellow .send__num { color: var(--red); }
+  .send__step.dark .send__num { color: var(--hi); }
+  .send__h { font-size: clamp(32px, 3vw, 44px); }
+
+  /* Our games rows (yellow wipes in on hover, like the news list) */
+  .sgames-sec { border-bottom: var(--rule); }
+  .sgames { list-style: none; margin: 0; padding: 0; border-top: var(--rule); }
+  .sgame-wrap + .sgame-wrap { border-top: var(--rule); }
+  .sgame { display: block; position: relative; overflow: hidden; text-decoration: none; color: var(--ink); }
+  .sgame::before { content: ''; position: absolute; inset: 0; background: var(--yellow); clip-path: inset(0 100% 0 0); transition: clip-path .45s var(--ease-out); }
+  .sgame:hover, .sgame:focus-visible { color: var(--black); }
+  .sgame:hover::before, .sgame:focus-visible::before { clip-path: inset(0 0 0 0); }
+  .sgame__inner { position: relative; display: grid; align-items: center; gap: clamp(16px, 3vw, 40px); grid-template-columns: 96px minmax(0, 1fr) auto auto 40px; padding-block: clamp(20px, 2.5vw, 32px); }
+  .sgame__thumb { width: 96px; aspect-ratio: 1; border: 2px solid var(--black); border-radius: 22px; overflow: hidden; transition: transform .45s var(--ease-pop); }
+  .sgame:hover .sgame__thumb { transform: rotate(-6deg) scale(1.06); }
+  .sgame__thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .sgame__main { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .sgame__title { font-size: clamp(36px, 4vw, 60px); line-height: 1; }
+  .sgame__tag { font-size: 17px; }
+  .sgame__status { font-size: 12px; border: 2px solid currentColor; padding: 7px 12px; }
+  .sgame__help { font-weight: 700; }
+  .sgame__arrow { font-family: var(--font-label); font-size: 28px; transition: transform .3s var(--ease-pop); }
+  .sgame:hover .sgame__arrow { transform: translateX(8px); }
+
+  /* Good to know */
+  .faq-sec { border-bottom: var(--rule); }
+  .faq__left { flex: 0 1 calc(var(--side) + min(100%, var(--max)) * .4); padding: clamp(48px, 7vw, 88px) var(--gutter) clamp(32px, 5vw, 64px) calc(var(--side) + var(--gutter)); border-right: var(--rule); display: flex; flex-direction: column; gap: 12px; }
+  .faq__title { font-size: clamp(56px, 6vw, 92px); }
+  .faq__list { flex: 1 1 520px; padding: clamp(24px, 6vw, 72px) calc(var(--side) + var(--gutter)) clamp(24px, 6vw, 72px) clamp(24px, 4vw, 64px); }
+  .faq__item { border-bottom: var(--rule); }
+  .faq__item summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 24px 0; }
+  .faq__item summary::-webkit-details-marker { display: none; }
+  .faq__q { font-size: clamp(19px, 1.8vw, 24px); font-weight: 700; }
+  .faq__item summary:hover .faq__q { color: var(--red); }
+  /* Plus made of two bars inside a tilted square; it turns into a minus when open */
+  .faq__icon { flex: 0 0 34px; height: 34px; border: var(--rule); position: relative; transform: rotate(-10deg); transition: transform .35s var(--ease-pop), background .2s; }
+  .faq__icon::before, .faq__icon::after { content: ''; position: absolute; left: 50%; top: 50%; width: 14px; height: 2px; margin: -1px 0 0 -7px; background: var(--ink); transition: transform .35s var(--ease-pop); }
+  .faq__icon::after { transform: rotate(90deg); }
+  .faq__item[open] .faq__icon { transform: rotate(0); background: var(--yellow); }
+  .faq__item[open] .faq__icon::before, .faq__item[open] .faq__icon::after { background: var(--black); }
+  .faq__item[open] .faq__icon::after { transform: rotate(0); }
+  .faq__a { margin: 0 0 24px; font-size: 18px; max-width: 640px; animation: faq-in .35s var(--ease-out); }
+  @keyframes faq-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+
+  @media (max-width: 960px) {
+    .shero__text { flex-basis: 100%; border-right: 0; border-bottom: var(--rule); }
+    .send__step { border-right: 0; border-bottom: var(--rule); min-height: 0; }
+    .send__step:last-child { border-bottom: 0; }
+    .sgame__inner { grid-template-columns: 72px minmax(0, 1fr); }
+    .sgame__thumb { width: 72px; }
+    .sgame__status, .sgame__help { grid-column: 2; justify-self: start; }
+    .sgame__arrow { display: none; }
+    .faq__left { flex-basis: 100%; border-right: 0; padding-bottom: 0; }
+    .faq__list { padding: 8px var(--gutter) 48px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .shero__card, .sgame::before, .sgame__thumb, .sgame__arrow, .faq__icon, .faq__icon::before, .faq__icon::after { transition: none; }
+    .faq__a { animation: none; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-copy-email]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(btn.dataset.copyEmail || '');
+        btn.textContent = 'Copied.';
+      } catch {
+        btn.textContent = 'Copy failed';
+      }
+      setTimeout(() => { btn.textContent = 'Copy address'; }, 1800);
+    });
+  });
+</script>
