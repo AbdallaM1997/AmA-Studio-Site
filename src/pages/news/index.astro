@@ -1,25 +1,185 @@
 ---
+import { url } from '../../lib/url';
 import Base from '../../layouts/Base.astro';
-import NewsCard from '../../components/NewsCard.astro';
 import Checker from '../../components/Checker.astro';
+import Logo from '../../components/Logo.astro';
 import news from '../../data/news.json';
 
 const posts = [...news].sort((a, b) => b.date.localeCompare(a.date));
+const latest = posts[0];
+const categories = [...new Set(posts.map((p) => p.category))];
+const fmt = (d: string, month: 'short' | 'long' = 'short') =>
+  new Date(d + 'T12:00:00').toLocaleDateString('en-GB', { day: 'numeric', month, year: 'numeric' });
+const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', black: 'var(--black)' } as Record<string, string>)[t] ?? 'var(--yellow)';
+const squares = (t: string) => (t === 'red' ? ['yellow', 'black'] : t === 'black' ? ['red', 'yellow'] : ['red', 'black']);
 ---
 <Base title="News" description="Devlogs, launches and studio news from AmA Studio.">
-  <section class="section">
-    <div class="wrap section__inner">
-      <span class="label" data-reveal>05 / News</span>
-      <h1 class="display page-title" data-reveal style="--d:.08s">From the lab<span class="dot">.</span></h1>
-      <div class="grid" data-stagger>
-        {posts.map((post) => <div data-reveal><NewsCard post={post} /></div>)}
+  <!-- Hero: title + filters on the left, the latest post runs to the right edge -->
+  <header class="nhero">
+    <div class="nhero__grid">
+      <div class="nhero__text">
+        <span class="label" data-reveal>05 / News</span>
+        <h1 class="display nhero__title" data-reveal style="--d:.08s">From the lab<span class="dot">.</span></h1>
+        <p class="lead nhero__lead" data-reveal style="--d:.2s">Devlogs, launches and studio news from Cairo.</p>
+        {categories.length > 1 && (
+          <div class="nfilter" role="group" aria-label="Filter posts" data-stagger="0.06">
+            <button type="button" class="nfilter__btn" data-filter="all" aria-pressed="true" data-reveal="pop">All <span>{posts.length}</span></button>
+            {categories.map((c) => (
+              <button type="button" class="nfilter__btn" data-filter={c} aria-pressed="false" data-reveal="pop">
+                {c} <span>{posts.filter((p) => p.category === c).length}</span>
+              </button>
+            ))}
+          </div>
+        )}
       </div>
+
+      {latest && (
+        <a href={url(`/news/${latest.slug}/`)} class="nhero__feat on-light" style={`background:${themeBg(latest.theme)}`} data-reveal="wipe" data-parallax>
+          {latest.image
+            ? <img class="nhero__img" src={url(latest.image)} alt="" data-depth="-14" />
+            : <span class="nhero__logo" data-depth="10"><Logo size="clamp(100px, 10vw, 150px)" /></span>}
+          <span class="sq-wrap" data-depth="30" style="left:7%;top:10%"><span class={`sq sq--${squares(latest.theme)[0]} float`} style="width:56px;height:56px;transform:rotate(16deg)"></span></span>
+          <span class="nhero__card">
+            <span class="label nhero__tag">Latest · {fmt(latest.date)}</span>
+            <span class="display nhero__feat-title">{latest.title}<span class="dot">.</span></span>
+            <span class="textlink">Read the post <span class="arrow">→</span></span>
+          </span>
+        </a>
+      )}
     </div>
-  </section>
+  </header>
+
   <Checker pattern="yk2rcyrk3ckr" height="40px" class="rule-b" />
+
+  <!-- Every post as a full-width row -->
+  <section class="nlist" aria-label="All posts">
+    <ol class="nlist__rows" data-stagger="0.08">
+      {posts.map((post, i) => (
+        <li class="nrow-wrap" data-category={post.category} data-reveal>
+          <a href={url(`/news/${post.slug}/`)} class="nrow">
+            <span class="wrap nrow__inner">
+              <span class="display nrow__num">{String(posts.length - i).padStart(2, '0')}</span>
+              <span class="nrow__meta">
+                <span class="label">{post.category}</span>
+                <time class="nrow__date" datetime={post.date}>{fmt(post.date)}</time>
+              </span>
+              <span class="nrow__main">
+                <span class="display nrow__title">{post.title}<span class="dot">.</span></span>
+                <span class="nrow__ex">{post.excerpt}</span>
+              </span>
+              <span class="nrow__thumb" style={`background:${themeBg(post.theme)}`} aria-hidden="true">
+                {post.image
+                  ? <img src={url(post.image)} alt="" loading="lazy" />
+                  : <span class={`sq sq--${squares(post.theme)[0]} nrow__sq`}></span>}
+              </span>
+              <span class="nrow__arrow" aria-hidden="true">→</span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ol>
+    <p class="wrap nlist__empty" data-empty hidden>No posts here yet.</p>
+  </section>
+
+  <Checker pattern="k2yrkr3ykc2rk" height="40px" class="rule-b" />
 </Base>
 
 <style>
-  .page-title { font-size: clamp(72px, 10vw, 150px); margin: 14px 0 48px; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 24px; }
+  /* Hero (same full-bleed grid as the home hero and the post pages) */
+  .nhero { border-bottom: var(--rule); }
+  .nhero__grid { --side: max(0px, (100% - var(--max)) / 2); display: flex; flex-wrap: wrap; }
+  .nhero__text {
+    flex: 0 1 calc(var(--side) + min(100%, var(--max)) * .5); min-width: 0; container-type: inline-size;
+    padding: clamp(48px, 7vw, 96px) var(--gutter) clamp(40px, 5vw, 64px) calc(var(--side) + var(--gutter));
+    display: flex; flex-direction: column; gap: 22px; border-right: var(--rule);
+  }
+  .nhero__title { font-size: clamp(64px, 17cqi, 160px); line-height: .9; }
+  .nhero__lead { margin: 0; max-width: 460px; }
+
+  .nfilter { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+  .nfilter__btn {
+    font-family: var(--font-label); font-size: 13px; letter-spacing: .08em; text-transform: uppercase;
+    min-height: 44px; padding: 0 16px; border: var(--rule); background: var(--bg); color: var(--ink); cursor: pointer;
+    display: inline-flex; align-items: center; gap: 10px;
+    transition: transform .18s var(--ease-out), box-shadow .18s var(--ease-out), background .18s;
+  }
+  .nfilter__btn span { color: var(--red); }
+  .nfilter__btn:hover { transform: translate(-3px, -3px); box-shadow: 5px 5px 0 var(--ink); }
+  .nfilter__btn[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+
+  .nhero__feat { flex: 1 1 420px; min-width: 0; min-height: clamp(360px, 40vw, 600px); position: relative; overflow: hidden; display: flex; align-items: flex-end; text-decoration: none; color: var(--black); }
+  .nhero__img { position: absolute; inset: -24px; width: calc(100% + 48px); height: calc(100% + 48px); max-width: none; object-fit: cover; transition: translate .5s var(--ease-out), scale .6s var(--ease-out); }
+  .nhero__feat:hover .nhero__img { scale: 1.04; }
+  .nhero__logo { position: absolute; inset: 0; display: grid; place-items: center; padding-bottom: 120px; transition: translate .5s var(--ease-out); }
+  .nhero__card {
+    position: relative; z-index: 2; margin: 0 var(--gutter) var(--gutter); max-width: 520px;
+    background: var(--cream); border: 2px solid var(--black); padding: 20px 24px 22px;
+    display: flex; flex-direction: column; gap: 8px; transition: transform .3s var(--ease-out), box-shadow .3s var(--ease-out);
+  }
+  .nhero__feat:hover .nhero__card { transform: translate(-4px, -4px); box-shadow: 8px 8px 0 var(--black); }
+  .nhero__tag { font-size: 11px; color: var(--black); }
+  .nhero__feat-title { font-size: clamp(36px, 3.6vw, 56px); line-height: 1; }
+  .nhero__feat:hover .arrow { transform: translateX(6px); }
+
+  /* List rows: full-width bands, content on the page column */
+  .nlist__rows { list-style: none; margin: 0; padding: 0; }
+  .nrow-wrap { border-bottom: var(--rule); }
+  .nrow { display: block; text-decoration: none; color: var(--ink); position: relative; overflow: hidden; }
+  /* Yellow fill wipes in from the left on hover */
+  .nrow::before { content: ''; position: absolute; inset: 0; background: var(--yellow); clip-path: inset(0 100% 0 0); transition: clip-path .45s var(--ease-out); }
+  .nrow:hover, .nrow:focus-visible { color: var(--black); }
+  .nrow:hover::before, .nrow:focus-visible::before { clip-path: inset(0 0 0 0); }
+  .nrow__inner {
+    position: relative; display: grid; align-items: center; gap: clamp(16px, 3vw, 40px);
+    grid-template-columns: 90px 150px minmax(0, 1fr) clamp(140px, 18vw, 260px) 40px;
+    padding-block: clamp(24px, 3vw, 36px);
+  }
+  .nrow__num { font-size: clamp(40px, 4vw, 64px); color: var(--red); line-height: 1; }
+  .nrow__meta { display: flex; flex-direction: column; gap: 6px; }
+  .nrow__meta .label { font-size: 12px; }
+  .nrow__date { font-size: 15px; font-weight: 600; }
+  .nrow__main { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  .nrow__title { font-size: clamp(34px, 4vw, 60px); line-height: 1; }
+  .nrow__ex { font-size: 17px; max-width: 620px; }
+  .nrow__thumb { position: relative; aspect-ratio: 16 / 10; border: 2px solid var(--black); overflow: hidden; transition: transform .45s var(--ease-pop); }
+  .nrow:hover .nrow__thumb { transform: rotate(-3deg) scale(1.04); }
+  .nrow__thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .nrow__sq { width: 42px; height: 42px; left: 20px; bottom: 18px; transform: rotate(14deg); transition: transform .5s var(--ease-pop); }
+  .nrow:hover .nrow__sq { transform: rotate(104deg) translate(8px, -10px); }
+  .nrow__arrow { font-family: var(--font-label); font-size: 28px; transition: transform .3s var(--ease-pop); }
+  .nrow:hover .nrow__arrow { transform: translateX(8px); }
+  .nrow-wrap[hidden] { display: none; }
+  .nlist__empty { padding-block: 48px; font-weight: 700; }
+
+  @media (max-width: 960px) {
+    .nhero__text { flex-basis: 100%; border-right: 0; border-bottom: var(--rule); }
+    .nrow__inner { grid-template-columns: 56px minmax(0, 1fr) 120px; grid-template-areas: 'num meta thumb' 'main main main'; }
+    .nrow__num { grid-area: num; }
+    .nrow__meta { grid-area: meta; }
+    .nrow__thumb { grid-area: thumb; }
+    .nrow__main { grid-area: main; }
+    .nrow__arrow { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nrow::before, .nrow__thumb, .nrow__sq, .nrow__arrow, .nhero__img, .nhero__card, .nfilter__btn { transition: none; }
+  }
 </style>
+
+<script>
+  // Category filter: show only the rows in the picked category
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  const rows = document.querySelectorAll<HTMLElement>('[data-category]');
+  const empty = document.querySelector<HTMLElement>('[data-empty]');
+  buttons.forEach((btn) => btn.addEventListener('click', () => {
+    const f = btn.dataset.filter;
+    buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+    let shown = 0;
+    rows.forEach((row) => {
+      const show = f === 'all' || row.dataset.category === f;
+      row.hidden = !show;
+      if (show) { shown++; row.classList.remove('is-in'); requestAnimationFrame(() => row.classList.add('is-in')); }
+    });
+    if (empty) empty.hidden = shown > 0;
+  }));
+</script>
