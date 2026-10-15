@@ -173,26 +173,36 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
     </section>
   )}
 
-  <!-- 06 / NEWSLETTER: text on the page column, the form panel runs to the right edge -->
+  <!-- 06 / NEWSLETTER: giant band, text + form split, edge-to-edge perks -->
   {site.newsletter.enabled && (
     <section id="newsletter" class="hnl" aria-labelledby="nl-title">
+      <div class="hnl__mark">
+        <h2 id="nl-title" class="display hnl__big" data-reveal style="--d:.45s">
+          {['Take', 'a', 'play', 'break'].map((w, i) => <>{i > 0 && ' '}<span class="fw"><span style={`--i:${i}`}>{w}</span>{i === 3 && <span class="dot dot--black">.</span>}</span></>)}
+        </h2>
+      </div>
       <div class="hsplit">
-        <div class="hsplit__left">
+        <div class="hsplit__left hnl__left">
           <span class="label" data-reveal>06 / Newsletter</span>
-          <h2 id="nl-title" class="display nl__title" data-reveal style="--d:.08s">Take a<br />play break<span class="dot dot--black">.</span></h2>
-          <p class="nl__lead" data-reveal style="--d:.16s">{site.newsletter.text}</p>
+          <p class="hnl__intro" data-reveal style="--d:.08s">{site.newsletter.text}</p>
         </div>
         <div class="hsplit__right dark hnl__panel" data-reveal="wipe">
           <form class="nl__form" data-newsletter action={site.newsletter.formAction || undefined} method="post" data-reveal style="--d:.3s">
             <label for="nl-email" class="label">Your email</label>
             <div class="nl__row">
               <input id="nl-email" name="email" type="email" required placeholder="you@email.com" autocomplete="email" />
-              <button type="submit" class="btn btn--red">Sign me up</button>
+              <button type="submit" class="btn btn--red">Sign me up <span class="arrow">→</span></button>
             </div>
             <p class="nl__note" data-note aria-live="polite"></p>
           </form>
         </div>
       </div>
+      <ul class="hperks" data-stagger="0.08">
+        <li class="hperks__cell" data-reveal><span class="hperks__sq" aria-hidden="true"></span><span class="display">New games</span><span>First to hear when one lands.</span></li>
+        <li class="hperks__cell" data-reveal><span class="hperks__sq" aria-hidden="true"></span><span class="display">Beta invites</span><span>Play before everyone else.</span></li>
+        <li class="hperks__cell" data-reveal><span class="hperks__sq" aria-hidden="true"></span><span class="display">Devlogs</span><span>How our games get made.</span></li>
+        <li class="hperks__cell" data-reveal><span class="hperks__sq" aria-hidden="true"></span><span class="display">No spam</span><span>One short email when there's something worth playing.</span></li>
+      </ul>
     </section>
   )}
 
@@ -401,31 +411,45 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
   .hnews__rows { list-style: none; margin: 0; padding: 0; border-top: var(--rule); }
 
   /* Newsletter */
-  .hnl { border-bottom: var(--rule); }
-  .nl__title { font-size: clamp(64px, 8vw, 124px); color: var(--red); }
-  .nl__lead { margin: 0; max-width: 520px; }
-  .hnl__panel { min-height: clamp(300px, 28vw, 420px); }
+  .hnl { border-bottom: var(--rule); container-type: inline-size; }
+  /* "Take a play break." is about 6.6em wide in Anton, so this fills the width */
+  .hnl__mark { border-bottom: var(--rule); overflow: hidden; padding: clamp(28px, 3vw, 48px) var(--gutter) clamp(12px, 1.5vw, 24px); }
+  .hnl__big { font-size: calc((100cqi - 2 * var(--gutter)) / 6.9); line-height: .9; margin: 0; white-space: nowrap; text-align: center; letter-spacing: -.01em; color: var(--red); }
+  :global(.js) .hnl__big[data-reveal] { opacity: 1; transform: none; }
+  :global(.js) .hnl__big .fw > span:first-child { transform: translateY(105%); transition: transform .8s var(--ease-out); transition-delay: calc(var(--i) * 90ms + .05s); }
+  :global(.js) .hnl__big.is-in .fw > span:first-child { transform: none; }
+
+  .hnl__left { justify-content: center; }
+  .hnl__intro { margin: 0; font-size: clamp(22px, 2.1vw, 32px); line-height: 1.35; font-weight: 600; max-width: 520px; }
+  .hnl__panel { min-height: clamp(280px, 24vw, 380px); }
   .nl__form { width: 100%; max-width: 640px; display: flex; flex-direction: column; gap: 12px; }
   .nl__form .label { font-size: 12px; }
   .nl__row { display: flex; flex-wrap: wrap; }
   .nl__row input { flex: 1 1 220px; min-width: 0; min-height: 64px; border: 2px solid var(--cream); background: var(--cream); color: var(--black); padding: 0 20px; font: inherit; font-size: 18px; }
+  .nl__row input:focus-visible { outline: 3px solid var(--red); outline-offset: 3px; }
   .nl__row .btn { min-height: 64px; }
+  .nl__row .btn:hover .arrow { transform: translateX(6px); }
   .nl__note { margin: 0; min-height: 1.5em; font-weight: 700; }
   @media (max-width: 520px) { .nl__row .btn { flex: 1 1 100%; } }
 
-  @media (max-width: 960px) {
-    .hsplit__left { flex-basis: 100%; border-right: 0; border-bottom: var(--rule); }
-    .hsplit__right { padding: 40px var(--gutter); }
-    .hband__art { flex-basis: 100%; border-right: 0; border-bottom: var(--rule); min-height: 360px; }
-    .hband__text { flex-basis: 100%; padding: 40px var(--gutter) 48px; }
-    .hshelf__item, .hshelf__item:first-child, .hshelf__item:last-child { padding: 32px var(--gutter); }
-    .hshelf__item + .hshelf__item { border-left: 0; border-top: var(--rule); }
-    .dept__item, .dept__item:first-child, .dept__item:last-child { padding: 32px var(--gutter); }
-    .dept__item + .dept__item { border-left: 0; border-top: var(--rule); }
-  }
+  .hperks { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); border-top: var(--rule); }
+  .hperks__cell { padding: clamp(24px, 3vw, 40px) clamp(18px, 2.5vw, 36px); display: flex; flex-direction: column; gap: 8px; }
+  .hperks__cell + .hperks__cell { border-left: var(--rule); }
+  .hperks__cell:first-child { padding-left: calc(max(0px, (100cqi - var(--max)) / 2) + var(--gutter)); }
+  .hperks__cell:last-child { padding-right: calc(max(0px, (100cqi - var(--max)) / 2) + var(--gutter)); }
+  .hperks__cell .display { font-size: clamp(28px, 2.8vw, 44px); line-height: 1; }
+  .hperks__sq { width: 16px; height: 16px; background: var(--red); transform: rotate(-14deg); margin-bottom: 6px; transition: transform .4s var(--ease-pop); }
+  .hperks__cell:hover .hperks__sq { transform: rotate(76deg) scale(1.2); }
 
+  @media (max-width: 960px) {
+    .hperks { grid-template-columns: 1fr 1fr; }
+    .hperks__cell, .hperks__cell:first-child, .hperks__cell:last-child { padding: 24px var(--gutter); }
+    .hperks__cell:nth-child(3) { border-left: 0; }
+    .hperks__cell:nth-child(n+3) { border-top: var(--rule); }
+  }
   @media (prefers-reduced-motion: reduce) {
-    .hband__media, .hshelf__slot { transition: none; }
+    :global(.js) .hnl__big .fw > span:first-child { transform: none; transition: none; }
+    .hperks__sq { transition: none; }
   }
 
   /* Contact */
