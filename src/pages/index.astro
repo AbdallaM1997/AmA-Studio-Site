@@ -68,9 +68,12 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
     {featured && (
       <div class="hband">
         <a href={url(`/games/${featured.slug}/`)} class="hband__art on-light" style={`background:${themeBg(featured.theme)}`} data-reveal="wipe" data-parallax tabindex="-1" aria-hidden="true">
-          {featured.trailer
-            ? <video class="hband__media" src={url(featured.trailer)} poster={url(('trailerPoster' in featured && featured.trailerPoster) || featured.keyArt)} autoplay muted loop playsinline preload="metadata" data-depth="-10"></video>
-            : featured.keyArt && <img class="hband__media" src={url(featured.keyArt)} alt="" loading="lazy" data-depth="-10" />}
+          {featured.keyArt && <img class="hband__bg" src={url(featured.keyArt)} alt="" loading="lazy" data-depth="-8" />}
+          {featured.trailer && (
+            <div class="hband__phone" data-depth="14">
+              <video class="hband__media" src={url(featured.trailer)} poster={url(('trailerPoster' in featured && featured.trailerPoster) || featured.keyArt)} autoplay muted loop playsinline preload="metadata"></video>
+            </div>
+          )}
           <span class="sq-wrap" data-depth="26" style="right:8%;top:10%"><span class="sq sq--yellow float" style="width:54px;height:54px;transform:rotate(16deg)"></span></span>
         </a>
         <div class="hband__text">
@@ -372,7 +375,15 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
   @media (prefers-reduced-motion: reduce) { :global(.js) .hbig .fw > span:first-child { transform: none; transition: none; } .hbar__link::before { transition: none; } }
   .hband { border-top: var(--rule); border-bottom: var(--rule); }
   .hband__art { flex: 1 1 440px; min-width: 0; min-height: clamp(420px, 44vw, 660px); position: relative; overflow: hidden; display: block; border-right: var(--rule); }
-  .hband__media { position: absolute; inset: -20px; width: calc(100% + 40px); height: calc(100% + 40px); max-width: none; object-fit: cover; transition: translate .5s var(--ease-out); }
+  /* Trailer: the whole portrait video in a phone frame, key art behind it */
+  .hband__art { display: flex; align-items: center; justify-content: center; }
+  .hband__bg { position: absolute; inset: -20px; width: calc(100% + 40px); height: calc(100% + 40px); max-width: none; object-fit: cover; transition: translate .6s var(--ease-out); }
+  .hband__phone {
+    position: relative; z-index: 2; height: clamp(380px, 34vw, 580px); aspect-ratio: 9 / 16; background: var(--black);
+    border: 10px solid var(--black); border-radius: 34px; overflow: hidden; box-shadow: 12px 12px 0 var(--black);
+    transition: translate .6s var(--ease-out);
+  }
+  .hband__phone video, .hband__phone img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 24px; }
   .hband__text {
     flex: 0 1 calc(var(--side) + min(100%, var(--max)) * .5); min-width: 0;
     padding: clamp(40px, 6vw, 88px) calc(var(--side) + var(--gutter)) clamp(40px, 6vw, 88px) clamp(28px, 4vw, 64px);
@@ -502,6 +513,8 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
     .dept__item, .dept__item:first-child, .dept__item:last-child { padding: 32px var(--gutter); }
     .dept__item + .dept__item { border-left: 0; border-top: var(--rule); }
   }
+
+  @media (prefers-reduced-motion: reduce) { .hband__bg, .hband__phone { transition: none; } }
 
   /* Contact */
   .contact { border-bottom: var(--rule); }
