@@ -68,7 +68,7 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
     {featured && (
       <div class="hband">
         <a href={url(`/games/${featured.slug}/`)} class="hband__art on-light" style={`background:${themeBg(featured.theme)}`} data-reveal="wipe" data-parallax tabindex="-1" aria-hidden="true">
-          {featured.keyArt && <img class="hband__bg" src={url(featured.keyArt)} alt="" loading="lazy" data-depth="-8" />}
+          <span class="stage-sq" aria-hidden="true" data-depth="-10"></span>
           {featured.trailer && (
             <div class="hband__phone" data-depth="14">
               <video class="hband__media" src={url(featured.trailer)} poster={url(('trailerPoster' in featured && featured.trailerPoster) || featured.keyArt)} autoplay muted loop playsinline preload="metadata"></video>
@@ -377,7 +377,6 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
   .hband__art { flex: 1 1 440px; min-width: 0; min-height: clamp(420px, 44vw, 660px); position: relative; overflow: hidden; display: block; border-right: var(--rule); }
   /* Trailer: the whole portrait video in a phone frame, key art behind it */
   .hband__art { display: flex; align-items: center; justify-content: center; }
-  .hband__bg { position: absolute; inset: -20px; width: calc(100% + 40px); height: calc(100% + 40px); max-width: none; object-fit: cover; transition: translate .6s var(--ease-out); }
   .hband__phone {
     position: relative; z-index: 2; height: clamp(380px, 34vw, 580px); aspect-ratio: 9 / 16; background: var(--black);
     border: 10px solid var(--black); border-radius: 34px; overflow: hidden; box-shadow: 12px 12px 0 var(--black);
@@ -514,7 +513,7 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
     .dept__item + .dept__item { border-left: 0; border-top: var(--rule); }
   }
 
-  @media (prefers-reduced-motion: reduce) { .hband__bg, .hband__phone { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .hband__phone { transition: none; } }
 
   /* Contact */
   .contact { border-bottom: var(--rule); }

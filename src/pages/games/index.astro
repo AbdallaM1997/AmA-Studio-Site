@@ -51,7 +51,7 @@ const platforms = [...new Set(games.flatMap((g) => g.platforms))];
     <section class:list={['gband', { 'gband--flip': i % 2 === 1 }]} aria-labelledby={`g-${g.slug}`}>
       <div class="gband__grid">
         <a href={url(`/games/${g.slug}/`)} class="gband__art on-light" style={`background:${themeBg(g.theme)}`} data-reveal="wipe" data-parallax tabindex="-1" aria-hidden="true">
-          {g.keyArt && <img class="gband__bg" src={url(g.keyArt)} alt="" loading="lazy" data-depth="-8" />}
+          <span class="stage-sq" aria-hidden="true" data-depth="-10"></span>
           {g.trailer
             ? <div class="gband__phone" data-depth="14"><video class="gband__media" src={url(g.trailer)} poster={url(('trailerPoster' in g && g.trailerPoster) || g.keyArt)} autoplay muted loop playsinline preload="metadata"></video></div>
             : !g.keyArt && <span class="ghero__logo" data-depth="10"><Logo size="clamp(90px, 9vw, 130px)" /></span>}
@@ -137,7 +137,6 @@ const platforms = [...new Set(games.flatMap((g) => g.platforms))];
   .gband__art { flex: 1 1 440px; min-width: 0; min-height: clamp(420px, 46vw, 700px); position: relative; overflow: hidden; display: block; border-right: var(--rule); }
   /* Trailer: the whole portrait video in a phone frame, key art behind it */
   .gband__art { display: flex; align-items: center; justify-content: center; }
-  .gband__bg { position: absolute; inset: -20px; width: calc(100% + 40px); height: calc(100% + 40px); max-width: none; object-fit: cover; transition: translate .6s var(--ease-out); }
   .gband__phone {
     position: relative; z-index: 2; height: clamp(380px, 34vw, 580px); aspect-ratio: 9 / 16; background: var(--black);
     border: 10px solid var(--black); border-radius: 34px; overflow: hidden; box-shadow: 12px 12px 0 var(--black);
@@ -181,7 +180,7 @@ const platforms = [...new Set(games.flatMap((g) => g.platforms))];
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .ghero__img, .ghero__logo, .ghero__card, .gband__bg, .gband__phone, .gband__shot { transition: none; }
+    .ghero__img, .ghero__logo, .ghero__card, .gband__phone, .gband__shot { transition: none; }
   }
 </style>
 

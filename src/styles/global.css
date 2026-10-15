@@ -240,3 +240,13 @@ html.splash-on .pager { display: none; }
 .hfacts dt::before, .post-meta dt::before, .ghero__facts dt::before, .phero__facts dt::before {
   content: ''; flex: none; width: 7px; height: 7px; background: var(--red); transform: rotate(-14deg);
 }
+
+/* Trailer stage: one big tilted yellow square behind a phone, so the video is the focus */
+.stage-sq {
+  --sz: min(64%, 500px);
+  position: absolute; left: 50%; top: 50%; z-index: 0; width: var(--sz); aspect-ratio: 1;
+  margin: calc(var(--sz) / -2) 0 0 calc(var(--sz) / -2);
+  background: var(--yellow); border: 2px solid var(--black); box-shadow: 14px 14px 0 var(--black);
+  rotate: -9deg; pointer-events: none; transition: translate .6s var(--ease-out);
+}
+@media (prefers-reduced-motion: reduce) { .stage-sq { transition: none; } }

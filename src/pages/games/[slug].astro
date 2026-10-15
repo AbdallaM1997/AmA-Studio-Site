@@ -41,7 +41,7 @@ const poster = ('trailerPoster' in game && game.trailerPoster) || game.keyArt;
       </div>
 
       <div class="g-hero__art on-light" style={`background:${artBg}`} data-reveal="wipe" data-parallax>
-        {game.keyArt && <img class="g-hero__bg" src={url(game.keyArt)} alt="" data-depth="-12" />}
+        <span class="stage-sq" aria-hidden="true" data-depth="-10"></span>
         <span class="sq-wrap" data-depth="30" style="left:7%;top:10%"><span class="sq sq--yellow float" style="width:72px;height:72px;transform:rotate(16deg)"></span></span>
         <span class="sq-wrap" data-depth="-24" style="right:8%;bottom:12%"><span class="sq sq--black float" style="width:52px;height:52px;transform:rotate(-10deg);--delay:-2s"></span></span>
         <div class="phone" data-reveal="pop" style="--d:.45s" data-depth="14">
@@ -159,12 +159,11 @@ const poster = ('trailerPoster' in game && game.trailerPoster) || game.keyArt;
     flex: 1 1 440px; min-width: 0; min-height: clamp(600px, 52vw, 760px); position: relative; overflow: hidden;
     display: flex; flex-direction: column; gap: 22px; align-items: center; justify-content: center; padding-block: 40px;
   }
-  .g-hero__bg { position: absolute; inset: -24px; width: calc(100% + 48px); height: calc(100% + 48px); max-width: none; object-fit: cover; transition: translate .5s var(--ease-out); }
-  .phone { width: 260px; height: 520px; background: var(--black); border-radius: 38px; padding: 12px; position: relative; z-index: 1; box-shadow: 12px 12px 0 var(--black); transition: translate .5s var(--ease-out); }
+  .phone { width: 260px; height: 520px; background: var(--black); border-radius: 38px; padding: 12px; position: relative; z-index: 2; box-shadow: 12px 12px 0 var(--black); transition: translate .6s var(--ease-out); }
   .phone__screen { width: 100%; height: 100%; border-radius: 28px; background: var(--yellow); overflow: hidden; display: flex; align-items: center; justify-content: center; }
   .phone__screen video, .phone__screen img { width: 100%; height: 100%; object-fit: cover; }
   /* Trailer autoplays muted (browsers require it); this turns the music on */
-  .phone__sound { position: relative; z-index: 1; }
+  .phone__sound { position: relative; z-index: 2; }
   .phone__sound-sq { width: 12px; height: 12px; background: var(--red); transform: rotate(-14deg); transition: transform .35s var(--ease-pop); }
   .phone__sound[aria-pressed="true"] .phone__sound-sq { transform: rotate(31deg) scale(1.2); }
 
@@ -237,7 +236,7 @@ const poster = ('trailerPoster' in game && game.trailerPoster) || game.keyArt;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .phone__sound-sq, .g-hero__bg, .phone, .shot__screen { transition: none; }
+    .phone__sound-sq, .phone, .shot__screen { transition: none; }
     .lb[open] { animation: none; }
   }
 </style>
