@@ -30,6 +30,7 @@
   /* Motion */
   --ease-pop: cubic-bezier(.34, 1.56, .64, 1);
   --ease-out: cubic-bezier(.16, 1, .3, 1);
+  --ease-soft: cubic-bezier(.33, 1, .68, 1); /* gentle fade for opacity */
 }
 
 /* ---------- Dark mode ----------
@@ -149,11 +150,12 @@ a:hover { color: var(--red); }
 .ph__tag { background: var(--cream); color: var(--black); padding: 8px 12px; position: relative; z-index: 1; }
 
 /* ---------- Reveal-on-scroll (see src/scripts/motion.js) ---------- */
-.js [data-reveal] { opacity: 0; transform: translateY(28px); transition: opacity .7s var(--ease-out), transform .7s var(--ease-out); transition-delay: var(--d, 0s); }
+.js [data-reveal] { opacity: 0; transform: translateY(22px); transition: opacity .9s var(--ease-soft), transform 1s var(--ease-out); transition-delay: var(--d, 0s); }
 .js [data-reveal="left"] { transform: translateX(-36px); }
-/* Wipe: a panel slides open from the left edge (clip-path, so no layout work) */
-.js [data-reveal="wipe"] { opacity: 1; transform: none; clip-path: inset(0 100% 0 0); transition: clip-path .9s var(--ease-out); transition-delay: var(--d, .15s); }
-.js [data-reveal="wipe"].is-in { clip-path: inset(0 0 0 0); }
+/* Wipe: a panel slides open from the left edge. A keyframe animation (not a transition) so the browser can run it off the main thread */
+.js [data-reveal="wipe"] { opacity: 1; transform: none; clip-path: inset(0 100% 0 0); transition: none; }
+.js [data-reveal="wipe"].is-in { animation: wipe-in 1s var(--ease-out) var(--d, .15s) both; }
+@keyframes wipe-in { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
 .js [data-reveal="pop"] { transform: scale(.85) rotate(-3deg); transition-timing-function: var(--ease-out), var(--ease-pop); }
 .js [data-reveal].is-in { opacity: 1; transform: none; }
 
@@ -174,7 +176,7 @@ a:hover { color: var(--red); }
 .float { animation: float var(--dur, 5s) ease-in-out infinite; animation-delay: var(--delay, 0s); }
 
 @media (prefers-reduced-motion: reduce) {
-  .js [data-reveal], .js [data-reveal] .dot, .js .checker[data-reveal] span { opacity: 1 !important; transform: none !important; clip-path: none !important; transition: none !important; }
+  .js [data-reveal], .js [data-reveal] .dot, .js .checker[data-reveal] span { opacity: 1 !important; transform: none !important; clip-path: none !important; transition: none !important; animation: none !important; }
   .float { animation: none; }
   .btn, .textlink .arrow { transition: none; }
 }

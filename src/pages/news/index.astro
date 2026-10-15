@@ -56,7 +56,7 @@ const squares = (t: string) => (t === 'red' ? ['yellow', 'black'] : t === 'black
   <!-- Every post as a full-width row -->
   <section class="nlist" aria-label="All posts">
     <ol class="nlist__rows" data-stagger="0.08">
-      {posts.map((post, i) => <NewsRow post={post} num={posts.length - i} />)}
+      {posts.map((post, i) => <NewsRow post={post} num={i + 1} />)}
     </ol>
     <p class="wrap nlist__empty" data-empty hidden>No posts here yet.</p>
   </section>

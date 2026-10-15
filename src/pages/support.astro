@@ -158,9 +158,9 @@ const faqs = [
   .sgames { list-style: none; margin: 0; padding: 0; border-top: var(--rule); }
   .sgame-wrap + .sgame-wrap { border-top: var(--rule); }
   .sgame { display: block; position: relative; overflow: hidden; text-decoration: none; color: var(--ink); }
-  .sgame::before { content: ''; position: absolute; inset: 0; background: var(--yellow); clip-path: inset(0 100% 0 0); transition: clip-path .45s var(--ease-out); }
+  .sgame::before { content: ''; position: absolute; inset: 0; background: var(--yellow); transform: scaleX(0); transform-origin: left; transition: transform .55s var(--ease-out); }
   .sgame:hover, .sgame:focus-visible { color: var(--black); }
-  .sgame:hover::before, .sgame:focus-visible::before { clip-path: inset(0 0 0 0); }
+  .sgame:hover::before, .sgame:focus-visible::before { transform: scaleX(1); }
   .sgame__inner { position: relative; display: grid; align-items: center; gap: clamp(16px, 3vw, 40px); grid-template-columns: 96px minmax(0, 1fr) auto auto 40px; padding-block: clamp(20px, 2.5vw, 32px); }
   .sgame__thumb { width: 96px; aspect-ratio: 1; border: 2px solid var(--black); border-radius: 22px; overflow: hidden; transition: transform .45s var(--ease-pop); }
   .sgame:hover .sgame__thumb { transform: rotate(-6deg) scale(1.06); }

@@ -181,8 +181,8 @@ function setupCursor() {
     // The frame eases after the pointer; with reduced motion it just sits on it
     rx += (x - rx) * (reduce ? 1 : 0.22);
     ry += (y - ry) * (reduce ? 1 : 0.22);
-    dot.style.transform = `translate(${x}px, ${y}px)`;
-    ring.style.transform = `translate(${rx}px, ${ry}px)`;
+    dot.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    ring.style.transform = `translate3d(${rx.toFixed(2)}px, ${ry.toFixed(2)}px, 0)`;
     raf = Math.abs(x - rx) + Math.abs(y - ry) > 0.1 ? requestAnimationFrame(tick) : 0;
   };
   const kick = () => { if (!raf) raf = requestAnimationFrame(tick); };

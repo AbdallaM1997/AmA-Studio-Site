@@ -187,7 +187,7 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
         <a href={url('/news/')} class="hbar__link" data-reveal>All posts <span class="arrow">→</span></a>
       </div>
       <ol class="hnews__rows" data-stagger="0.08">
-        {latest.map((post, i) => <NewsRow post={post} num={latest.length - i} />)}
+        {latest.map((post, i) => <NewsRow post={post} num={i + 1} />)}
       </ol>
     </section>
   )}
@@ -317,9 +317,9 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
   .hero__cell:last-child { padding-right: calc(max(0px, (100cqi - var(--max)) / 2) + var(--gutter)); }
   .hero__cell .label { font-size: 11px; }
   .hero__cell-t { font-size: clamp(24px, 2.2vw, 34px); line-height: 1; }
-  .hero__cell::before { content: ''; position: absolute; inset: 0; background: var(--yellow); clip-path: inset(100% 0 0 0); transition: clip-path .3s var(--ease-out); }
+  .hero__cell::before { content: ''; position: absolute; inset: 0; background: var(--yellow); transform: scaleY(0); transform-origin: bottom; transition: transform .4s var(--ease-out); }
   .hero__cell:hover { color: var(--black); }
-  .hero__cell:hover::before { clip-path: inset(0 0 0 0); }
+  .hero__cell:hover::before { transform: scaleY(1); }
   .hero__scroll { flex-direction: row; align-items: center; gap: 14px; }
   .hero__scroll-sq { width: 22px; height: 22px; border: var(--rule); transform: rotate(-14deg); animation: hero-bob 1.6s var(--ease-out) infinite; }
   .hero__scroll-sq::before { content: ''; position: absolute; left: 50%; top: 40%; width: 7px; height: 7px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: translate(-50%, -50%) rotate(45deg); }
@@ -364,9 +364,9 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
     font-family: var(--font-label); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink);
   }
   .hbar__link { z-index: 0; }
-  .hbar__link::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--yellow); clip-path: inset(100% 0 0 0); transition: clip-path .3s var(--ease-out); }
+  .hbar__link::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--yellow); transform: scaleY(0); transform-origin: bottom; transition: transform .4s var(--ease-out); }
   .hbar__link:hover { color: var(--black); }
-  .hbar__link:hover::before { clip-path: inset(0 0 0 0); }
+  .hbar__link:hover::before { transform: scaleY(1); }
   .hbar__link:hover .arrow { transform: translateX(6px); }
   @media (max-width: 600px) { .hbar__mid { display: none; } .hbar__link { margin-left: auto; } }
   @media (prefers-reduced-motion: reduce) { :global(.js) .hbig .fw > span:first-child { transform: none; transition: none; } .hbar__link::before { transition: none; } }
