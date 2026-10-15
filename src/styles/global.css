@@ -201,14 +201,12 @@ a:hover { color: var(--red); }
 .cursor.is-text { opacity: 0; }
 @media (prefers-reduced-motion: reduce) { .cursor__ring::before { transition: none; } }
 
-/* ---------- Section-by-section scrolling (see setupSections in src/scripts/motion.js) ----------
-   Desktop with a mouse/trackpad only: the page settles on one full section at a time.
-   Sections taller than the screen still scroll normally inside. Off for touch and reduced motion. */
-@media (min-width: 961px) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  html.has-snap { scroll-snap-type: y mandatory; scroll-padding-top: 78px; }
-  html.has-snap .snap-sec { scroll-snap-align: start; }
-}
-html.splash-on.has-snap { scroll-snap-type: none; }
+/* ---------- Section scrolling (see setupSections in src/scripts/motion.js) ----------
+   Gentle settle, done in JS: scroll freely, and when you stop close to the start of a section
+   the page glides it exactly under the nav. Desktop with a mouse/trackpad only; off for reduced motion.
+   --nav-h is measured in JS so anchor jumps land in the right place too. */
+html { scroll-padding-top: var(--nav-h, 78px); }
+html.splash-on .pager { display: none; }
 
 /* Red bar that sweeps across the top of a section each time it arrives */
 .snap-sec { position: relative; }
@@ -230,8 +228,6 @@ html.splash-on.has-snap { scroll-snap-type: none; }
   opacity: 0; transform: translateX(8px); transition: opacity .2s, transform .25s var(--ease-out);
 }
 .pager__btn:hover .pager__label, .pager__btn:focus-visible .pager__label { opacity: 1; transform: none; }
-html.splash-on .pager { display: none; }
-
 @media (prefers-reduced-motion: reduce) {
   .snap-sec.is-arriving > .snap-bar { animation: none; }
   .pager__sq, .pager__label { transition: none; }

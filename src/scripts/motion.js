@@ -243,7 +243,41 @@ function setupSections() {
     return b;
   });
   document.body.append(pager);
-  document.documentElement.classList.add('has-snap');
+
+  // Exact landing spot: right under the sticky nav (its height changes with the layout)
+  const nav = document.querySelector('.nav');
+  const navH = () => (nav ? nav.getBoundingClientRect().height : 0);
+  const setNavVar = () => document.documentElement.style.setProperty('--nav-h', `${Math.round(navH())}px`);
+  setNavVar();
+  window.addEventListener('resize', setNavVar);
+  const topOf = (sec) => sec.getBoundingClientRect().top + window.scrollY - navH();
+
+  // Gentle settle: when scrolling stops near a section start, glide it into place
+  const settleOn = window.matchMedia('(min-width: 961px) and (pointer: fine)');
+  let selfScroll = false;
+  let timer = 0;
+  const settle = () => {
+    if (reduce || !settleOn.matches || document.documentElement.classList.contains('splash-on')) return;
+    if (selfScroll) { selfScroll = false; return; }
+    const y = window.scrollY;
+    const maxY = document.documentElement.scrollHeight - window.innerHeight;
+    if (y <= 2 || y >= maxY - 2) return;
+    const reach = window.innerHeight * 0.28;
+    let best = null;
+    secs.forEach((sec) => {
+      const t = Math.min(Math.max(topOf(sec), 0), maxY);
+      const d = t - y;
+      if (Math.abs(d) < reach && (best === null || Math.abs(d) < Math.abs(best - y))) best = t;
+    });
+    if (best === null || Math.abs(best - y) < 2) return;
+    selfScroll = true;
+    window.scrollTo({ top: best, behavior: 'smooth' });
+  };
+  if ('onscrollend' in window) {
+    window.addEventListener('scrollend', settle);
+  } else {
+    window.addEventListener('scroll', () => { clearTimeout(timer); timer = setTimeout(settle, 140); }, { passive: true });
+  }
 
   // The section crossing the middle of the screen is the current one
   let current = -1;
