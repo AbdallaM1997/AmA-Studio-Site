@@ -2,7 +2,13 @@
 import { url } from '../../lib/url';
 import Base from '../../layouts/Base.astro';
 import Checker from '../../components/Checker.astro';
+import Logo from '../../components/Logo.astro';
+import NewsCard from '../../components/NewsCard.astro';
+import GameCard from '../../components/GameCard.astro';
+import SectionHead from '../../components/SectionHead.astro';
 import news from '../../data/news.json';
+import games from '../../data/games.json';
+import site from '../../data/site.json';
 
 export function getStaticPaths() {
   return news.map((post) => ({ params: { slug: post.slug }, props: { post } }));
@@ -10,31 +16,189 @@ export function getStaticPaths() {
 const { post } = Astro.props;
 const date = new Date(post.date + 'T12:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 const bg = { red: 'var(--red)', yellow: 'var(--yellow)', black: 'var(--black)' }[post.theme] ?? 'var(--yellow)';
+const words = post.title.split(/\s+/);
+const wordCount = post.body.join(' ').split(/\s+/).length;
+const readMins = Math.max(1, Math.round(wordCount / 200));
+const game = 'game' in post && post.game ? games.find((g) => g.slug === post.game) : undefined;
+const more = news.filter((n) => n.slug !== post.slug).sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3);
+const pageUrl = new URL(url(`/news/${post.slug}/`), Astro.site).href;
+const shareText = `${post.title} · ${site.name}`;
+const squares = post.theme === 'red' ? ['yellow', 'black'] : post.theme === 'black' ? ['red', 'yellow'] : ['red', 'black'];
 ---
 <Base title={post.title} description={post.excerpt} image={post.image || undefined}>
-  <article>
-    <header class="section post-head" style={`background:${bg}`}>
-      <div class="wrap section__inner">
-        <span class="label" data-reveal><a href={url('/news/')} style="text-decoration:none">05 / News</a> / {post.category} · <time datetime={post.date}>{date}</time></span>
-        <h1 class="display post-title" data-reveal style="--d:.08s">{post.title}<span class="dot">.</span></h1>
+  <div class="read-progress" aria-hidden="true"><span data-read-progress></span></div>
+
+  <article class="post" data-post>
+    <!-- Hero: text lines up with the page column, the art panel runs to the right edge -->
+    <header class="post-hero">
+      <div class="post-hero__grid">
+        <div class="post-hero__text">
+          <span class="label" data-reveal><a href={url('/news/')} class="post-hero__crumb">05 / News</a> / {post.category}</span>
+          <h1 class="display post-hero__title" data-reveal style={`--d:${(words.length * 0.07 + 0.1).toFixed(2)}s`}>
+            {words.map((w, i) => <><span class="w"><span style={`--i:${i}`}>{w}</span></span>{' '}</>)}<span class="dot">.</span>
+          </h1>
+          <p class="lead post-hero__lead" data-reveal style="--d:.35s">{post.excerpt}</p>
+          <dl class="post-meta" data-stagger="0.08">
+            <div data-reveal="pop"><dt class="label">Date</dt><dd><time datetime={post.date}>{date}</time></dd></div>
+            <div data-reveal="pop"><dt class="label">Read</dt><dd>{readMins} min</dd></div>
+            <div data-reveal="pop"><dt class="label">Filed under</dt><dd>{post.category}</dd></div>
+          </dl>
+        </div>
+
+        <div class="post-hero__art on-light" style={`background:${bg}`} data-reveal="wipe" data-parallax>
+          {post.image
+            ? <img class="post-hero__img" src={url(post.image)} alt="" data-depth="-14" />
+            : <div class="post-hero__logo" data-depth="10"><Logo size="clamp(110px, 12vw, 170px)" /></div>}
+          <span class="sq-wrap" data-depth="34" style="left:7%;top:10%"><span class={`sq sq--${squares[0]} float`} style="width:64px;height:64px;transform:rotate(16deg)"></span></span>
+          <span class="sq-wrap" data-depth="-22" style="right:8%;bottom:12%"><span class={`sq sq--${squares[1]} float`} style="width:38px;height:38px;transform:rotate(-12deg);--delay:-2s"></span></span>
+        </div>
       </div>
     </header>
-    <div class="section">
-      <div class="wrap section__inner prose" data-stagger="0.06">
-        {post.image && <img src={url(post.image)} alt="" data-reveal />}
-        {post.body.map((p) => <p data-reveal>{p}</p>)}
-        <a href={url('/news/')} class="textlink" data-reveal>All posts <span class="arrow">→</span></a>
+
+    <Checker pattern="k2yrkr3ykc2rk" height="40px" class="rule-b" />
+
+    <!-- Body: sticky share rail + the story -->
+    <div class="post-body wrap">
+      <aside class="post-rail" aria-label="Share this post">
+        <div class="post-rail__inner" data-reveal="left">
+          <span class="label">Share</span>
+          <a class="post-share" href={`https://wa.me/?text=${encodeURIComponent(`${shareText} ${pageUrl}`)}`} target="_blank" rel="noopener">WhatsApp</a>
+          <a class="post-share" href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(pageUrl)}`} target="_blank" rel="noopener">X / Twitter</a>
+          <a class="post-share" href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`} target="_blank" rel="noopener">Facebook</a>
+          <button type="button" class="post-share" data-copy-link={pageUrl}>Copy link</button>
+          <a href={url('/news/')} class="textlink post-rail__back">All posts <span class="arrow">→</span></a>
+        </div>
+      </aside>
+
+      <div class="post-main">
+        <div class="post-story" data-stagger="0.1">
+          {post.body.map((p, i) => <p class:list={['post-p', { 'post-p--lead': i === 0 }]} data-reveal>{p}</p>)}
+        </div>
+
+        {game && (
+          <section class="post-game" aria-labelledby="post-game-title">
+            <span class="label" data-reveal>Meet the game</span>
+            <h2 id="post-game-title" class="display post-game__title" data-reveal style="--d:.08s">{game.title}<span class="dot">.</span></h2>
+            <div data-reveal style="--d:.16s"><GameCard game={game} featured /></div>
+          </section>
+        )}
       </div>
     </div>
   </article>
-  <Checker pattern="k2yrkr3ykc2rk" height="40px" class="rule-b" />
+
+  {more.length > 0 && (
+    <section class="section post-more" aria-labelledby="more-title">
+      <div class="wrap section__inner">
+        <SectionHead num="05" label="News" title="More from the lab" link={{ href: '/news/', text: 'All posts' }} />
+        <div class="post-more__grid" data-stagger>
+          {more.map((p) => <div data-reveal><NewsCard post={p} /></div>)}
+        </div>
+      </div>
+    </section>
+  )}
+  <Checker pattern="yk2rcyrk3ckr" height="40px" class="rule-b" />
 </Base>
 
 <style>
-  /* Post header keeps its theme color in both modes. */
-  .post-head { --ink: var(--black); --rule: 2px solid var(--black); color: var(--black); }
-  .post-head[style*="--black"] { --ink: var(--cream); --rule: 2px solid var(--cream); color: var(--cream); }
-  .post-title { font-size: clamp(56px, 8vw, 120px); margin-top: 16px; max-width: 14ch; }
-  .prose { max-width: 760px; font-size: 19px; }
-  .prose p { margin: 0 0 1.2em; }
+  /* Reading progress: a red bar under the nav that fills as you scroll the post */
+  .read-progress { position: fixed; left: 0; right: 0; top: 0; height: 5px; z-index: 60; pointer-events: none; }
+  .read-progress span { display: block; height: 100%; background: var(--red); transform-origin: left; transform: scaleX(0); }
+
+  /* Hero */
+  .post-hero { border-bottom: var(--rule); }
+  .post-hero__grid { --side: max(0px, (100% - var(--max)) / 2); display: flex; flex-wrap: wrap; }
+  .post-hero__text {
+    flex: 0 1 calc(var(--side) + min(100%, var(--max)) * .55); min-width: 0; container-type: inline-size;
+    padding: clamp(48px, 7vw, 96px) var(--gutter) clamp(40px, 5vw, 64px) calc(var(--side) + var(--gutter));
+    display: flex; flex-direction: column; gap: 24px; border-right: var(--rule);
+  }
+  .post-hero__crumb { text-decoration: none; }
+  .post-hero__title { font-size: clamp(56px, 15cqi, 150px); line-height: .9; }
+  .post-hero__lead { margin: 0; max-width: 560px; }
+
+  /* Title words rise out of a mask one by one, then the red full stop pops */
+  :global(.js) .post-hero__title[data-reveal] { opacity: 1; transform: none; }
+  .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .04em; margin-bottom: -.04em; }
+  .w > span { display: inline-block; }
+  :global(.js) .w > span { transform: translateY(105%); transition: transform .75s var(--ease-out); transition-delay: calc(var(--i) * 70ms + .1s); }
+  :global(.js) .is-in .w > span { transform: none; }
+
+  .post-meta { display: flex; flex-wrap: wrap; gap: 12px; margin: 8px 0 0; }
+  .post-meta > div { border: var(--rule); padding: 10px 16px; display: flex; flex-direction: column; gap: 4px; min-width: 120px; }
+  .post-meta dt { font-size: 11px; color: var(--red); }
+  .post-meta dd { margin: 0; font-weight: 700; }
+
+  .post-hero__art { flex: 1 1 420px; min-width: 0; min-height: clamp(340px, 42vw, 620px); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .post-hero__img { position: absolute; inset: -24px; width: calc(100% + 48px); height: calc(100% + 48px); max-width: none; object-fit: cover; transition: translate .5s var(--ease-out); }
+  .post-hero__logo { position: relative; z-index: 2; transition: translate .5s var(--ease-out); }
+
+  /* Body */
+  .post-body { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: clamp(28px, 5vw, 80px); padding-block: clamp(48px, 7vw, 96px); }
+  .post-rail__inner { position: sticky; top: 108px; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+  .post-rail__inner > .label { font-size: 12px; margin-bottom: 6px; }
+  .post-share {
+    font-family: var(--font-label); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; text-decoration: none;
+    width: 100%; min-height: 44px; display: flex; align-items: center; padding: 0 14px; border: var(--rule); background: var(--bg); color: var(--ink); cursor: pointer;
+    transition: transform .18s var(--ease-out), box-shadow .18s var(--ease-out), background .18s;
+  }
+  .post-share:hover { color: var(--black); background: var(--yellow); transform: translate(-3px, -3px); box-shadow: 5px 5px 0 var(--ink); }
+  .post-rail__back { margin-top: 14px; }
+
+  .post-main { min-width: 0; }
+  .post-story { max-width: 820px; }
+  .post-p { margin: 0 0 1.1em; font-size: clamp(18px, 1.5vw, 21px); line-height: 1.65; }
+  .post-p--lead { font-size: clamp(22px, 2.2vw, 30px); line-height: 1.4; font-weight: 600; padding-left: 22px; border-left: 6px solid var(--red); margin-bottom: 1.2em; }
+
+  .post-game { margin-top: clamp(40px, 6vw, 72px); padding-top: clamp(32px, 4vw, 48px); border-top: var(--rule); display: flex; flex-direction: column; gap: 12px; }
+  .post-game__title { font-size: clamp(48px, 6vw, 84px); margin-bottom: 16px; }
+
+  .post-more { border-top: 0; }
+  .post-more__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 24px; }
+
+  @media (max-width: 960px) {
+    .post-hero__text { flex-basis: 100%; border-right: 0; border-bottom: var(--rule); }
+    .post-body { grid-template-columns: 1fr; }
+    .post-rail__inner { position: static; flex-direction: row; flex-wrap: wrap; }
+    .post-rail__inner > .label { width: 100%; }
+    .post-share { width: auto; }
+    .post-rail { order: 2; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(.js) .w > span { transform: none; transition: none; }
+    .post-hero__img, .post-hero__logo, .post-share { transition: none; }
+  }
 </style>
+
+<script>
+  // Reading progress bar
+  const bar = document.querySelector<HTMLElement>('[data-read-progress]');
+  const article = document.querySelector<HTMLElement>('[data-post]');
+  if (bar && article) {
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const r = article.getBoundingClientRect();
+      const total = r.height - window.innerHeight;
+      const p = total > 0 ? Math.min(1, Math.max(0, -r.top / total)) : 1;
+      bar.style.transform = `scaleX(${p})`;
+    };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    update();
+  }
+
+  // Copy link
+  document.querySelectorAll<HTMLButtonElement>('[data-copy-link]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(btn.dataset.copyLink || location.href);
+        btn.textContent = 'Copied.';
+      } catch {
+        btn.textContent = 'Copy failed';
+      }
+      setTimeout(() => { btn.textContent = 'Copy link'; }, 1800);
+    });
+  });
+</script>
