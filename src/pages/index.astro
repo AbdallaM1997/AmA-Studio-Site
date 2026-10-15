@@ -182,15 +182,56 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
     </section>
   )}
 
-  <!-- 07 / CONTACT (+ services when switched on in site.json) -->
-  <section id="contact" class="red contact" aria-labelledby="contact-title">
-    <div class="wrap contact__inner">
-      <div class="contact__text">
+  <!-- 07 / CONTACT: red text column on the page grid, the form panel runs to the right edge -->
+  <section id="contact" class="contact" aria-labelledby="contact-title">
+    <div class="hsplit">
+      <div class="hsplit__left red contact__left" data-parallax>
+        <span class="sq-wrap" data-depth="22" style="right:10%;top:12%"><span class="sq sq--yellow float" style="width:46px;height:46px;transform:rotate(16deg)"></span></span>
+        <span class="sq-wrap" data-depth="-16" style="right:22%;bottom:12%"><span class="sq sq--black float" style="width:26px;height:26px;transform:rotate(-12deg);--delay:-1.5s"></span></span>
         <span class="label" data-reveal>07 / Contact</span>
-        <h2 id="contact-title" class="display contact__title" data-reveal style="--d:.08s">Say hi<span class="dot dot--cream">.</span> Got an idea<span class="dot dot--cream">?</span></h2>
+        <h2 id="contact-title" class="display contact__title" data-reveal style="--d:.08s">Say hi<span class="dot dot--cream">.</span><br />Got an idea<span class="dot dot--cream">?</span></h2>
         {!site.services.enabled && <p class="contact__teaser" data-reveal style="--d:.16s">{site.services.teaser}</p>}
+        <div class="contact__direct" data-reveal style="--d:.22s">
+          <span class="label">Or email us directly</span>
+          <a href={`mailto:${site.email}`} class="contact__mail">{site.email}</a>
+        </div>
       </div>
-      <a href={`mailto:${site.email}`} class="btn contact__mail" data-reveal="pop" style="--d:.2s">{site.email}</a>
+
+      <div class="hsplit__right contact__right" data-reveal="wipe">
+        <form class="cform" data-contact-form data-email={site.email} action={site.contactForm.formAction || undefined} method="post" novalidate={false}>
+          <div class="cform__row">
+            <label class="cform__field" data-reveal style="--d:.3s">
+              <span class="label">Your name</span>
+              <input name="name" type="text" required autocomplete="name" placeholder="Nour" />
+            </label>
+            <label class="cform__field" data-reveal style="--d:.36s">
+              <span class="label">Your email</span>
+              <input name="email" type="email" required autocomplete="email" placeholder="you@email.com" />
+            </label>
+          </div>
+          <fieldset class="cform__topics" data-reveal style="--d:.42s">
+            <legend class="label">What's it about?</legend>
+            <div class="cform__chips">
+              {site.contactForm.topics.map((t, i) => (
+                <label class="cform__chip">
+                  <input type="radio" name="topic" value={t} checked={i === 0} />
+                  <span>{t}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+          <label class="cform__field" data-reveal style="--d:.48s">
+            <span class="label">Message</span>
+            <textarea name="message" rows="5" required placeholder="Tell us what's on your mind."></textarea>
+          </label>
+          <div class="cform__foot" data-reveal style="--d:.54s">
+            <button type="submit" class="btn btn--red cform__send">Send message <span class="arrow">→</span></button>
+            <p class="cform__note" data-contact-note aria-live="polite">
+              {site.contactForm.formAction ? 'We reply within a few days.' : 'This opens your email app with your message ready to send.'}
+            </p>
+          </div>
+        </form>
+      </div>
     </div>
     {site.services.enabled && (
       <div class="wrap services" data-stagger>
@@ -345,14 +386,64 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
 
   /* Contact */
   .contact { border-bottom: var(--rule); }
-  .contact__inner { display: flex; flex-wrap: wrap; gap: 28px; justify-content: space-between; align-items: center; padding-block: clamp(44px, 6vw, 64px); }
-  .contact__text { display: flex; flex-direction: column; gap: 10px; }
-  .contact__title { font-size: clamp(42px, 5vw, 64px); line-height: 1; }
-  .contact__teaser { margin: 0; font-weight: 700; }
-  .contact__mail { text-transform: none; letter-spacing: .02em; }
+  .contact__left { position: relative; overflow: hidden; justify-content: center; gap: 20px; }
+  .contact__left > :not(.sq-wrap) { position: relative; z-index: 2; }
+  .contact__title { font-size: clamp(56px, 6.5vw, 104px); line-height: .92; }
+  .contact__teaser { margin: 0; font-weight: 700; max-width: 440px; }
+  .contact__direct { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+  .contact__direct .label { font-size: 11px; }
+  .contact__mail { font-family: var(--font-display); font-size: clamp(24px, 2.4vw, 34px); text-decoration: none; overflow-wrap: anywhere; }
+  .contact__mail:hover { color: var(--cream); }
+  .contact__right { align-items: center; }
+
+  /* Form */
+  .cform { width: 100%; max-width: 720px; display: flex; flex-direction: column; gap: 20px; }
+  .cform__row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .cform__field { display: flex; flex-direction: column; gap: 8px; }
+  .cform .label { font-size: 12px; }
+  .cform input[type="text"], .cform input[type="email"], .cform textarea {
+    width: 100%; min-height: 56px; padding: 14px 18px; font: inherit; font-size: 17px;
+    background: var(--cream); color: var(--black); border: 2px solid var(--black); border-radius: 0;
+    transition: box-shadow .18s var(--ease-out), transform .18s var(--ease-out);
+  }
+  .cform textarea { resize: vertical; min-height: 150px; line-height: 1.5; }
+  .cform input::placeholder, .cform textarea::placeholder { color: var(--black); opacity: .45; }
+  .cform input:focus-visible, .cform textarea:focus-visible { outline: none; transform: translate(-3px, -3px); box-shadow: 6px 6px 0 var(--red); }
+
+  .cform__topics { border: 0; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  .cform__topics legend { padding: 0; margin-bottom: 10px; }
+  .cform__chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .cform__chip { position: relative; cursor: pointer; }
+  .cform__chip input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .cform__chip span {
+    display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 16px; border: var(--rule);
+    font-family: var(--font-label); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; background: var(--bg); color: var(--ink);
+    transition: transform .18s var(--ease-out), box-shadow .18s var(--ease-out), background .18s;
+  }
+  .cform__chip span::before { content: ''; width: 10px; height: 10px; border: 2px solid currentColor; transform: rotate(-14deg); transition: transform .3s var(--ease-pop), background .2s; }
+  .cform__chip:hover span { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--ink); }
+  .cform__chip input:checked + span { background: var(--yellow); color: var(--black); border-color: var(--black); }
+  .cform__chip input:checked + span::before { background: var(--red); border-color: var(--red); transform: rotate(31deg) scale(1.15); }
+  .cform__chip input:focus-visible + span { outline: 3px solid var(--red); outline-offset: 3px; }
+
+  .cform__foot { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; margin-top: 4px; }
+  .cform__send { min-height: 60px; padding: 0 30px; font-size: 15px; }
+  .cform__send:hover .arrow { transform: translateX(6px); }
+  .cform__note { margin: 0; font-size: 15px; font-weight: 600; max-width: 340px; }
+
   .services { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0; border-top: var(--rule); padding-block: 32px 48px; }
   .services__item { padding-right: 24px; }
   .services__item h3 { font-size: 34px; }
+
+  @media (max-width: 960px) {
+    .contact__left { border-bottom: var(--rule); }
+  }
+  @media (max-width: 600px) {
+    .cform__row { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cform input, .cform textarea, .cform__chip span, .cform__chip span::before { transition: none; }
+  }
 </style>
 
 <script>
@@ -360,4 +451,23 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
     document.querySelectorAll<HTMLVideoElement>('.hband__media').forEach((v) => { v.removeAttribute('autoplay'); v.pause(); });
   }
+</script>
+
+<script>
+  // Contact form: with no form service set in site.json, open the visitor's email app with the message filled in
+  document.querySelectorAll<HTMLFormElement>('[data-contact-form]').forEach((form) => {
+    if (form.getAttribute('action')) return;
+    const note = form.querySelector<HTMLElement>('[data-contact-note]');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+      const data = new FormData(form);
+      const topic = String(data.get('topic') || 'Hello');
+      const name = String(data.get('name') || '');
+      const subject = `${topic} from ${name}`.trim();
+      const body = `${data.get('message') || ''}\n\n${name}\n${data.get('email') || ''}`;
+      window.location.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      if (note) note.textContent = 'Your email app should open now. Press send there and we will get it.';
+    });
+  });
 </script>

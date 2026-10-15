@@ -44,6 +44,10 @@
     "formAction": "",
     "text": "New games, beta invites and devlogs. One short email when there's something worth playing."
   },
+  "contactForm": {
+    "formAction": "",
+    "topics": ["Player support", "Press", "Partnership", "Just saying hi"]
+  },
   "services": {
     "enabled": false,
     "teaser": "Players, press and partners welcome. Brand and event projects coming soon.",
