@@ -128,23 +128,37 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
     </div>
   </section>
 
-  <!-- 04 / STUDIO: title on the page column, the yellow panel runs to the right edge -->
+  <!-- 04 / STUDIO (About): giant name band, intro split, edge-to-edge facts -->
   <section id="studio" class="hstudio" aria-labelledby="studio-title">
+    <div class="hstudio__mark">
+      <h2 id="studio-title" class="display hstudio__big" data-reveal style="--d:.4s">
+        <span class="fw"><span style="--i:0">AmA</span></span>{' '}<span class="fw"><span class="studio__eq" style="--i:1">=</span></span>{' '}<span class="fw"><span style="--i:2">AmAzing</span><span class="dot">.</span></span>
+      </h2>
+    </div>
     <div class="hsplit">
-      <div class="hsplit__left">
+      <div class="hsplit__left hstudio__left">
         <span class="label" data-reveal>04 / Studio</span>
-        <h2 id="studio-title" class="display hstudio__title" data-reveal style="--d:.08s">AmA <span class="studio__eq">=</span><br />AmAzing<span class="dot">.</span></h2>
-      </div>
-      <div class="hsplit__right yellow hstudio__panel" data-reveal="wipe" data-parallax>
-        <span class="sq-wrap" data-depth="24" style="right:7%;top:12%"><span class="sq sq--red float" style="width:50px;height:50px;transform:rotate(18deg)"></span></span>
-        <span class="sq-wrap" data-depth="-16" style="right:16%;bottom:14%"><span class="sq sq--black float" style="width:28px;height:28px;transform:rotate(-12deg);--delay:-1.5s"></span></span>
-        <div class="hstudio__copy" data-stagger>
-          <p class="lead" data-reveal>{site.studio.intro}</p>
-          {site.studio.founderNote && <p data-reveal>{site.studio.founderNote}</p>}
-          <a href="#contact" class="textlink" data-reveal>Say hi <span class="arrow">→</span></a>
+        <p class="hstudio__intro" data-reveal style="--d:.08s">{site.studio.intro}</p>
+        {site.studio.founderNote && <p data-reveal style="--d:.14s">{site.studio.founderNote}</p>}
+        <div class="hstudio__ctas" data-reveal style="--d:.2s">
+          <a href="#contact" class="btn">Say hi</a>
+          <a href={url('/games/')} class="btn btn--ghost">See our games</a>
         </div>
       </div>
+      <div class="hsplit__right yellow hstudio__panel" data-reveal="wipe" data-parallax data-toy>
+        <span class="sq-wrap" data-depth="24" style="left:10%;top:14%"><span class="sq sq--red float" style="width:56px;height:56px;transform:rotate(18deg)"></span></span>
+        <span class="sq-wrap" data-depth="-18" style="right:9%;top:12%"><span class="sq sq--black float" style="width:30px;height:30px;transform:rotate(-12deg);--delay:-1.5s"></span></span>
+        <span class="sq-wrap" data-depth="14" style="right:14%;bottom:16%"><span class="sq sq--red float" style="width:40px;height:40px;transform:rotate(-20deg);--delay:-2.5s"></span></span>
+        <div class="hstudio__logo" data-depth="8"><Logo size="clamp(120px, 14vw, 230px)" /></div>
+        <span class="label hstudio__hint">Tap to drop squares</span>
+      </div>
     </div>
+    <dl class="hfacts" data-stagger="0.08">
+      <div class="hfacts__cell" data-reveal><dt class="label">Based in</dt><dd class="display">{site.location}</dd></div>
+      <div class="hfacts__cell" data-reveal><dt class="label">Built with</dt><dd class="display">Unity</dd></div>
+      <div class="hfacts__cell" data-reveal><dt class="label">Games</dt><dd class="display">{games.length}</dd></div>
+      <div class="hfacts__cell" data-reveal><dt class="label">Platforms</dt><dd class="display">{[...new Set(games.flatMap((g) => g.platforms))].join(' & ')}</dd></div>
+    </dl>
   </section>
 
   <!-- 05 / NEWS: full-width rows -->
@@ -345,13 +359,43 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
   .dept__h { font-size: clamp(36px, 3.4vw, 48px); }
   .dept__item p { margin: 0; font-size: 18px; max-width: 380px; }
 
-  /* Studio */
-  .hstudio { border-bottom: var(--rule); }
-  .hstudio__title { font-size: clamp(72px, 8vw, 132px); line-height: .9; }
+  /* Studio (About) */
+  .hstudio { border-bottom: var(--rule); container-type: inline-size; }
+  /* "AmA = AmAzing." is about 5.7em wide in Anton, so this fills the width */
+  .hstudio__mark { border-bottom: var(--rule); overflow: hidden; padding: clamp(28px, 3vw, 48px) var(--gutter) clamp(12px, 1.5vw, 24px); }
+  .hstudio__big { font-size: calc((100cqi - 2 * var(--gutter)) / 5.9); line-height: .9; margin: 0; white-space: nowrap; text-align: center; letter-spacing: -.01em; }
   .studio__eq { color: var(--red); }
-  .hstudio__panel { min-height: clamp(360px, 34vw, 520px); }
-  .hstudio__copy { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 20px; max-width: 640px; }
-  .hstudio__copy p { margin: 0; }
+  .fw { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .04em; margin-bottom: -.04em; }
+  .fw > span:first-child { display: inline-block; }
+  :global(.js) .hstudio__big[data-reveal] { opacity: 1; transform: none; }
+  :global(.js) .hstudio__big .fw > span:first-child { transform: translateY(105%); transition: transform .8s var(--ease-out); transition-delay: calc(var(--i) * 110ms + .05s); }
+  :global(.js) .hstudio__big.is-in .fw > span:first-child { transform: none; }
+
+  .hstudio__left { justify-content: center; }
+  .hstudio__intro { margin: 0; font-size: clamp(22px, 2.1vw, 32px); line-height: 1.35; font-weight: 600; max-width: 560px; }
+  .hstudio__ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
+  .hstudio__panel { min-height: clamp(380px, 34vw, 540px); justify-content: center; cursor: crosshair; user-select: none; -webkit-user-select: none; }
+  .hstudio__logo { position: relative; z-index: 2; pointer-events: none; transition: translate .5s var(--ease-out); }
+  .hstudio__hint { position: absolute; left: 0; right: 0; bottom: 22px; text-align: center; font-size: 11px; z-index: 2; pointer-events: none; }
+
+  .hfacts { display: grid; grid-template-columns: repeat(4, 1fr); margin: 0; border-top: var(--rule); }
+  .hfacts__cell { padding: clamp(24px, 3vw, 40px) clamp(18px, 2.5vw, 36px); display: flex; flex-direction: column; gap: 8px; }
+  .hfacts__cell + .hfacts__cell { border-left: var(--rule); }
+  .hfacts__cell:first-child { padding-left: calc(max(0px, (100cqi - var(--max)) / 2) + var(--gutter)); }
+  .hfacts__cell:last-child { padding-right: calc(max(0px, (100cqi - var(--max)) / 2) + var(--gutter)); }
+  .hfacts dt { font-size: 11px; color: var(--red); }
+  .hfacts dd { margin: 0; font-size: clamp(28px, 2.8vw, 44px); line-height: 1; }
+
+  @media (max-width: 960px) {
+    .hfacts { grid-template-columns: 1fr 1fr; }
+    .hfacts__cell, .hfacts__cell:first-child, .hfacts__cell:last-child { padding: 24px var(--gutter); }
+    .hfacts__cell:nth-child(3) { border-left: 0; }
+    .hfacts__cell:nth-child(n+3) { border-top: var(--rule); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :global(.js) .hstudio__big .fw > span:first-child { transform: none; transition: none; }
+    .hstudio__logo { transition: none; }
+  }
 
   /* News */
   .hnews__rows { list-style: none; margin: 0; padding: 0; border-top: var(--rule); }
