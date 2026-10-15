@@ -69,9 +69,9 @@ const sloganWords = site.slogan.replace(/\.$/, '').split(/\s+/);
 <style>
   .footer { background: var(--bg); container-type: inline-size; }
 
-  /* Giant slogan: about 11.2% of the footer width per em keeps "Serious about fun." on one line, edge to edge */
+  /* Giant slogan: "Serious about fun." is about 7.1em wide in Anton, so this fills the footer edge to edge */
   .footer__mark { border-bottom: var(--rule); overflow: hidden; padding: clamp(24px, 3vw, 44px) var(--gutter) clamp(12px, 1.5vw, 24px); }
-  .footer__big { font-size: 11.2cqi; line-height: .9; margin: 0; white-space: nowrap; text-align: center; letter-spacing: -.01em; }
+  .footer__big { font-size: calc((100cqi - 2 * var(--gutter)) / 7.3); line-height: .9; margin: 0; white-space: nowrap; text-align: center; letter-spacing: -.01em; }
   .fw { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .04em; margin-bottom: -.04em; }
   .fw > span:first-child { display: inline-block; }
   :global(.js) .footer__big[data-reveal] { opacity: 1; transform: none; }
