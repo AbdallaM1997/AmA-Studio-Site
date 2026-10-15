@@ -3,7 +3,6 @@ import { url } from '../../lib/url';
 import Base from '../../layouts/Base.astro';
 import GameCard from '../../components/GameCard.astro';
 import Checker from '../../components/Checker.astro';
-import site from '../../data/site.json';
 import games from '../../data/games.json';
 
 export function getStaticPaths() {
@@ -16,33 +15,39 @@ const statusLabel: Record<string, string> = { 'coming-soon': 'Coming soon', live
 const artBg = { red: 'var(--red)', yellow: 'var(--yellow)', black: 'var(--black)' }[game.theme] ?? 'var(--red)';
 const shots = game.screenshots.length ? game.screenshots : Array.from({ length: 5 }, () => '');
 const hasStores = game.stores.appStore || game.stores.googlePlay;
+const poster = ('trailerPoster' in game && game.trailerPoster) || game.keyArt;
 ---
 <Base title={game.title} description={`${game.title}: ${game.tagline}`} image={game.keyArt || undefined}>
-  <section class="section" aria-labelledby="g-title">
-    <div class="g-hero">
+  <!-- Hero: text on the page column, the art panel runs to the right edge -->
+  <header class="g-hero" aria-labelledby="g-title">
+    <div class="g-hero__grid">
       <div class="g-hero__text">
-        <span class="label" data-reveal><a href={url('/games/')} style="text-decoration:none">02 / Games</a> / {game.title}</span>
+        <span class="label" data-reveal><a href={url('/games/')} class="g-crumb">02 / Games</a> / {game.genre}</span>
         <h1 id="g-title" class="display g-title" data-reveal style="--d:.08s">{game.title}<span class="dot">.</span></h1>
-        <p class="lead" data-reveal style="--d:.16s">{game.tagline} {game.description}</p>
+        <p class="lead g-tagline" data-reveal style="--d:.16s">{game.tagline}</p>
+        <p class="g-desc" data-reveal style="--d:.22s">{game.description}</p>
         <ul class="tags" data-stagger="0.06">
-          <li data-reveal>{game.genre}</li>
-          {game.platforms.map((p) => <li data-reveal>{p}</li>)}
-          <li data-reveal>{game.price}</li>
-          <li class="tags__status on-light" data-reveal>{statusLabel[game.status] ?? game.status}</li>
+          <li class="tags__status on-light" data-reveal="pop">{statusLabel[game.status] ?? game.status}</li>
+          <li data-reveal="pop">{game.genre}</li>
+          {game.platforms.map((p) => <li data-reveal="pop">{p}</li>)}
+          {game.price && <li data-reveal="pop">{game.price}</li>}
         </ul>
         <div class="stores" data-reveal style="--d:.3s">
           {game.stores.appStore && <a class="btn" href={game.stores.appStore} target="_blank" rel="noopener">App Store</a>}
           {game.stores.googlePlay && <a class="btn" href={game.stores.googlePlay} target="_blank" rel="noopener">Google Play</a>}
           {!hasStores && <a class="btn btn--red" href={url('/#newsletter')}>Tell me when it's out</a>}
+          <a class="btn btn--ghost" href="#shots">Screenshots</a>
         </div>
       </div>
-      <div class="g-hero__art" style={`background:${artBg}`} data-parallax>
-        <span class="sq-wrap" data-depth="30" style="left:10%;top:12%"><span class="sq sq--yellow float" style="width:80px;height:80px;transform:rotate(16deg)"></span></span>
-        <span class="sq-wrap" data-depth="-24" style="right:12%;bottom:14%"><span class="sq sq--black float" style="width:60px;height:60px;transform:rotate(-10deg);--delay:-2s"></span></span>
-        <div class="phone" data-reveal="pop" style="--d:.2s">
+
+      <div class="g-hero__art on-light" style={`background:${artBg}`} data-reveal="wipe" data-parallax>
+        {game.keyArt && <img class="g-hero__bg" src={url(game.keyArt)} alt="" data-depth="-12" />}
+        <span class="sq-wrap" data-depth="30" style="left:7%;top:10%"><span class="sq sq--yellow float" style="width:72px;height:72px;transform:rotate(16deg)"></span></span>
+        <span class="sq-wrap" data-depth="-24" style="right:8%;bottom:12%"><span class="sq sq--black float" style="width:52px;height:52px;transform:rotate(-10deg);--delay:-2s"></span></span>
+        <div class="phone" data-reveal="pop" style="--d:.45s" data-depth="14">
           <div class="phone__screen on-light">
             {game.trailer
-              ? <video src={url(game.trailer)} poster={url(game.trailerPoster)} autoplay muted loop playsinline preload="metadata" aria-label={`${game.title} gameplay`}></video>
+              ? <video src={url(game.trailer)} poster={url(poster)} autoplay muted loop playsinline preload="metadata" aria-label={`${game.title} gameplay`}></video>
               : game.keyArt ? <img src={url(game.keyArt)} alt={`${game.title} key art`} /> : <span class="label">Gameplay video</span>}
           </div>
         </div>
@@ -53,42 +58,54 @@ const hasStores = game.stores.appStore || game.stores.googlePlay;
         )}
       </div>
     </div>
-  </section>
+  </header>
 
-  <section class="section" aria-labelledby="how-title">
-    <div class="wrap section__inner">
-      <h2 id="how-title" class="display h2" data-reveal>How to play<span class="dot">.</span></h2>
-      <div class="how" data-stagger="0.12">
-        {game.howToPlay.map((step, i) => (
-          <div class:list={['how__step', ['yellow', 'cream', 'dark'][i % 3]]} data-reveal>
-            <span class="display how__num">{String(i + 1).padStart(2, '0')}</span>
-            <h3 class="display how__h">{step.title}<span class="dot">.</span></h3>
-            <p>{step.text}</p>
-          </div>
-        ))}
-      </div>
+  <Checker pattern="r2kyc2krk3yr" height="40px" class="rule-b" />
+
+  <!-- How to play: edge-to-edge color columns -->
+  <section class="how-sec" aria-labelledby="how-title">
+    <div class="wrap how-head">
+      <span class="label" data-reveal>01 / How to play</span>
+      <h2 id="how-title" class="display h2" data-reveal style="--d:.08s">How to play<span class="dot">.</span></h2>
     </div>
+    <ol class="how" data-stagger="0.12">
+      {game.howToPlay.map((step, i) => (
+        <li class:list={['how__step', ['yellow', 'cream', 'dark'][i % 3]]} data-reveal>
+          <span class="display how__num">{String(i + 1).padStart(2, '0')}</span>
+          <h3 class="display how__h">{step.title}<span class="dot">.</span></h3>
+          <p>{step.text}</p>
+        </li>
+      ))}
+    </ol>
   </section>
 
-  <section class="section yellow" aria-labelledby="shots-title">
-    <div class="wrap section__inner">
-      <h2 id="shots-title" class="display h2" data-reveal>Screenshots<span class="dot">.</span></h2>
-      <div class="shots" data-stagger="0.07">
-        {shots.map((src, i) => (
-          <div class="shot" data-reveal="pop">
-            <div class:list={['shot__screen', i % 2 ? 'red' : '']}>
-              {src ? <img src={url(src)} alt={`${game.title} screenshot ${i + 1}`} loading="lazy" /> : <span class="label">Screen {i + 1}</span>}
-            </div>
-          </div>
-        ))}
+  <!-- Screenshots: a strip that starts on the page column and runs off the right edge -->
+  <section id="shots" class="shots-sec yellow" aria-labelledby="shots-title">
+    <div class="wrap shots-head">
+      <div>
+        <span class="label" data-reveal>02 / Screenshots</span>
+        <h2 id="shots-title" class="display h2" data-reveal style="--d:.08s">Screenshots<span class="dot">.</span></h2>
       </div>
+      {game.screenshots.length > 0 && <span class="label shots-hint" data-reveal style="--d:.16s">Tap a screen to look closer</span>}
+    </div>
+    <div class="shots" data-stagger="0.07">
+      {shots.map((src, i) => (
+        <div class="shot" data-reveal="pop">
+          {src
+            ? <button type="button" class="shot__screen" data-shot={url(src)} aria-label={`Open ${game.title} screenshot ${i + 1}`}><img src={url(src)} alt={`${game.title} screenshot ${i + 1}`} loading="lazy" /></button>
+            : <div class:list={['shot__screen', i % 2 ? 'red' : '']}><span class="label">Screen {i + 1}</span></div>}
+        </div>
+      ))}
     </div>
   </section>
 
   {game.features.length > 0 && (
-    <section class="section" aria-labelledby="feat-title">
+    <section class="feat-sec" aria-labelledby="feat-title">
       <div class="feat">
-        <div class="feat__left"><h2 id="feat-title" class="display h2" data-reveal>Why you'll<br />love it<span class="dot">.</span></h2></div>
+        <div class="feat__left">
+          <span class="label" data-reveal>03 / Features</span>
+          <h2 id="feat-title" class="display feat__title" data-reveal style="--d:.08s">Why you'll<br />love it<span class="dot">.</span></h2>
+        </div>
         <ul class="feat__list" data-stagger>
           {game.features.map((f) => <li data-reveal="left"><span class="feat__sq" aria-hidden="true"></span>{f}</li>)}
         </ul>
@@ -96,8 +113,8 @@ const hasStores = game.stores.appStore || game.stores.googlePlay;
     </section>
   )}
 
-  <section class="section" aria-labelledby="more-title">
-    <div class="wrap section__inner more">
+  <section class="more-sec" aria-labelledby="more-title">
+    <div class="wrap more">
       <div>
         <h2 id="more-title" class="display more__title" data-reveal>{others.length ? 'More games' : 'More games soon'}<span class="dot">.</span></h2>
         <p data-reveal style="--d:.08s">Need help with {game.title}? Visit support or read the privacy policy.</p>
@@ -113,57 +130,120 @@ const hasStores = game.stores.appStore || game.stores.googlePlay;
     )}
   </section>
   <Checker pattern="k2yrkr3ykc2rk" height="40px" class="rule-b" />
+
+  <dialog class="lb" data-lightbox aria-label={`${game.title} screenshot`}>
+    <img class="lb__img" src="" alt="" data-lightbox-img />
+    <button type="button" class="btn btn--small lb__close" data-lightbox-close>Close</button>
+  </dialog>
 </Base>
 
 <style>
-  .g-hero { max-width: var(--max); margin: 0 auto; display: flex; flex-wrap: wrap; }
-  .g-hero__text { flex: 1.4 1 520px; min-width: 0; padding: clamp(44px, 6vw, 72px) var(--gutter); display: flex; flex-direction: column; gap: 22px; border-right: var(--rule); }
-  .g-hero__text p { margin: 0; max-width: 560px; }
-  .g-title { font-size: clamp(84px, 11.5vw, 180px); }
-  .tags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
-  .tags li { border: var(--rule); padding: 8px 12px; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; }
+  /* Hero (same full-bleed grid as the other pages) */
+  .g-hero { border-bottom: var(--rule); }
+  .g-hero__grid { --side: max(0px, (100% - var(--max)) / 2); display: flex; flex-wrap: wrap; }
+  .g-hero__text {
+    flex: 0 1 calc(var(--side) + min(100%, var(--max)) * .52); min-width: 0; container-type: inline-size;
+    padding: clamp(44px, 6vw, 88px) var(--gutter) clamp(40px, 5vw, 64px) calc(var(--side) + var(--gutter));
+    display: flex; flex-direction: column; gap: 20px; border-right: var(--rule);
+  }
+  .g-crumb { text-decoration: none; }
+  .g-title { font-size: clamp(72px, 20cqi, 190px); line-height: .88; }
+  .g-tagline { margin: 0; max-width: 560px; }
+  .g-desc { margin: 0; max-width: 560px; font-size: 17px; }
+  .tags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .tags li { font-family: var(--font-label); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; border: var(--rule); padding: 8px 12px; }
   .tags__status { background: var(--yellow); }
-  .stores { display: flex; flex-wrap: wrap; gap: 12px; }
-  .g-hero__art { flex: 1 1 440px; min-height: 540px; position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 22px; align-items: center; justify-content: center; padding-block: 32px; }
+  .stores { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
+
+  .g-hero__art {
+    flex: 1 1 440px; min-width: 0; min-height: clamp(600px, 52vw, 760px); position: relative; overflow: hidden;
+    display: flex; flex-direction: column; gap: 22px; align-items: center; justify-content: center; padding-block: 40px;
+  }
+  .g-hero__bg { position: absolute; inset: -24px; width: calc(100% + 48px); height: calc(100% + 48px); max-width: none; object-fit: cover; transition: translate .5s var(--ease-out); }
+  .phone { width: 260px; height: 520px; background: var(--black); border-radius: 38px; padding: 12px; position: relative; z-index: 1; box-shadow: 12px 12px 0 var(--black); transition: translate .5s var(--ease-out); }
+  .phone__screen { width: 100%; height: 100%; border-radius: 28px; background: var(--yellow); overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .phone__screen video, .phone__screen img { width: 100%; height: 100%; object-fit: cover; }
   /* Trailer autoplays muted (browsers require it); this turns the music on */
   .phone__sound { position: relative; z-index: 1; }
   .phone__sound-sq { width: 12px; height: 12px; background: var(--red); transform: rotate(-14deg); transition: transform .35s var(--ease-pop); }
   .phone__sound[aria-pressed="true"] .phone__sound-sq { transform: rotate(31deg) scale(1.2); }
-  @media (prefers-reduced-motion: reduce) { .phone__sound-sq { transition: none; } }
-  .phone { width: 250px; height: 500px; background: var(--black); border-radius: 36px; padding: 12px; position: relative; z-index: 1; }
-  .phone__screen { width: 100%; height: 100%; border-radius: 26px; background: var(--yellow); overflow: hidden; display: flex; align-items: center; justify-content: center; }
-  .phone__screen video, .phone__screen img { width: 100%; height: 100%; object-fit: cover; }
-  @media (max-width: 960px) { .g-hero__text { border-right: 0; border-bottom: var(--rule); } .g-hero__art { min-height: 460px; } }
 
-  .how { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; margin-top: 36px; }
-  .how__step { border: var(--rule); padding: 30px; display: flex; flex-direction: column; gap: 12px; }
-  .how__step p { margin: 0; }
+  /* How to play */
+  .how-sec { border-bottom: var(--rule); }
+  .how-head { padding-block: clamp(48px, 6vw, 80px) clamp(28px, 3vw, 40px); display: flex; flex-direction: column; gap: 12px; }
+  .how { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); border-top: var(--rule); }
+  .how__step { padding: clamp(32px, 4vw, 56px) clamp(24px, 3vw, 48px) clamp(40px, 5vw, 72px); display: flex; flex-direction: column; gap: 14px; min-height: 340px; border-right: var(--rule); }
+  .how__step:last-child { border-right: 0; }
+  .how__step p { margin: 0; font-size: 18px; max-width: 380px; }
   .cream { background: var(--cream); }
-  .how__num { font-size: 64px; }
-  .how__step.cream .how__num { color: var(--red); }
+  .how__num { font-size: clamp(72px, 8vw, 120px); line-height: .9; }
+  .how__step.cream .how__num, .how__step.yellow .how__num { color: var(--red); }
   .how__step.dark .how__num { color: var(--hi); }
-  .how__h { font-size: 32px; }
+  .how__h { font-size: clamp(32px, 3vw, 44px); }
 
-  .shots { display: flex; gap: 22px; overflow-x: auto; padding: 36px 4px 12px; scroll-snap-type: x mandatory; }
-  .shot { flex: 0 0 220px; height: 440px; background: var(--black); border-radius: 28px; padding: 10px; scroll-snap-align: start; }
-  .shot__screen { height: 100%; border-radius: 20px; background: var(--cream); overflow: hidden; display: flex; align-items: center; justify-content: center; }
-  .shot__screen img { width: 100%; height: 100%; object-fit: cover; }
+  /* Screenshots */
+  .shots-sec { --side: max(0px, (100% - var(--max)) / 2); border-bottom: var(--rule); padding-block: clamp(48px, 6vw, 80px) clamp(40px, 5vw, 64px); overflow: hidden; }
+  .shots-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px; }
+  .shots-head > div { display: flex; flex-direction: column; gap: 12px; }
+  .shots-hint { font-size: 11px; }
+  .shots {
+    display: flex; gap: 26px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin;
+    padding: 40px var(--gutter) 28px calc(var(--side) + var(--gutter)); scroll-padding-left: calc(var(--side) + var(--gutter));
+  }
+  .shot { flex: 0 0 clamp(220px, 20vw, 280px); scroll-snap-align: start; }
+  .shot__screen {
+    display: flex; align-items: center; justify-content: center; width: 100%; aspect-ratio: 9 / 18; padding: 10px; border: 0;
+    background: var(--black); border-radius: 30px; overflow: hidden; cursor: zoom-in; transition: transform .4s var(--ease-pop), box-shadow .3s var(--ease-out);
+  }
+  .shot:nth-child(odd) .shot__screen { transform: rotate(-2deg); }
+  .shot:nth-child(even) .shot__screen { transform: rotate(2deg) translateY(14px); }
+  button.shot__screen:hover, button.shot__screen:focus-visible { transform: rotate(0) translateY(-8px); box-shadow: 10px 10px 0 var(--red); }
+  .shot__screen img { width: 100%; height: 100%; object-fit: cover; border-radius: 22px; }
+  div.shot__screen { cursor: default; background: var(--cream); border: 10px solid var(--black); }
 
-  .feat { max-width: var(--max); margin: 0 auto; display: flex; flex-wrap: wrap; }
-  .feat__left { flex: 1 1 380px; padding: clamp(48px, 7vw, 80px) var(--gutter); border-right: var(--rule); }
-  .feat__list { flex: 1 1 520px; list-style: none; margin: 0; padding: clamp(24px, 7vw, 80px) var(--gutter); }
-  .feat__list li { display: flex; gap: 18px; align-items: baseline; padding: 20px 0; border-bottom: var(--rule); font-size: 20px; font-weight: 700; }
+  /* Features */
+  .feat-sec { border-bottom: var(--rule); }
+  .feat { --side: max(0px, (100% - var(--max)) / 2); display: flex; flex-wrap: wrap; }
+  .feat__left { flex: 0 1 calc(var(--side) + min(100%, var(--max)) * .4); padding: clamp(48px, 7vw, 88px) var(--gutter) clamp(32px, 5vw, 64px) calc(var(--side) + var(--gutter)); border-right: var(--rule); display: flex; flex-direction: column; gap: 12px; }
+  .feat__title { font-size: clamp(56px, 6vw, 92px); }
+  .feat__list { flex: 1 1 520px; list-style: none; margin: 0; padding: clamp(24px, 6vw, 72px) calc(var(--side) + var(--gutter)) clamp(24px, 6vw, 72px) clamp(24px, 4vw, 64px); }
+  .feat__list li { display: flex; gap: 18px; align-items: baseline; padding: 22px 0; border-bottom: var(--rule); font-size: clamp(19px, 1.8vw, 24px); font-weight: 700; }
   .feat__sq { flex: 0 0 14px; height: 14px; background: var(--red); transform: rotate(-14deg); }
-  @media (max-width: 900px) { .feat__left { border-right: 0; padding-bottom: 0; } }
 
-  .more { display: flex; flex-wrap: wrap; gap: 28px; justify-content: space-between; align-items: center; }
+  /* More */
+  .more-sec { border-bottom: var(--rule); }
+  .more { display: flex; flex-wrap: wrap; gap: 28px; justify-content: space-between; align-items: center; padding-block: clamp(48px, 6vw, 80px); }
   .more p { margin: 10px 0 0; }
-  .more__title { font-size: clamp(48px, 5vw, 64px); }
+  .more__title { font-size: clamp(48px, 5vw, 72px); }
   .more__btns { display: flex; flex-wrap: wrap; gap: 12px; }
   .others { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; padding-bottom: 72px; }
+
+  /* Lightbox */
+  .lb { border: 0; padding: 0; background: transparent; max-width: min(92vw, 520px); max-height: 92vh; overflow: visible; }
+  .lb::backdrop { background: rgb(24 24 24 / .86); }
+  .lb[open] { animation: lb-pop .35s var(--ease-pop); }
+  @keyframes lb-pop { from { opacity: 0; transform: scale(.88) rotate(-3deg); } to { opacity: 1; transform: none; } }
+  .lb__img { display: block; max-height: 84vh; width: auto; max-width: 100%; border: 10px solid var(--black); border-radius: 30px; background: var(--black); }
+  .lb__close { position: absolute; top: -18px; right: -18px; }
+
+  @media (max-width: 960px) {
+    .g-hero__text { flex-basis: 100%; border-right: 0; border-bottom: var(--rule); }
+    .g-hero__art { min-height: 620px; }
+    .how__step { border-right: 0; border-bottom: var(--rule); min-height: 0; }
+    .how__step:last-child { border-bottom: 0; }
+    .feat__left { flex-basis: 100%; border-right: 0; padding-bottom: 0; }
+    .feat__list { padding: 16px var(--gutter) 48px; }
+    .lb__close { top: auto; bottom: -60px; right: 50%; translate: 50% 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .phone__sound-sq, .g-hero__bg, .phone, .shot__screen { transition: none; }
+    .lb[open] { animation: none; }
+  }
 </style>
 
 <script>
+  // Trailer sound toggle
   document.querySelectorAll<HTMLButtonElement>('[data-sound-toggle]').forEach((btn) => {
     const video = btn.parentElement?.querySelector('video');
     const label = btn.querySelector('[data-sound-label]');
@@ -175,4 +255,17 @@ const hasStores = game.stores.appStore || game.stores.googlePlay;
       label.textContent = video.muted ? 'Sound on' : 'Sound off';
     });
   });
+
+  // Screenshot lightbox (native <dialog>: Esc closes, focus is handled by the browser)
+  const lb = document.querySelector<HTMLDialogElement>('[data-lightbox]');
+  const lbImg = document.querySelector<HTMLImageElement>('[data-lightbox-img]');
+  if (lb && lbImg) {
+    document.querySelectorAll<HTMLButtonElement>('[data-shot]').forEach((btn) => btn.addEventListener('click', () => {
+      lbImg.src = btn.dataset.shot || '';
+      lbImg.alt = btn.querySelector('img')?.alt || '';
+      lb.showModal();
+    }));
+    lb.querySelector('[data-lightbox-close]')?.addEventListener('click', () => lb.close());
+    lb.addEventListener('click', (e) => { if (e.target === lb) lb.close(); });
+  }
 </script>
