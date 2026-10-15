@@ -412,9 +412,9 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
 
   /* Newsletter */
   .hnl { border-bottom: var(--rule); container-type: inline-size; }
-  /* "Take a play break." is about 6.6em wide in Anton, so this fills the width */
+  /* "Take a play break." is about 7.1em wide in Anton, so this fills the width with a little room */
   .hnl__mark { border-bottom: var(--rule); overflow: hidden; padding: clamp(28px, 3vw, 48px) var(--gutter) clamp(12px, 1.5vw, 24px); }
-  .hnl__big { font-size: calc((100cqi - 2 * var(--gutter)) / 6.9); line-height: .9; margin: 0; white-space: nowrap; text-align: center; letter-spacing: -.01em; color: var(--red); }
+  .hnl__big { font-size: calc((100cqi - 2 * var(--gutter)) / 7.4); line-height: .9; margin: 0; white-space: nowrap; text-align: center; letter-spacing: -.01em; color: var(--red); }
   :global(.js) .hnl__big[data-reveal] { opacity: 1; transform: none; }
   :global(.js) .hnl__big .fw > span:first-child { transform: translateY(105%); transition: transform .8s var(--ease-out); transition-delay: calc(var(--i) * 90ms + .05s); }
   :global(.js) .hnl__big.is-in .fw > span:first-child { transform: none; }
