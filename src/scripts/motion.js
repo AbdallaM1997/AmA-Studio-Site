@@ -219,7 +219,7 @@ function setupSections() {
   if (secs.length < 2) return;
 
   const nameOf = (el) => {
-    const label = el.getAttribute('aria-label') || el.querySelector('.label')?.textContent || el.querySelector('h1, h2')?.textContent || '';
+    const label = el.querySelector('.label')?.textContent || el.getAttribute('aria-label') || el.querySelector('h1, h2')?.textContent || '';
     return label.replace(/\s+/g, ' ').trim().slice(0, 32) || 'Section';
   };
 
