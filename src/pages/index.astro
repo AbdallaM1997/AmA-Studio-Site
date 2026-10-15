@@ -4,7 +4,6 @@ import { url } from '../lib/url';
 import Base from '../layouts/Base.astro';
 import Logo from '../components/Logo.astro';
 import Checker from '../components/Checker.astro';
-import SectionHead from '../components/SectionHead.astro';
 import NewsRow from '../components/NewsRow.astro';
 import site from '../data/site.json';
 import games from '../data/games.json';
@@ -56,15 +55,15 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
 
   <!-- 02 / GAMES: featured game as a full-width band, art runs to the left edge -->
   <section id="games" class="hgames" aria-label="Our games">
-    <div class="hgames__mark">
-      <h2 class="display hgames__big" data-reveal style="--d:.3s">
+    <div class="hmark">
+      <h2 class="display hbig" data-reveal style="--d:.3s;--fit:4.6">
         <span class="fw"><span style="--i:0">Our</span></span>{' '}<span class="fw"><span style="--i:1">games</span><span class="dot">.</span></span>
       </h2>
     </div>
-    <div class="hgames__bar">
-      <span class="label hgames__label" data-reveal>02 / Games</span>
-      <span class="hgames__count" data-reveal>{games.length} {games.length === 1 ? 'game' : 'games'} · more in the lab</span>
-      <a href={url('/games/')} class="hgames__all" data-reveal>All games <span class="arrow">→</span></a>
+    <div class="hbar">
+      <span class="label hbar__label" data-reveal>02 / Games</span>
+      <span class="hbar__mid" data-reveal>{games.length} {games.length === 1 ? 'game' : 'games'} · more in the lab</span>
+      <a href={url('/games/')} class="hbar__link" data-reveal>All games <span class="arrow">→</span></a>
     </div>
     {featured && (
       <div class="hband">
@@ -171,8 +170,15 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
   <!-- 05 / NEWS: full-width rows -->
   {latest.length > 0 && (
     <section class="hnews" aria-label="News">
-      <div class="wrap hsec-head">
-        <SectionHead num="05" label="News" title="From the lab" link={{ href: '/news/', text: 'All posts' }} />
+      <div class="hmark">
+        <h2 class="display hbig" data-reveal style="--d:.3s;--fit:5.6">
+          {['From', 'the', 'lab'].map((w, i) => <>{i > 0 && ' '}<span class="fw"><span style={`--i:${i}`}>{w}</span>{i === 2 && <span class="dot">.</span>}</span></>)}
+        </h2>
+      </div>
+      <div class="hbar">
+        <span class="label hbar__label" data-reveal>05 / News</span>
+        <span class="hbar__mid" data-reveal>Devlogs, launches and studio news</span>
+        <a href={url('/news/')} class="hbar__link" data-reveal>All posts <span class="arrow">→</span></a>
       </div>
       <ol class="hnews__rows" data-stagger="0.08">
         {latest.map((post, i) => <NewsRow post={post} num={latest.length - i} />)}
@@ -336,28 +342,28 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
   .hsec-head :global(.section-head) { margin-bottom: 0; }
 
   /* Games */
-  .hgames { container-type: inline-size; }
-  /* "Our games." is about 4.4em wide in Anton, so this fills the width with a little room */
-  .hgames__mark { border-bottom: var(--rule); overflow: hidden; padding: clamp(28px, 3vw, 48px) var(--gutter) clamp(12px, 1.5vw, 24px); }
-  .hgames__big { font-size: calc((100cqi - 2 * var(--gutter)) / 4.6); line-height: .9; margin: 0; white-space: nowrap; text-align: center; letter-spacing: -.01em; }
-  :global(.js) .hgames__big[data-reveal] { opacity: 1; transform: none; }
-  :global(.js) .hgames__big .fw > span:first-child { transform: translateY(105%); transition: transform .8s var(--ease-out); transition-delay: calc(var(--i) * 110ms + .05s); }
-  :global(.js) .hgames__big.is-in .fw > span:first-child { transform: none; }
-  .hgames__bar { display: flex; align-items: stretch; min-height: 64px; }
-  .hgames__label { display: flex; align-items: center; padding: 0 clamp(18px, 2.5vw, 36px) 0 calc(max(0px, (100cqi - var(--max)) / 2) + var(--gutter)); border-right: var(--rule); }
-  .hgames__count { display: flex; align-items: center; flex: 1; padding: 0 clamp(18px, 2.5vw, 36px); font-weight: 700; }
-  .hgames__all {
+  .hgames, .hnews { container-type: inline-size; }
+  /* Giant section titles: --fit is the title width in em (+ a little room), so it fills the section edge to edge */
+  .hmark { border-bottom: var(--rule); overflow: hidden; padding: clamp(28px, 3vw, 48px) var(--gutter) clamp(12px, 1.5vw, 24px); }
+  .hbig { font-size: calc((100cqi - 2 * var(--gutter)) / var(--fit, 5)); line-height: .9; margin: 0; white-space: nowrap; text-align: center; letter-spacing: -.01em; }
+  :global(.js) .hbig[data-reveal] { opacity: 1; transform: none; }
+  :global(.js) .hbig .fw > span:first-child { transform: translateY(105%); transition: transform .8s var(--ease-out); transition-delay: calc(var(--i) * 110ms + .05s); }
+  :global(.js) .hbig.is-in .fw > span:first-child { transform: none; }
+  .hbar { display: flex; align-items: stretch; min-height: 64px; }
+  .hbar__label { display: flex; align-items: center; padding: 0 clamp(18px, 2.5vw, 36px) 0 calc(max(0px, (100cqi - var(--max)) / 2) + var(--gutter)); border-right: var(--rule); }
+  .hbar__mid { display: flex; align-items: center; flex: 1; padding: 0 clamp(18px, 2.5vw, 36px); font-weight: 700; }
+  .hbar__link {
     position: relative; overflow: hidden; display: flex; align-items: center; gap: 10px; border-left: var(--rule); text-decoration: none;
     padding: 0 calc(max(0px, (100cqi - var(--max)) / 2) + var(--gutter)) 0 clamp(18px, 2.5vw, 36px);
     font-family: var(--font-label); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink);
   }
-  .hgames__all { z-index: 0; }
-  .hgames__all::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--yellow); clip-path: inset(100% 0 0 0); transition: clip-path .3s var(--ease-out); }
-  .hgames__all:hover { color: var(--black); }
-  .hgames__all:hover::before { clip-path: inset(0 0 0 0); }
-  .hgames__all:hover .arrow { transform: translateX(6px); }
-  @media (max-width: 600px) { .hgames__count { display: none; } .hgames__all { margin-left: auto; } }
-  @media (prefers-reduced-motion: reduce) { :global(.js) .hgames__big .fw > span:first-child { transform: none; transition: none; } .hgames__all::before { transition: none; } }
+  .hbar__link { z-index: 0; }
+  .hbar__link::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--yellow); clip-path: inset(100% 0 0 0); transition: clip-path .3s var(--ease-out); }
+  .hbar__link:hover { color: var(--black); }
+  .hbar__link:hover::before { clip-path: inset(0 0 0 0); }
+  .hbar__link:hover .arrow { transform: translateX(6px); }
+  @media (max-width: 600px) { .hbar__mid { display: none; } .hbar__link { margin-left: auto; } }
+  @media (prefers-reduced-motion: reduce) { :global(.js) .hbig .fw > span:first-child { transform: none; transition: none; } .hbar__link::before { transition: none; } }
   .hband { border-top: var(--rule); border-bottom: var(--rule); }
   .hband__art { flex: 1 1 440px; min-width: 0; min-height: clamp(420px, 44vw, 660px); position: relative; overflow: hidden; display: block; border-right: var(--rule); }
   .hband__media { position: absolute; inset: -20px; width: calc(100% + 40px); height: calc(100% + 40px); max-width: none; object-fit: cover; transition: translate .5s var(--ease-out); }
