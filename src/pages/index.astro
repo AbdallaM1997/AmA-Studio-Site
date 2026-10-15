@@ -55,9 +55,16 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
   </section>
 
   <!-- 02 / GAMES: featured game as a full-width band, art runs to the left edge -->
-  <section id="games" class="hgames" aria-labelledby="games-title">
-    <div class="wrap hsec-head">
-      <SectionHead num="02" label="Games" title="Our games" link={{ href: '/games/', text: 'All games' }} />
+  <section id="games" class="hgames" aria-label="Our games">
+    <div class="hgames__mark">
+      <h2 class="display hgames__big" data-reveal style="--d:.3s">
+        <span class="fw"><span style="--i:0">Our</span></span>{' '}<span class="fw"><span style="--i:1">games</span><span class="dot">.</span></span>
+      </h2>
+    </div>
+    <div class="hgames__bar">
+      <span class="label hgames__label" data-reveal>02 / Games</span>
+      <span class="hgames__count" data-reveal>{games.length} {games.length === 1 ? 'game' : 'games'} · more in the lab</span>
+      <a href={url('/games/')} class="hgames__all" data-reveal>All games <span class="arrow">→</span></a>
     </div>
     {featured && (
       <div class="hband">
@@ -73,7 +80,7 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
             <li data-reveal="pop">{featured.genre}</li>
             {featured.platforms.map((p) => <li data-reveal="pop">{p}</li>)}
           </ul>
-          <h3 id="games-title" class="display hband__title" data-reveal style="--d:.08s">{featured.title}<span class="dot">.</span></h3>
+          <h3 class="display hband__title" data-reveal style="--d:.08s">{featured.title}<span class="dot">.</span></h3>
           <p class="lead hband__tagline" data-reveal style="--d:.14s">{featured.tagline}</p>
           <p class="hband__desc" data-reveal style="--d:.2s">{featured.description}</p>
           <div class="hband__ctas" data-reveal style="--d:.26s">
@@ -329,6 +336,28 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
   .hsec-head :global(.section-head) { margin-bottom: 0; }
 
   /* Games */
+  .hgames { container-type: inline-size; }
+  /* "Our games." is about 5.1em wide in Anton, so this fills the width with a little room */
+  .hgames__mark { border-bottom: var(--rule); overflow: hidden; padding: clamp(28px, 3vw, 48px) var(--gutter) clamp(12px, 1.5vw, 24px); }
+  .hgames__big { font-size: calc((100cqi - 2 * var(--gutter)) / 5.4); line-height: .9; margin: 0; white-space: nowrap; text-align: center; letter-spacing: -.01em; }
+  :global(.js) .hgames__big[data-reveal] { opacity: 1; transform: none; }
+  :global(.js) .hgames__big .fw > span:first-child { transform: translateY(105%); transition: transform .8s var(--ease-out); transition-delay: calc(var(--i) * 110ms + .05s); }
+  :global(.js) .hgames__big.is-in .fw > span:first-child { transform: none; }
+  .hgames__bar { display: flex; align-items: stretch; min-height: 64px; }
+  .hgames__label { display: flex; align-items: center; padding: 0 clamp(18px, 2.5vw, 36px) 0 calc(max(0px, (100cqi - var(--max)) / 2) + var(--gutter)); border-right: var(--rule); }
+  .hgames__count { display: flex; align-items: center; flex: 1; padding: 0 clamp(18px, 2.5vw, 36px); font-weight: 700; }
+  .hgames__all {
+    position: relative; overflow: hidden; display: flex; align-items: center; gap: 10px; border-left: var(--rule); text-decoration: none;
+    padding: 0 calc(max(0px, (100cqi - var(--max)) / 2) + var(--gutter)) 0 clamp(18px, 2.5vw, 36px);
+    font-family: var(--font-label); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink);
+  }
+  .hgames__all { z-index: 0; }
+  .hgames__all::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--yellow); clip-path: inset(100% 0 0 0); transition: clip-path .3s var(--ease-out); }
+  .hgames__all:hover { color: var(--black); }
+  .hgames__all:hover::before { clip-path: inset(0 0 0 0); }
+  .hgames__all:hover .arrow { transform: translateX(6px); }
+  @media (max-width: 600px) { .hgames__count { display: none; } .hgames__all { margin-left: auto; } }
+  @media (prefers-reduced-motion: reduce) { :global(.js) .hgames__big .fw > span:first-child { transform: none; transition: none; } .hgames__all::before { transition: none; } }
   .hband { border-top: var(--rule); border-bottom: var(--rule); }
   .hband__art { flex: 1 1 440px; min-width: 0; min-height: clamp(420px, 44vw, 660px); position: relative; overflow: hidden; display: block; border-right: var(--rule); }
   .hband__media { position: absolute; inset: -20px; width: calc(100% + 40px); height: calc(100% + 40px); max-width: none; object-fit: cover; transition: translate .5s var(--ease-out); }
