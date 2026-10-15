@@ -188,6 +188,8 @@ a:hover { color: var(--red); }
 .has-cursor, .has-cursor * { cursor: none !important; }
 .has-cursor :is(input, textarea, select, [contenteditable]) { cursor: text !important; }
 .cursor { position: fixed; left: 0; top: 0; z-index: 2000; pointer-events: none; opacity: 0; transition: opacity .2s; }
+/* The cursor lives in the top layer (as a popover) so it stays above modal pop-ups; undo the popover's default box */
+.cursor[popover] { inset: 0 auto auto 0; margin: 0; padding: 0; border: 0; background: none; overflow: visible; width: 0; height: 0; color: inherit; }
 .cursor.is-on { opacity: 1; }
 .cursor__dot, .cursor__ring { position: fixed; left: 0; top: 0; display: block; will-change: transform; }
 .cursor__dot { width: 8px; height: 8px; margin: -4px 0 0 -4px; background: var(--c-ink, var(--ink)); }

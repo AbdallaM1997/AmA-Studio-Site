@@ -173,6 +173,21 @@ function setupCursor() {
   el.innerHTML = '<span class="cursor__ring"></span><span class="cursor__dot"></span>';
   document.body.append(el);
   document.documentElement.classList.add('has-cursor');
+
+  // Pop-ups (<dialog> modals) sit in the browser's top layer, above any z-index.
+  // Put the cursor in the top layer too, and bring it back to the front whenever a dialog opens.
+  const canTop = typeof el.showPopover === 'function';
+  const toFront = () => {
+    if (!canTop) return;
+    try { if (el.matches(':popover-open')) el.hidePopover(); el.showPopover(); } catch (e) {}
+  };
+  if (canTop) {
+    el.setAttribute('popover', 'manual');
+    toFront();
+    new MutationObserver((list) => {
+      if (list.some((m) => m.target.tagName === 'DIALOG' && m.target.hasAttribute('open'))) toFront();
+    }).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['open'] });
+  }
   const dot = el.firstElementChild.nextElementSibling;
   const ring = el.firstElementChild;
 
