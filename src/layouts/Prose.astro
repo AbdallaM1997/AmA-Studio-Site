@@ -1,27 +1,152 @@
 ---
-/** Simple text page (support, privacy, terms). Write the content as normal HTML inside it. */
+/**
+ * Long text page (privacy, terms). Write the content as normal HTML inside it.
+ * Every <h2> becomes a numbered section and an entry in the sticky "On this page" list.
+ */
+import { url } from '../lib/url';
 import Base from './Base.astro';
+import Checker from '../components/Checker.astro';
+import site from '../data/site.json';
+
 interface Props { title: string; label: string; description?: string; updated?: string }
 const { title, label, description, updated } = Astro.props;
+
+const slugify = (s: string) => s.toLowerCase().replace(/&[a-z]+;/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const toc: { id: string; text: string; num: string }[] = [];
+const raw = await Astro.slots.render('default');
+const body = raw.replace(/<h2([^>]*)>([\s\S]*?)<\/h2>/g, (_m, attrs: string, inner: string) => {
+  const text = inner.replace(/<[^>]+>/g, '').trim();
+  const num = String(toc.length + 1).padStart(2, '0');
+  const id = `${num}-${slugify(text)}`;
+  toc.push({ id, text, num });
+  return `<h2${attrs} id="${id}"><span class="prose-num">${num}</span>${inner}</h2>`;
+});
 ---
 <Base title={title} description={description}>
-  <section class="section">
-    <div class="wrap section__inner">
-      <span class="label" data-reveal>{label}</span>
-      <h1 class="display prose-title" data-reveal style="--d:.08s">{title}<span class="dot">.</span></h1>
-      {updated && <p class="updated" data-reveal style="--d:.12s">Last updated: {updated}</p>}
-      <div class="prose" data-reveal style="--d:.16s"><slot /></div>
+  <!-- Hero: title on the left, the help panel runs to the right edge -->
+  <header class="phero">
+    <div class="phero__grid">
+      <div class="phero__text">
+        <span class="label" data-reveal>{label}</span>
+        <h1 class="display phero__title" data-reveal style="--d:.08s">{title}<span class="dot">.</span></h1>
+        {description && <p class="lead phero__lead" data-reveal style="--d:.16s">{description}</p>}
+        <dl class="phero__facts" data-stagger="0.08">
+          {updated && <div data-reveal="pop"><dt class="label">Last updated</dt><dd>{updated}</dd></div>}
+          <div data-reveal="pop"><dt class="label">Sections</dt><dd>{toc.length}</dd></div>
+          <div data-reveal="pop"><dt class="label">From</dt><dd>{site.name}</dd></div>
+        </dl>
+      </div>
+      <div class="phero__panel yellow" data-reveal="wipe" data-parallax>
+        <span class="sq-wrap" data-depth="28" style="left:8%;top:12%"><span class="sq sq--red float" style="width:58px;height:58px;transform:rotate(16deg)"></span></span>
+        <span class="sq-wrap" data-depth="-20" style="right:9%;bottom:14%"><span class="sq sq--black float" style="width:36px;height:36px;transform:rotate(-12deg);--delay:-2s"></span></span>
+        <div class="phero__card" data-depth="8">
+          <span class="label">Questions?</span>
+          <p class="phero__card-text">Ask us anything about this page.</p>
+          <a href={`mailto:${site.email}`} class="display phero__email">{site.email}</a>
+          <a href={url('/support/')} class="textlink">Visit support <span class="arrow">→</span></a>
+        </div>
+      </div>
     </div>
-  </section>
+  </header>
+
+  <Checker pattern="k2yrkr3ykc2rk" height="40px" class="rule-b" />
+
+  <!-- Body: sticky contents rail + the text -->
+  <div class="pbody wrap">
+    {toc.length > 0 && (
+      <nav class="ptoc" aria-label="On this page">
+        <div class="ptoc__inner" data-reveal="left">
+          <span class="label ptoc__label">On this page</span>
+          <ol class="ptoc__list">
+            {toc.map((t) => <li><a href={`#${t.id}`} data-toc={t.id}><span class="ptoc__num">{t.num}</span>{t.text}</a></li>)}
+          </ol>
+        </div>
+      </nav>
+    )}
+    <div class="prose" data-reveal style="--d:.1s"><Fragment set:html={body} /></div>
+  </div>
+
+  <Checker pattern="yk2rcyrk3ckr" height="40px" class="rule-b" />
 </Base>
 
 <style>
-  .prose-title { font-size: clamp(60px, 9vw, 130px); margin-top: 14px; }
-  .updated { font-weight: 700; margin: 18px 0 0; }
-  .prose { max-width: 780px; margin-top: 36px; }
-  .prose :global(h2) { font-family: var(--font-display); font-weight: 400; font-size: 38px; line-height: 1; margin: 1.6em 0 .5em; }
-  .prose :global(p), .prose :global(li) { font-size: 18px; }
+  /* Hero (same full-bleed grid as the other pages) */
+  .phero { border-bottom: var(--rule); }
+  .phero__grid { --side: max(0px, (100% - var(--max)) / 2); display: flex; flex-wrap: wrap; }
+  .phero__text {
+    flex: 0 1 calc(var(--side) + min(100%, var(--max)) * .56); min-width: 0; container-type: inline-size;
+    padding: clamp(48px, 7vw, 96px) var(--gutter) clamp(40px, 5vw, 64px) calc(var(--side) + var(--gutter));
+    display: flex; flex-direction: column; gap: 22px; border-right: var(--rule);
+  }
+  .phero__title { font-size: clamp(60px, 15cqi, 150px); line-height: .9; }
+  .phero__lead { margin: 0; max-width: 520px; }
+  .phero__facts { display: flex; flex-wrap: wrap; gap: 12px; margin: 6px 0 0; }
+  .phero__facts > div { border: var(--rule); padding: 10px 16px; display: flex; flex-direction: column; gap: 4px; min-width: 110px; }
+  .phero__facts dt { font-size: 11px; color: var(--red); }
+  .phero__facts dd { margin: 0; font-weight: 700; }
+
+  .phero__panel { flex: 1 1 380px; min-width: 0; min-height: clamp(340px, 34vw, 500px); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 40px var(--gutter); }
+  .phero__card {
+    position: relative; z-index: 2; background: var(--cream); border: 2px solid var(--black); box-shadow: 10px 10px 0 var(--black);
+    padding: clamp(24px, 3vw, 36px); display: flex; flex-direction: column; align-items: flex-start; gap: 12px; max-width: 480px; width: 100%;
+    transition: translate .5s var(--ease-out);
+  }
+  .phero__card-text { margin: 0; font-size: 17px; }
+  .phero__email { font-size: clamp(26px, 2.8vw, 42px); line-height: 1; text-decoration: none; overflow-wrap: anywhere; }
+  .phero__email:hover { color: var(--red); }
+
+  /* Body */
+  .pbody { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: clamp(28px, 5vw, 88px); padding-block: clamp(48px, 7vw, 96px); }
+  .ptoc__inner { position: sticky; top: 108px; }
+  .ptoc__label { display: block; font-size: 12px; margin-bottom: 14px; }
+  .ptoc__list { list-style: none; margin: 0; padding: 0; border-top: var(--rule); }
+  .ptoc__list a {
+    display: flex; gap: 12px; align-items: baseline; padding: 12px 0 12px 12px; border-bottom: var(--rule);
+    text-decoration: none; font-weight: 700; font-size: 15px; position: relative;
+    transition: background .2s, padding-left .25s var(--ease-out);
+  }
+  .ptoc__num { font-family: var(--font-label); font-size: 12px; color: var(--red); }
+  .ptoc__list a:hover { color: var(--red); }
+  .ptoc__list a.is-current { background: var(--yellow); color: var(--black); }
+  .ptoc__list a.is-current .ptoc__num { color: var(--black); }
+
+  .prose { max-width: 860px; min-width: 0; }
+  .prose :global(h2) {
+    font-family: var(--font-display); font-weight: 400; font-size: clamp(38px, 4vw, 56px); line-height: 1;
+    margin: 1.4em 0 .5em; padding-top: 24px; border-top: var(--rule); scroll-margin-top: 100px;
+    display: flex; gap: 16px; align-items: baseline;
+  }
+  .prose :global(h2:first-of-type) { margin-top: .8em; }
+  .prose :global(.prose-num) { font-family: var(--font-label); font-size: 14px; color: var(--red); letter-spacing: .08em; }
+  .prose :global(p), .prose :global(li) { font-size: clamp(17px, 1.3vw, 19px); line-height: 1.65; }
   .prose :global(ul) { padding-left: 1.2em; }
+  .prose :global(li) { margin-bottom: .4em; }
   .prose :global(li::marker) { color: var(--red); }
-  .prose :global(.note) { background: var(--yellow); --ink: var(--black); --rule: 2px solid var(--black); color: var(--black); border: var(--rule); padding: 16px 20px; font-weight: 600; }
+  .prose :global(.note) { background: var(--yellow); --ink: var(--black); --rule: 2px solid var(--black); color: var(--black); border: var(--rule); padding: 16px 20px; font-weight: 600; margin-top: 0; }
+
+  @media (max-width: 960px) {
+    .phero__text { flex-basis: 100%; border-right: 0; border-bottom: var(--rule); }
+    .pbody { grid-template-columns: 1fr; }
+    .ptoc__inner { position: static; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .phero__card, .ptoc__list a { transition: none; }
+  }
 </style>
+
+<script>
+  // Highlight the section you're reading in the "On this page" list
+  const links = new Map<string, HTMLElement>();
+  document.querySelectorAll<HTMLElement>('[data-toc]').forEach((a) => links.set(a.dataset.toc || '', a));
+  if (links.size && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        links.forEach((a) => a.classList.remove('is-current'));
+        links.get(e.target.id)?.classList.add('is-current');
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+    links.forEach((_a, id) => { const h = document.getElementById(id); if (h) io.observe(h); });
+  }
+</script>
