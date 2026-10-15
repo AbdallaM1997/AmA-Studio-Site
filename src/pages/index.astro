@@ -491,6 +491,18 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
     .hperks__sq { transition: none; }
   }
 
+  /* Phones and tablets: shared splits stack, edge columns drop their page-column padding */
+  @media (max-width: 960px) {
+    .hsplit__left { flex-basis: 100%; border-right: 0; border-bottom: var(--rule); }
+    .hsplit__right { flex-basis: 100%; padding: 40px var(--gutter); }
+    .hband__art { flex-basis: 100%; border-right: 0; border-bottom: var(--rule); min-height: 125vw; }
+    .hband__text { flex-basis: 100%; padding: 40px var(--gutter) 48px; }
+    .hshelf__item, .hshelf__item:first-child, .hshelf__item:last-child { padding: 32px var(--gutter); }
+    .hshelf__item + .hshelf__item { border-left: 0; border-top: var(--rule); }
+    .dept__item, .dept__item:first-child, .dept__item:last-child { padding: 32px var(--gutter); }
+    .dept__item + .dept__item { border-left: 0; border-top: var(--rule); }
+  }
+
   /* Contact */
   .contact { border-bottom: var(--rule); }
   .contact__left { position: relative; overflow: hidden; justify-content: center; gap: 20px; }
