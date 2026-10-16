@@ -79,7 +79,7 @@ const sloganWords = site.slogan.replace(/\.$/, '').split(/\s+/);
   :global(.js) .is-in .fw > span:first-child { transform: none; }
 
   /* Columns run edge to edge; the first and last line up with the page column */
-  .footer__cols { --side: max(0px, (100cqi - var(--max)) / 2); display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; border-bottom: var(--rule); }
+  .footer__cols { --side: max(0px, (100cqi - var(--max)) / 2); display: grid; grid-template-columns: minmax(min-content, 1.4fr) repeat(3, minmax(min-content, 1fr)); border-bottom: var(--rule); }
   .footer__col { padding: clamp(32px, 4vw, 56px) clamp(20px, 2.5vw, 40px); display: flex; flex-direction: column; gap: 12px; }
   .footer__col + .footer__col { border-left: var(--rule); }
   .footer__col:first-child { padding-left: calc(var(--side) + var(--gutter)); }
