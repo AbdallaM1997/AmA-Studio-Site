@@ -210,10 +210,11 @@ const faqs = [
   .shero__panel { flex: 1 1 420px; min-width: 0; min-height: clamp(380px, 38vw, 560px); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 40px var(--gutter); }
   .shero__card {
     position: relative; z-index: 2; background: var(--cream); border: 2px solid var(--black); box-shadow: 10px 10px 0 var(--black);
-    padding: clamp(24px, 3vw, 40px); display: flex; flex-direction: column; gap: 14px; max-width: 560px; width: 100%;
+    padding: clamp(24px, 3vw, 40px); display: flex; flex-direction: column; gap: 14px; max-width: 560px; width: 100%; container-type: inline-size;
     transition: translate .5s var(--ease-out);
   }
-  .shero__email { font-size: clamp(30px, 3.4vw, 52px); line-height: 1; text-decoration: none; overflow-wrap: anywhere; }
+  /* Sized to the card so the address always stays on one line (it is about 8.3em wide) */
+  .shero__email { font-size: min(52px, 11.4cqi); line-height: 1; text-decoration: none; white-space: nowrap; }
   .shero__email:hover { color: var(--red); }
   .shero__card-btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
 
