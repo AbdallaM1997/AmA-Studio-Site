@@ -184,6 +184,7 @@ a:hover { color: var(--red); }
 /* ---------- Brand cursor (see setupCursor in src/scripts/motion.js) ----------
    Mouse only. A small square dot sits on the pointer; a tilted square frame follows it.
    Over links it grows and turns, over play areas it closes up, on click it pops.
+   Both parts carry a contrasting edge, so the cursor stays visible on red, yellow, cream and black.
    JS adds .has-cursor, so without JS (or on touch) the normal cursor stays. */
 .has-cursor, .has-cursor * { cursor: none !important; }
 .has-cursor :is(input, textarea, select, [contenteditable]) { cursor: text !important; }
@@ -192,15 +193,17 @@ a:hover { color: var(--red); }
 .cursor[popover] { inset: 0 auto auto 0; margin: 0; padding: 0; border: 0; background: none; overflow: visible; width: 0; height: 0; color: inherit; }
 .cursor.is-on { opacity: 1; }
 .cursor__dot, .cursor__ring { position: fixed; left: 0; top: 0; display: block; will-change: transform; }
-.cursor__dot { width: 8px; height: 8px; margin: -4px 0 0 -4px; background: var(--c-ink, var(--ink)); }
+.cursor__dot { width: 8px; height: 8px; margin: -4px 0 0 -4px; background: var(--c-ink, var(--ink)); box-shadow: 0 0 0 2px var(--c-edge, var(--cream)); }
 .cursor__ring { width: 30px; height: 30px; margin: -15px 0 0 -15px; }
 .cursor__ring::before {
-  content: ''; position: absolute; inset: 0; border: 2px solid var(--c-ring, var(--red));
+  content: ''; position: absolute; inset: 0; border: 2px solid var(--red);
+  /* Two-tone frame (red with a hard black edge inside and out) so it shows on every color, red included */
+  box-shadow: 0 0 0 2px var(--black), inset 0 0 0 2px var(--black);
   transform: rotate(-14deg); transition: transform .35s var(--ease-pop), background .2s;
 }
 .cursor.is-link .cursor__ring::before { transform: rotate(31deg) scale(1.55); }
 .cursor.is-toy .cursor__ring::before { transform: rotate(76deg) scale(.6); }
-.cursor.is-toy .cursor__dot { background: var(--red); }
+.cursor.is-toy .cursor__dot { background: var(--red); box-shadow: 0 0 0 2px var(--black); }
 .cursor.is-down .cursor__ring::before { transform: rotate(-14deg) scale(.75); transition-duration: .12s; }
 .cursor.is-text { opacity: 0; }
 @media (prefers-reduced-motion: reduce) { .cursor__ring::before { transition: none; } }

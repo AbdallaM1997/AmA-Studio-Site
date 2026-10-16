@@ -222,7 +222,8 @@ function setupCursor() {
     el.classList.toggle('is-toy', !!t.closest('[data-toy]') && !t.closest('a, button'));
     const ink = getComputedStyle(t).getPropertyValue('--ink').trim();
     el.style.setProperty('--c-ink', ink);
-    el.style.setProperty('--c-ring', t.closest('.red, .btn--red') ? ink : 'var(--red)');
+    // The dot's edge is the opposite of its fill (black dot gets a cream edge, cream dot a black edge)
+    el.style.setProperty('--c-edge', /^#?(f8f5ec|fff|rgb\(248)/i.test(ink.replace(/\s/g, '')) || ink.includes('--cream') ? 'var(--black)' : 'var(--cream)');
   });
 }
 
