@@ -272,30 +272,40 @@ function setupSections() {
   window.addEventListener('resize', setNavVar);
   const topOf = (sec) => sec.getBoundingClientRect().top + window.scrollY - navH();
 
-  // Gentle settle: when scrolling stops near a section start, glide it into place
+  // Gentle settle: when scrolling stops just short of the next section start, glide it into place.
+  // It only ever moves the way you were already scrolling, so it never pulls you back.
   const settleOn = window.matchMedia('(min-width: 961px) and (pointer: fine)');
   let timer = 0;
+  let lastY = window.scrollY;
+  let dir = 0;
+  let gliding = false;
   const settle = () => {
-    if (reduce || !settleOn.matches || document.documentElement.classList.contains('splash-on')) return;
+    if (gliding) { gliding = false; return; } // this scrollend is the end of our own glide
+    if (reduce || !settleOn.matches || document.documentElement.classList.contains('splash-on') || !dir) return;
     const y = window.scrollY;
     const maxY = document.documentElement.scrollHeight - window.innerHeight;
     if (y <= 2 || y >= maxY - 2) return;
-    const reach = window.innerHeight * 0.28;
+    const reach = window.innerHeight * 0.22;
     let best = null;
     secs.forEach((sec) => {
       const t = Math.min(Math.max(topOf(sec), 0), maxY);
-      const d = t - y;
-      if (Math.abs(d) < reach && (best === null || Math.abs(d) < Math.abs(best - y))) best = t;
+      const d = (t - y) * dir; // distance ahead in the scroll direction
+      if (d > 2 && d < reach && (best === null || d < (best - y) * dir)) best = t;
     });
-    if (best === null || Math.abs(best - y) < 2) return;
-    // Already in place after our own glide, so this never loops
+    if (best === null) return;
+    gliding = true;
     window.scrollTo({ top: best, behavior: 'smooth' });
   };
-  if ('onscrollend' in window) {
-    window.addEventListener('scrollend', settle);
-  } else {
-    window.addEventListener('scroll', () => { clearTimeout(timer); timer = setTimeout(settle, 140); }, { passive: true });
-  }
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (!gliding && Math.abs(y - lastY) > 0) dir = Math.sign(y - lastY);
+    lastY = y;
+    if (!('onscrollend' in window)) { clearTimeout(timer); timer = setTimeout(settle, 160); }
+  }, { passive: true });
+  // Any new wheel/touch/key input takes over from a glide
+  const takeOver = () => { gliding = false; };
+  ['wheel', 'touchstart', 'keydown', 'pointerdown'].forEach((t) => window.addEventListener(t, takeOver, { passive: true }));
+  if ('onscrollend' in window) window.addEventListener('scrollend', settle);
 
   // The section crossing the middle of the screen is the current one
   let current = -1;
