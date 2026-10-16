@@ -312,7 +312,7 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
   .hero__count { font-weight: 700; }
   :global(.hero__checker) { position: absolute; left: 0; right: 0; bottom: 0; }
 
-  .hero__strip { container-type: inline-size; display: grid; grid-template-columns: repeat(3, 1fr) auto; border-top: var(--rule); }
+  .hero__strip { container-type: inline-size; display: grid; grid-template-columns: repeat(3, minmax(min-content, 1fr)) auto; border-top: var(--rule); }
   .hero__cell { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 4px; padding: 18px clamp(18px, 2.5vw, 36px); text-decoration: none; color: var(--ink); }
   .hero__cell > * { position: relative; }
   .hero__cell + .hero__cell { border-left: var(--rule); }
@@ -437,7 +437,7 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
   .hstudio__logo { position: relative; z-index: 2; pointer-events: none; transition: translate .5s var(--ease-out); }
   .hstudio__hint { position: absolute; left: 0; right: 0; bottom: 22px; text-align: center; font-size: 11px; z-index: 2; pointer-events: none; }
 
-  .hfacts { display: grid; grid-template-columns: repeat(4, 1fr); margin: 0; border-top: var(--rule); }
+  .hfacts { display: grid; grid-template-columns: repeat(4, minmax(min-content, 1fr)); margin: 0; border-top: var(--rule); }
   .hfacts__cell { padding: clamp(24px, 3vw, 40px) clamp(18px, 2.5vw, 36px); display: flex; flex-direction: column; gap: 8px; }
   .hfacts__cell + .hfacts__cell { border-left: var(--rule); }
   .hfacts__cell:first-child { padding-left: calc(max(0px, (100cqi - var(--max)) / 2) + var(--gutter)); }
@@ -481,7 +481,7 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
   .nl__note { margin: 0; min-height: 1.5em; font-weight: 700; }
   @media (max-width: 520px) { .nl__row .btn { flex: 1 1 100%; } }
 
-  .hperks { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); border-top: var(--rule); }
+  .hperks { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(min-content, 1fr)); border-top: var(--rule); }
   .hperks__cell { padding: clamp(24px, 3vw, 40px) clamp(18px, 2.5vw, 36px); display: flex; flex-direction: column; gap: 8px; }
   .hperks__cell + .hperks__cell { border-left: var(--rule); }
   .hperks__cell:first-child { padding-left: calc(max(0px, (100cqi - var(--max)) / 2) + var(--gutter)); }
