@@ -316,8 +316,8 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
   .hero__cell { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 4px; padding: 18px clamp(18px, 2.5vw, 36px); text-decoration: none; color: var(--ink); }
   .hero__cell > * { position: relative; }
   .hero__cell + .hero__cell { border-left: var(--rule); }
-  .hero__cell:first-child { grid-column: 1 / 3; padding-left: var(--gutter); }
-  .hero__cell:last-child { grid-column: 5 / 7; padding-right: var(--gutter); }
+  .hero__cell:first-child { grid-column: 1 / 3; padding-left: calc(max(0px, (100cqi - var(--max)) / 2) + var(--gutter)); }
+  .hero__cell:last-child { grid-column: 5 / 7; padding-right: calc(max(0px, (100cqi - var(--max)) / 2) + var(--gutter)); }
   .hero__cell .label { font-size: 11px; }
   .hero__cell-t { font-size: clamp(24px, 2.2vw, 34px); line-height: 1; }
   .hero__cell::before { content: ''; position: absolute; inset: 0; background: var(--yellow); transform: scaleY(0); transform-origin: bottom; transition: transform .4s var(--ease-out); }
@@ -352,7 +352,7 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
 
   /* Games */
   .hgames, .hnews, .hdept { container-type: inline-size; }
-  /* Edge cells in the strips below span the empty side tracks, so their text lines up with the page column */
+  /* Edge cells in the strips below also span the empty side tracks, so the middle cells keep an even width on wide screens */
   /* Giant section titles: --fit is the title width in em (+ a little room), so it fills the section edge to edge */
   .hmark { border-bottom: var(--rule); overflow: hidden; padding: clamp(28px, 3vw, 48px) var(--gutter) clamp(12px, 1.5vw, 24px); }
   .hbig { font-size: calc((100cqi - 2 * var(--gutter)) / var(--fit, 5)); line-height: .9; margin: 0; white-space: nowrap; text-align: center; letter-spacing: -.01em; }
@@ -441,8 +441,8 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
   .hfacts { display: grid; grid-template-columns: max(0px, (100% - var(--max)) / 2) repeat(4, 1fr) max(0px, (100% - var(--max)) / 2); margin: 0; border-top: var(--rule); }
   .hfacts__cell { padding: clamp(24px, 3vw, 40px) clamp(18px, 2.5vw, 36px); display: flex; flex-direction: column; gap: 8px; }
   .hfacts__cell + .hfacts__cell { border-left: var(--rule); }
-  .hfacts__cell:first-child { grid-column: 1 / 3; padding-left: var(--gutter); }
-  .hfacts__cell:last-child { grid-column: 5 / 7; padding-right: var(--gutter); }
+  .hfacts__cell:first-child { grid-column: 1 / 3; padding-left: calc(max(0px, (100cqi - var(--max)) / 2) + var(--gutter)); }
+  .hfacts__cell:last-child { grid-column: 5 / 7; padding-right: calc(max(0px, (100cqi - var(--max)) / 2) + var(--gutter)); }
   .hfacts dt { font-size: 11px; }
   .hfacts dd { margin: 0; font-size: clamp(28px, 2.8vw, 44px); line-height: 1; }
 
@@ -485,8 +485,8 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
   .hperks { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: max(0px, (100% - var(--max)) / 2) repeat(4, 1fr) max(0px, (100% - var(--max)) / 2); border-top: var(--rule); }
   .hperks__cell { padding: clamp(24px, 3vw, 40px) clamp(18px, 2.5vw, 36px); display: flex; flex-direction: column; gap: 8px; }
   .hperks__cell + .hperks__cell { border-left: var(--rule); }
-  .hperks__cell:first-child { grid-column: 1 / 3; padding-left: var(--gutter); }
-  .hperks__cell:last-child { grid-column: 5 / 7; padding-right: var(--gutter); }
+  .hperks__cell:first-child { grid-column: 1 / 3; padding-left: calc(max(0px, (100cqi - var(--max)) / 2) + var(--gutter)); }
+  .hperks__cell:last-child { grid-column: 5 / 7; padding-right: calc(max(0px, (100cqi - var(--max)) / 2) + var(--gutter)); }
   .hperks__cell .display { font-size: clamp(28px, 2.8vw, 44px); line-height: 1; }
   .hperks__sq { width: 16px; height: 16px; background: var(--red); transform: rotate(-14deg); margin-bottom: 6px; transition: transform .4s var(--ease-pop); }
   .hperks__cell:hover .hperks__sq { transform: rotate(76deg) scale(1.2); }

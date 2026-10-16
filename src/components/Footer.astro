@@ -82,8 +82,8 @@ const sloganWords = site.slogan.replace(/\.$/, '').split(/\s+/);
   .footer__cols { --side: max(0px, (100cqi - var(--max)) / 2); display: grid; grid-template-columns: max(0px, (100% - var(--max)) / 2) 1.4fr repeat(3, 1fr) max(0px, (100% - var(--max)) / 2); border-bottom: var(--rule); }
   .footer__col { padding: clamp(32px, 4vw, 56px) clamp(20px, 2.5vw, 40px); display: flex; flex-direction: column; gap: 12px; }
   .footer__col + .footer__col { border-left: var(--rule); }
-  .footer__col:first-child { grid-column: 1 / 3; padding-left: var(--gutter); }
-  .footer__col:last-child { grid-column: 5 / 7; padding-right: var(--gutter); }
+  .footer__col:first-child { grid-column: 1 / 3; padding-left: calc(var(--side) + var(--gutter)); }
+  .footer__col:last-child { grid-column: 5 / 7; padding-right: calc(var(--side) + var(--gutter)); }
   .footer__col .label { margin: 0 0 4px; font-size: 12px; }
   .footer__col ul { list-style: none; margin: 0; padding: 0; }
   .footer__col li a { display: flex; justify-content: space-between; align-items: center; min-height: 44px; font-size: 16px; font-weight: 700; text-decoration: none; }
