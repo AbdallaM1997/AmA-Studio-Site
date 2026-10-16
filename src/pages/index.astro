@@ -245,6 +245,15 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
 
       <div class="hsplit__right contact__right" data-reveal="wipe">
         <form class="cform" data-contact-form data-email={site.email} action={site.contactForm.formAction || undefined} method="post" novalidate={false}>
+          {site.contactForm.formAction && (
+            <Fragment>
+              <input type="hidden" name="_subject" value={`New message from ${site.name} website`} />
+              <input type="hidden" name="_template" value="table" />
+              <input type="hidden" name="_captcha" value="false" />
+              <input type="hidden" name="_next" value={`${site.url}#contact`} />
+              <input type="text" name="_honey" class="cform__honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            </Fragment>
+          )}
           <div class="cform__row">
             <label class="cform__field" data-reveal style="--d:.3s">
               <span class="label">Your name</span>
@@ -562,6 +571,9 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
   .cform__send { min-height: 60px; padding: 0 30px; font-size: 15px; }
   .cform__send:hover .arrow { transform: translateX(6px); }
   .cform__note { margin: 0; font-size: 15px; font-weight: 600; max-width: 340px; }
+  .cform__note a { color: inherit; }
+  .cform__honey { display: none; }
+  .cform__send[disabled] { opacity: .6; pointer-events: none; }
 
   .services { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0; border-top: var(--rule); padding-block: 32px 48px; }
   .services__item { padding-right: 24px; }
@@ -586,20 +598,51 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
 </script>
 
 <script>
-  // Contact form: with no form service set in site.json, open the visitor's email app with the message filled in
+  // Contact form: with a form service in site.json, send the message in the background (FormSubmit's AJAX endpoint).
+  // With none, open the visitor's email app with the message filled in.
   document.querySelectorAll<HTMLFormElement>('[data-contact-form]').forEach((form) => {
-    if (form.getAttribute('action')) return;
     const note = form.querySelector<HTMLElement>('[data-contact-note]');
-    form.addEventListener('submit', (e) => {
+    const btn = form.querySelector<HTMLButtonElement>('.cform__send');
+    const email = form.dataset.email || '';
+    const say = (html: string) => { if (note) note.innerHTML = html; };
+    const action = form.getAttribute('action');
+
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       if (!form.reportValidity()) return;
       const data = new FormData(form);
       const topic = String(data.get('topic') || 'Hello');
-      const name = String(data.get('name') || '');
-      const subject = `${topic} from ${name}`.trim();
-      const body = `${data.get('message') || ''}\n\n${name}\n${data.get('email') || ''}`;
-      window.location.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      if (note) note.textContent = 'Your email app should open now. Press send there and we will get it.';
+      const name = String(data.get('name') || '').trim();
+
+      if (!action) {
+        const body = `${data.get('message') || ''}
+
+${name}
+${data.get('email') || ''}`;
+        window.location.href = `mailto:${email}?subject=${encodeURIComponent(`${topic} from ${name}`)}&body=${encodeURIComponent(body)}`;
+        say('Your email app should open now. Press send there and we will get it.');
+        return;
+      }
+
+      data.set('_subject', `${topic} from ${name} (website)`);
+      data.delete('_next');
+      if (btn) btn.disabled = true;
+      say('Sending…');
+      try {
+        const res = await fetch(action.replace('formsubmit.co/', 'formsubmit.co/ajax/'), {
+          method: 'POST',
+          headers: { Accept: 'application/json' },
+          body: data,
+        });
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok || String(json.success) !== 'true') throw new Error(json.message || 'Send failed');
+        form.reset();
+        say(`Thanks${name ? ', ' + name.replace(/[<>&]/g, '') : ''}. Your message is on its way. We reply within a few days.`);
+      } catch (err) {
+        say(`Sorry, that didn't send. Please email us at <a href="mailto:${email}">${email}</a>.`);
+      } finally {
+        if (btn) btn.disabled = false;
+      }
     });
   });
 </script>

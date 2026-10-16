@@ -45,7 +45,7 @@
     "text": "New games, beta invites and devlogs. One short email when there's something worth playing."
   },
   "contactForm": {
-    "formAction": "",
+    "formAction": "https://formsubmit.co/info@amastudios.net",
     "topics": ["Player support", "Press", "Partnership", "Just saying hi"]
   },
   "services": {
