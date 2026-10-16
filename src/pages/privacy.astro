@@ -2,18 +2,23 @@
 import Prose from '../layouts/Prose.astro';
 import site from '../data/site.json';
 ---
-<Prose title="Privacy policy" label="Players / Privacy" updated="[DATE]" description={`How ${site.name} handles your data.`}>
-  <p class="note">Template: review and complete every [bracketed] part before publishing. This is a starting point, not legal advice. Make sure it matches the SDKs actually inside each game.</p>
-
+<Prose title="Privacy policy" label="Players / Privacy" updated="16 October 2026" description={`How ${site.name} handles your data.`}>
   <p>{site.name} ("we", "us") makes mobile games. This policy explains what data our games and this website collect, why, and the choices you have.</p>
 
   <h2>What we collect</h2>
   <ul>
-    <li><strong>Gameplay data:</strong> progress, levels and settings, stored on your device [and/or in cloud saves].</li>
+    <li><strong>Gameplay data:</strong> progress, levels and settings. They're stored on your device and backed up online with a random player ID, so your progress is safe if you change phones. We don't ask for your name to play.</li>
     <li><strong>Device and usage data:</strong> device model, system version, app version, crash reports and in-game events, used to fix bugs and improve the games.</li>
-    <li><strong>Advertising data:</strong> our free games show ads through [ad mediation provider, e.g. Unity LevelPlay] and its partner networks. They may collect your device's advertising ID, IP address and ad interactions to show and measure ads.</li>
+    <li><strong>Advertising data:</strong> our free games show ads through Unity LevelPlay and its partner ad networks. They may collect your device's advertising ID, IP address and ad interactions to show and measure ads. Players under 13 only see non-personalised ads (see Children below).</li>
     <li><strong>Purchases:</strong> in-app purchases are processed by Apple or Google. We receive a confirmation of the purchase, never your payment details.</li>
     <li><strong>Email:</strong> only if you contact us or join our newsletter.</li>
+  </ul>
+
+  <h2>This website</h2>
+  <ul>
+    <li>No ads, no tracking and no analytics.</li>
+    <li>Your browser remembers two small settings on your device: your light or dark theme, and that you've already seen the intro. They never leave your device.</li>
+    <li>When you send the contact or support form, what you type (your name, email, message, and for support the game, device and topic) is delivered to our inbox through FormSubmit.</li>
   </ul>
 
   <h2>Your choices</h2>
@@ -24,10 +29,26 @@ import site from '../data/site.json';
   </ul>
 
   <h2>Third-party services</h2>
-  <p>[List each SDK and link to its privacy policy, e.g. Unity, LevelPlay and each ad network, analytics, crash reporting.]</p>
+  <p>These services handle data for us. Each has its own privacy policy.</p>
+  <ul>
+    <li><strong>Unity Gaming Services</strong> (analytics and cloud saves): <a href="https://unity.com/legal/game-player-and-app-user-privacy-policy">Unity privacy policy</a>.</li>
+    <li><strong>Unity LevelPlay</strong> (ads) and its partner ad networks: <a href="https://unity.com/legal/game-player-and-app-user-privacy-policy">Unity privacy policy</a>.</li>
+    <li><strong>Apple App Store</strong> (downloads and purchases): <a href="https://www.apple.com/legal/privacy/">Apple privacy policy</a>.</li>
+    <li><strong>Google Play</strong> (downloads and purchases): <a href="https://policies.google.com/privacy">Google privacy policy</a>.</li>
+    <li><strong>FormSubmit</strong> (website contact and support forms): <a href="https://formsubmit.co/privacy.pdf">FormSubmit privacy policy</a>.</li>
+  </ul>
 
   <h2>Children</h2>
-  <p>Our games are made for a general audience and are not directed at children under [13 / the age required in your country]. [Adjust if a game targets children.]</p>
+  <p>Our games are made for everyone, kids included. We don't knowingly collect personal information from children under 13, or the minimum age in your country.</p>
+  <ul>
+    <li>Players under 13 see only non-personalised ads, and their advertising ID isn't used for tracking.</li>
+    <li>Kids don't need an account, a name or an email to play.</li>
+    <li>Parents can ask us to delete any data linked to their child by emailing <a href={`mailto:${site.email}`}>{site.email}</a>.</li>
+  </ul>
+  <p>Some future games may be made for older players. Each game's store page shows its age rating, and we'll update this policy when that happens.</p>
+
+  <h2>Changes</h2>
+  <p>If we change this policy, we'll update it here and change the date at the top.</p>
 
   <h2>Contact</h2>
   <p>{site.name}, {site.location}. Email: <a href={`mailto:${site.email}`}>{site.email}</a></p>
