@@ -244,7 +244,7 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
       </div>
 
       <div class="hsplit__right contact__right" data-reveal="wipe">
-        <form class="cform" data-contact-form data-email={site.email} action={site.contactForm.formAction || undefined} method="post" novalidate={false}>
+        <form class="cform" data-mail-form data-email={site.email} data-subject="{topic} from {name} (website)" data-thanks="Thanks, {name}. Your message is on its way. We reply within a few days." action={site.contactForm.formAction || undefined} method="post" novalidate={false}>
           {site.contactForm.formAction && (
             <Fragment>
               <input type="hidden" name="_subject" value={`New message from ${site.name} website`} />
@@ -281,7 +281,7 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
           </label>
           <div class="cform__foot" data-reveal style="--d:.54s">
             <button type="submit" class="btn btn--red cform__send">Send message <span class="arrow">→</span></button>
-            <p class="cform__note" data-contact-note aria-live="polite">
+            <p class="cform__note" data-form-note aria-live="polite">
               {site.contactForm.formAction ? 'We reply within a few days.' : 'This opens your email app with your message ready to send.'}
             </p>
           </div>
@@ -537,56 +537,12 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
   .contact__mail:hover { color: var(--cream); }
   .contact__right { align-items: center; }
 
-  /* Form */
-  .cform { width: 100%; max-width: 720px; display: flex; flex-direction: column; gap: 20px; }
-  .cform__row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  .cform__field { display: flex; flex-direction: column; gap: 8px; }
-  .cform .label { font-size: 12px; }
-  .cform input[type="text"], .cform input[type="email"], .cform textarea {
-    width: 100%; min-height: 56px; padding: 14px 18px; font: inherit; font-size: 17px;
-    background: var(--cream); color: var(--black); border: 2px solid var(--black); border-radius: 0;
-    transition: box-shadow .18s var(--ease-out), transform .18s var(--ease-out);
-  }
-  .cform textarea { resize: vertical; min-height: 150px; line-height: 1.5; }
-  .cform input::placeholder, .cform textarea::placeholder { color: var(--black); opacity: .45; }
-  .cform input:focus-visible, .cform textarea:focus-visible { outline: none; transform: translate(-3px, -3px); box-shadow: 6px 6px 0 var(--red); }
-
-  .cform__topics { border: 0; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
-  .cform__topics legend { padding: 0; margin-bottom: 10px; }
-  .cform__chips { display: flex; flex-wrap: wrap; gap: 10px; }
-  .cform__chip { position: relative; cursor: pointer; }
-  .cform__chip input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
-  .cform__chip span {
-    display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 16px; border: var(--rule);
-    font-family: var(--font-label); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; background: var(--bg); color: var(--ink);
-    transition: transform .18s var(--ease-out), box-shadow .18s var(--ease-out), background .18s;
-  }
-  .cform__chip span::before { content: ''; width: 10px; height: 10px; border: 2px solid currentColor; transform: rotate(-14deg); transition: transform .3s var(--ease-pop), background .2s; }
-  .cform__chip:hover span { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--ink); }
-  .cform__chip input:checked + span { background: var(--yellow); color: var(--black); border-color: var(--black); }
-  .cform__chip input:checked + span::before { background: var(--red); border-color: var(--red); transform: rotate(31deg) scale(1.15); }
-  .cform__chip input:focus-visible + span { outline: 3px solid var(--red); outline-offset: 3px; }
-
-  .cform__foot { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; margin-top: 4px; }
-  .cform__send { min-height: 60px; padding: 0 30px; font-size: 15px; }
-  .cform__send:hover .arrow { transform: translateX(6px); }
-  .cform__note { margin: 0; font-size: 15px; font-weight: 600; max-width: 340px; }
-  .cform__note a { color: inherit; }
-  .cform__honey { display: none; }
-  .cform__send[disabled] { opacity: .6; pointer-events: none; }
-
   .services { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0; border-top: var(--rule); padding-block: 32px 48px; }
   .services__item { padding-right: 24px; }
   .services__item h3 { font-size: 34px; }
 
   @media (max-width: 960px) {
     .contact__left { border-bottom: var(--rule); }
-  }
-  @media (max-width: 600px) {
-    .cform__row { grid-template-columns: 1fr; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .cform input, .cform textarea, .cform__chip span, .cform__chip span::before { transition: none; }
   }
 </style>
 
@@ -598,51 +554,6 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
 </script>
 
 <script>
-  // Contact form: with a form service in site.json, send the message in the background (FormSubmit's AJAX endpoint).
-  // With none, open the visitor's email app with the message filled in.
-  document.querySelectorAll<HTMLFormElement>('[data-contact-form]').forEach((form) => {
-    const note = form.querySelector<HTMLElement>('[data-contact-note]');
-    const btn = form.querySelector<HTMLButtonElement>('.cform__send');
-    const email = form.dataset.email || '';
-    const say = (html: string) => { if (note) note.innerHTML = html; };
-    const action = form.getAttribute('action');
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      if (!form.reportValidity()) return;
-      const data = new FormData(form);
-      const topic = String(data.get('topic') || 'Hello');
-      const name = String(data.get('name') || '').trim();
-
-      if (!action) {
-        const body = `${data.get('message') || ''}
-
-${name}
-${data.get('email') || ''}`;
-        window.location.href = `mailto:${email}?subject=${encodeURIComponent(`${topic} from ${name}`)}&body=${encodeURIComponent(body)}`;
-        say('Your email app should open now. Press send there and we will get it.');
-        return;
-      }
-
-      data.set('_subject', `${topic} from ${name} (website)`);
-      data.delete('_next');
-      if (btn) btn.disabled = true;
-      say('Sending…');
-      try {
-        const res = await fetch(action.replace('formsubmit.co/', 'formsubmit.co/ajax/'), {
-          method: 'POST',
-          headers: { Accept: 'application/json' },
-          body: data,
-        });
-        const json = await res.json().catch(() => ({}));
-        if (!res.ok || String(json.success) !== 'true') throw new Error(json.message || 'Send failed');
-        form.reset();
-        say(`Thanks${name ? ', ' + name.replace(/[<>&]/g, '') : ''}. Your message is on its way. We reply within a few days.`);
-      } catch (err) {
-        say(`Sorry, that didn't send. Please email us at <a href="mailto:${email}">${email}</a>.`);
-      } finally {
-        if (btn) btn.disabled = false;
-      }
-    });
-  });
+  import { setupMailForms } from '../scripts/forms';
+  setupMailForms();
 </script>

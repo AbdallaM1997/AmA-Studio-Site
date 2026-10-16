@@ -8,6 +8,7 @@
   "location": "Cairo, Egypt",
   "url": "https://amastudios.net/",
   "email": "info@amastudios.net",
+  "supportEmail": "support@amastudios.net",
   "splash": {
     "enabled": true,
     "variant": "pop",
@@ -43,6 +44,10 @@
     "enabled": true,
     "formAction": "",
     "text": "New games, beta invites and devlogs. One short email when there's something worth playing."
+  },
+  "supportForm": {
+    "formAction": "https://formsubmit.co/support@amastudios.net",
+    "topics": ["Bug", "Purchase", "Account or progress", "Idea", "Other"]
   },
   "contactForm": {
     "formAction": "https://formsubmit.co/info@amastudios.net",

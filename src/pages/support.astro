@@ -12,11 +12,13 @@ const steps = [
   { title: 'Your device', text: 'The phone and its system version. For example iPhone 15, iOS 19 or Samsung A54, Android 15.' },
   { title: 'What happened', text: 'What you did, what you expected and what you saw. A screenshot helps a lot.' },
 ];
+const supportEmail = site.supportEmail || site.email;
+const form = site.supportForm;
 const faqs = [
   { q: 'Who handles purchases?', a: 'Purchases are handled by the App Store or Google Play.' },
   { q: 'How do I get a refund?', a: 'Refunds are handled by the store you bought from. Contact the App Store or Google Play.' },
   { q: 'How do I restore purchases on a new device?', a: "Use the Restore button in the game's settings." },
-  { q: 'I found a bug. What now?', a: 'Email us with the game, your device and what happened. A screenshot or short screen recording helps us fix it faster.' },
+  { q: 'I found a bug. What now?', a: 'Send us a message with the game, your device and what happened. If we need a screenshot or a short screen recording, we will reply and ask.' },
 ];
 ---
 <Base title="Support" description={`Help with ${site.name} games.`}>
@@ -28,7 +30,7 @@ const faqs = [
         <h1 class="display shero__title" data-reveal style="--d:.08s">Support<span class="dot">.</span></h1>
         <p class="lead shero__lead" data-reveal style="--d:.18s">Stuck on a level, found a bug or have an idea? We read every message.</p>
         <div class="shero__ctas" data-reveal style="--d:.28s">
-          <a href="#send" class="btn">What to send</a>
+          <a href="#message" class="btn">Send a message</a>
           <a href="#faq" class="btn btn--ghost">Good to know</a>
         </div>
       </div>
@@ -38,10 +40,10 @@ const faqs = [
         <span class="sq-wrap" data-depth="-22" style="right:9%;bottom:14%"><span class="sq sq--black float" style="width:40px;height:40px;transform:rotate(-12deg);--delay:-2s"></span></span>
         <div class="shero__card" data-depth="8">
           <span class="label">Email us</span>
-          <a href={`mailto:${site.email}`} class="display shero__email">{site.email}</a>
+          <a href={`mailto:${supportEmail}`} class="display shero__email">{supportEmail}</a>
           <div class="shero__card-btns">
-            <a href={`mailto:${site.email}?subject=${encodeURIComponent('Game support')}`} class="btn">Write to us</a>
-            <button type="button" class="btn btn--ghost" data-copy-email={site.email}>Copy address</button>
+            <a href="#message" class="btn">Write to us</a>
+            <button type="button" class="btn btn--ghost" data-copy-email={supportEmail}>Copy address</button>
           </div>
         </div>
       </div>
@@ -53,7 +55,7 @@ const faqs = [
   <!-- What to send: edge-to-edge color columns -->
   <section id="send" class="send-sec" aria-labelledby="send-title">
     <div class="wrap sec-head">
-      <span class="label" data-reveal>01 / Contact us</span>
+      <span class="label" data-reveal>01 / Before you write</span>
       <h2 id="send-title" class="display h2" data-reveal style="--d:.08s">What to send<span class="dot">.</span></h2>
     </div>
     <ol class="send" data-stagger="0.12">
@@ -67,10 +69,86 @@ const faqs = [
     </ol>
   </section>
 
+  <!-- Support form: yellow panel on the page grid, the form runs to the right edge -->
+  <section id="message" class="smsg-sec" aria-labelledby="smsg-title">
+    <div class="smsg">
+      <div class="smsg__left yellow" data-parallax>
+        <span class="sq-wrap" data-depth="22" style="right:12%;top:14%"><span class="sq sq--red float" style="width:44px;height:44px;transform:rotate(16deg)"></span></span>
+        <span class="sq-wrap" data-depth="-16" style="right:24%;bottom:14%"><span class="sq sq--black float" style="width:24px;height:24px;transform:rotate(-12deg);--delay:-1.5s"></span></span>
+        <span class="label" data-reveal>02 / Send a message</span>
+        <h2 id="smsg-title" class="display smsg__title" data-reveal style="--d:.08s">Tell us<br />what's up<span class="dot">.</span></h2>
+        <p class="smsg__text" data-reveal style="--d:.16s">It goes straight to our support inbox. We reply within a few days.</p>
+        <div class="smsg__direct" data-reveal style="--d:.22s">
+          <span class="label">Or email us directly</span>
+          <a href={`mailto:${supportEmail}`} class="smsg__mail">{supportEmail}</a>
+        </div>
+      </div>
+
+      <div class="smsg__right" data-reveal="wipe">
+        <form class="cform" data-mail-form data-email={supportEmail} data-subject="Support: {topic} - {game} - from {name}" data-thanks="Thanks, {name}. We got your message and will reply within a few days." action={form.formAction || undefined} method="post">
+          {form.formAction && (
+            <Fragment>
+              <input type="hidden" name="_template" value="table" />
+              <input type="hidden" name="_captcha" value="false" />
+              <input type="hidden" name="_next" value={`${site.url}support/#message`} />
+              <input type="text" name="_honey" class="cform__honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            </Fragment>
+          )}
+          <div class="cform__row">
+            <label class="cform__field" data-reveal style="--d:.3s">
+              <span class="label">Your name</span>
+              <input name="name" type="text" required autocomplete="name" placeholder="Nour" />
+            </label>
+            <label class="cform__field" data-reveal style="--d:.36s">
+              <span class="label">Your email</span>
+              <input name="email" type="email" required autocomplete="email" placeholder="you@email.com" />
+            </label>
+          </div>
+          <div class="cform__row">
+            <label class="cform__field" data-reveal style="--d:.42s">
+              <span class="label">Game</span>
+              <span class="cform__select">
+                <select name="game" required>
+                  {games.map((g) => <option value={g.title}>{g.title}</option>)}
+                  <option value="Other">Other / not sure</option>
+                </select>
+              </span>
+            </label>
+            <label class="cform__field" data-reveal style="--d:.48s">
+              <span class="label">Your device</span>
+              <input name="device" type="text" autocomplete="off" placeholder="iPhone 15, iOS 19" />
+            </label>
+          </div>
+          <fieldset class="cform__topics" data-reveal style="--d:.54s">
+            <legend class="label">What's it about?</legend>
+            <div class="cform__chips">
+              {form.topics.map((t, i) => (
+                <label class="cform__chip">
+                  <input type="radio" name="topic" value={t} checked={i === 0} />
+                  <span>{t}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+          <label class="cform__field" data-reveal style="--d:.6s">
+            <span class="label">What happened</span>
+            <textarea name="message" rows="6" required placeholder="What you did, what you expected and what you saw. Add the level if you know it."></textarea>
+          </label>
+          <div class="cform__foot" data-reveal style="--d:.66s">
+            <button type="submit" class="btn btn--red cform__send">Send message <span class="arrow">→</span></button>
+            <p class="cform__note" data-form-note aria-live="polite">
+              {form.formAction ? 'We reply within a few days.' : 'This opens your email app with your message ready to send.'}
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
   <!-- Our games: one full-width row per game -->
   <section class="sgames-sec" aria-labelledby="sgames-title">
     <div class="wrap sec-head">
-      <span class="label" data-reveal>02 / Our games</span>
+      <span class="label" data-reveal>03 / Our games</span>
       <h2 id="sgames-title" class="display h2" data-reveal style="--d:.08s">Our games<span class="dot">.</span></h2>
     </div>
     <ul class="sgames" data-stagger="0.08">
@@ -86,7 +164,7 @@ const faqs = [
                 <span class="sgame__tag">{g.tagline}</span>
               </span>
               <span class="label sgame__status">{statusLabel[g.status] ?? g.status}</span>
-              <span class="sgame__help">{g.supportEmail || site.email}</span>
+              <span class="sgame__help">{g.supportEmail || supportEmail}</span>
               <span class="sgame__arrow" aria-hidden="true">→</span>
             </span>
           </a>
@@ -99,7 +177,7 @@ const faqs = [
   <section id="faq" class="faq-sec" aria-labelledby="faq-title">
     <div class="faq">
       <div class="faq__left">
-        <span class="label" data-reveal>03 / Purchases & bugs</span>
+        <span class="label" data-reveal>04 / Purchases & bugs</span>
         <h2 id="faq-title" class="display faq__title" data-reveal style="--d:.08s">Good to<br />know<span class="dot">.</span></h2>
       </div>
       <div class="faq__list" data-stagger="0.08">
@@ -119,7 +197,7 @@ const faqs = [
 <style>
   /* Hero (same full-bleed grid as the other pages) */
   .shero { border-bottom: var(--rule); }
-  .shero__grid, .faq { --side: max(0px, (100% - var(--max)) / 2); display: flex; flex-wrap: wrap; }
+  .shero__grid, .faq, .smsg { --side: max(0px, (100% - var(--max)) / 2); display: flex; flex-wrap: wrap; }
   .shero__text {
     flex: 0 1 calc(var(--side) + min(100%, var(--max)) * .5); min-width: 0; container-type: inline-size;
     padding: clamp(48px, 7vw, 96px) var(--gutter) clamp(40px, 5vw, 64px) calc(var(--side) + var(--gutter));
@@ -152,6 +230,25 @@ const faqs = [
   .send__step.cream .send__num { color: var(--red); }
   .send__step.dark .send__num { color: var(--hi); }
   .send__h { font-size: clamp(32px, 3vw, 44px); }
+
+  /* Support form */
+  .smsg-sec { border-bottom: var(--rule); }
+  .smsg__left {
+    flex: 0 1 calc(var(--side) + min(100%, var(--max)) * .4); min-width: 0; position: relative; overflow: hidden;
+    padding: clamp(48px, 7vw, 96px) var(--gutter) clamp(40px, 5vw, 72px) calc(var(--side) + var(--gutter));
+    display: flex; flex-direction: column; justify-content: center; gap: 20px; border-right: var(--rule);
+  }
+  .smsg__left > :not(.sq-wrap) { position: relative; z-index: 2; }
+  .smsg__title { font-size: clamp(56px, 6vw, 96px); line-height: .92; }
+  .smsg__text { margin: 0; font-size: 18px; font-weight: 600; max-width: 400px; }
+  .smsg__direct { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+  .smsg__direct .label { font-size: 11px; }
+  .smsg__mail { font-family: var(--font-display); font-size: clamp(24px, 2.4vw, 34px); text-decoration: none; overflow-wrap: anywhere; }
+  .smsg__mail:hover { color: var(--black); text-decoration: underline; }
+  .smsg__right {
+    flex: 1 1 520px; min-width: 0; display: flex; align-items: center;
+    padding: clamp(40px, 6vw, 80px) calc(var(--side) + var(--gutter)) clamp(40px, 6vw, 80px) clamp(24px, 4vw, 64px);
+  }
 
   /* Our games rows (yellow wipes in on hover, like the news list) */
   .sgames-sec { border-bottom: var(--rule); }
@@ -201,6 +298,8 @@ const faqs = [
     .sgame__thumb { width: 72px; }
     .sgame__status, .sgame__help { grid-column: 2; justify-self: start; }
     .sgame__arrow { display: none; }
+    .smsg__left { flex-basis: 100%; border-right: 0; border-bottom: var(--rule); }
+    .smsg__right { padding: 40px var(--gutter) 56px; }
     .faq__left { flex-basis: 100%; border-right: 0; padding-bottom: 0; }
     .faq__list { padding: 8px var(--gutter) 48px; }
   }
@@ -212,6 +311,9 @@ const faqs = [
 </style>
 
 <script>
+  import { setupMailForms } from '../scripts/forms';
+  setupMailForms();
+
   document.querySelectorAll<HTMLButtonElement>('[data-copy-email]').forEach((btn) => {
     btn.addEventListener('click', async () => {
       try {
