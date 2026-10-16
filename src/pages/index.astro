@@ -352,9 +352,9 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
 
   /* Games */
   .hgames, .hnews, .hdept { container-type: inline-size; }
-  /* Giant section titles: --fit is the title width in em; scaled to ~72% of the section width so they stay big but not edge to edge */
+  /* Giant section titles: --fit is the title width in em (+ a little room), so it fills the section edge to edge */
   .hmark { border-bottom: var(--rule); overflow: hidden; padding: clamp(28px, 3vw, 48px) var(--gutter) clamp(12px, 1.5vw, 24px); }
-  .hbig { font-size: calc((100cqi - 2 * var(--gutter)) / var(--fit, 5) * .72); line-height: .9; margin: 0; white-space: nowrap; text-align: center; letter-spacing: -.01em; }
+  .hbig { font-size: calc((100cqi - 2 * var(--gutter)) / var(--fit, 5)); line-height: .9; margin: 0; white-space: nowrap; text-align: center; letter-spacing: -.01em; }
   :global(.js) .hbig[data-reveal] { opacity: 1; transform: none; }
   :global(.js) .hbig .fw > span:first-child { transform: translateY(135%); transition: transform .8s var(--ease-out); transition-delay: calc(var(--i) * 110ms + .05s); }
   :global(.js) .hbig.is-in .fw > span:first-child { transform: none; }
@@ -422,7 +422,7 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
   .hstudio { border-bottom: var(--rule); container-type: inline-size; }
   /* "AmA = AmAzing." is about 5.7em wide in Anton, so this fills the width */
   .hstudio__mark { border-bottom: var(--rule); overflow: hidden; padding: clamp(28px, 3vw, 48px) var(--gutter) clamp(12px, 1.5vw, 24px); }
-  .hstudio__big { font-size: calc((100cqi - 2 * var(--gutter)) / 5.9 * .72); line-height: .9; margin: 0; white-space: nowrap; text-align: center; letter-spacing: -.01em; }
+  .hstudio__big { font-size: calc((100cqi - 2 * var(--gutter)) / 5.9); line-height: .9; margin: 0; white-space: nowrap; text-align: center; letter-spacing: -.01em; }
   .studio__eq { color: var(--red); }
   .fw { display: inline-block; overflow: hidden; vertical-align: top; padding: .12em 0 .26em; margin: -.12em 0 -.26em; }
   .fw > span:first-child { display: inline-block; }
@@ -463,7 +463,7 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
   .hnl { border-bottom: var(--rule); container-type: inline-size; }
   /* "Take a play break." is about 7.1em wide in Anton, so this fills the width with a little room */
   .hnl__mark { border-bottom: var(--rule); overflow: hidden; padding: clamp(28px, 3vw, 48px) var(--gutter) clamp(12px, 1.5vw, 24px); }
-  .hnl__big { font-size: calc((100cqi - 2 * var(--gutter)) / 7.4 * .72); line-height: .9; margin: 0; white-space: nowrap; text-align: center; letter-spacing: -.01em; color: var(--red); }
+  .hnl__big { font-size: calc((100cqi - 2 * var(--gutter)) / 7.4); line-height: .9; margin: 0; white-space: nowrap; text-align: center; letter-spacing: -.01em; color: var(--red); }
   :global(.js) .hnl__big[data-reveal] { opacity: 1; transform: none; }
   :global(.js) .hnl__big .fw > span:first-child { transform: translateY(135%); transition: transform .8s var(--ease-out); transition-delay: calc(var(--i) * 90ms + .05s); }
   :global(.js) .hnl__big.is-in .fw > span:first-child { transform: none; }
