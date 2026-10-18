@@ -192,13 +192,14 @@ const poster = ('trailerPoster' in game && game.trailerPoster) || game.keyArt;
   }
   .shot { flex: 0 0 clamp(220px, 20vw, 280px); scroll-snap-align: start; }
   .shot__screen {
-    display: flex; align-items: center; justify-content: center; width: 100%; aspect-ratio: 9 / 18; padding: 10px; border: 0;
-    background: var(--black); border-radius: 30px; overflow: hidden; cursor: zoom-in; transition: transform .4s var(--ease-pop), box-shadow .3s var(--ease-out);
+    /* Store screenshots are finished cards (title + framed game), so show each one whole with a hard black edge */
+    display: flex; align-items: center; justify-content: center; width: 100%; aspect-ratio: 9 / 16; padding: 0; border: 2px solid var(--black);
+    background: var(--black); border-radius: 18px; overflow: hidden; cursor: zoom-in; transition: transform .4s var(--ease-pop), box-shadow .3s var(--ease-out);
   }
   .shot:nth-child(odd) .shot__screen { transform: rotate(-2deg); }
   .shot:nth-child(even) .shot__screen { transform: rotate(2deg) translateY(14px); }
   button.shot__screen:hover, button.shot__screen:focus-visible { transform: rotate(0) translateY(-8px); box-shadow: 10px 10px 0 var(--red); }
-  .shot__screen img { width: 100%; height: 100%; object-fit: cover; border-radius: 22px; }
+  .shot__screen img { width: 100%; height: 100%; object-fit: cover; }
   div.shot__screen { cursor: default; background: var(--cream); border: 10px solid var(--black); }
 
   /* Features */
@@ -223,7 +224,7 @@ const poster = ('trailerPoster' in game && game.trailerPoster) || game.keyArt;
   .lb::backdrop { background: rgb(24 24 24 / .86); }
   .lb[open] { animation: lb-pop .35s var(--ease-pop); }
   @keyframes lb-pop { from { opacity: 0; transform: scale(.88) rotate(-3deg); } to { opacity: 1; transform: none; } }
-  .lb__img { display: block; max-height: 84vh; width: auto; max-width: 100%; border: 10px solid var(--black); border-radius: 30px; background: var(--black); }
+  .lb__img { display: block; max-height: 84vh; width: auto; max-width: 100%; border: 3px solid var(--black); border-radius: 18px; background: var(--black); }
   .lb__close { position: absolute; top: -18px; right: -18px; }
 
   @media (max-width: 960px) {

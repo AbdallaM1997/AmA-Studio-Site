@@ -3,3 +3,8 @@ dist/
 .astro/
 .DS_Store
 .env
+
+# Social posts: generated files and raw clips
+marketing/out/
+marketing/clips/*
+!marketing/clips/.gitkeep
