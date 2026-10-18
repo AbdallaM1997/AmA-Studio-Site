@@ -23,7 +23,7 @@ const isActive = (href: string) => !href.includes('#') && href !== '/' && path.s
         {site.nav.map((item, i) => (
           <li>
             <a href={url(item.href)} class:list={['nav__link', { 'is-active': isActive(item.href) }]}>
-              <span class="nav__num">{String(i + 1).padStart(2, '0')}</span> {item.label}
+              <span class="nav__num">{String(i + 1).padStart(2, '0')}</span> <span class="nav__label">{item.label}</span>
             </a>
           </li>
         ))}
