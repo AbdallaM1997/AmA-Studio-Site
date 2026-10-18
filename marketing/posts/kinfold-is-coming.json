@@ -1,0 +1,20 @@
+{
+  "template": "game",
+  "theme": "red",
+  "label": "02 / New game",
+  "headline": ["Kinfold", "is coming"],
+  "text": "A bright category card puzzle set in Egypt.",
+  "cta": "iOS + Android",
+  "image": "/images/games/kinfold/key-art.jpg",
+  "formats": ["square", "portrait", "story", "landscape"],
+  "videos": ["story"],
+  "duration": 5,
+  "captions": {
+    "instagram": "Meet Kinfold, our first game.\nLook at the cards, drop each one into its group, clear the board. Every card shows something from Egypt.\nComing to iOS and Android. Play in English or Arabic.\n\nدي Kinfold، أول لعبة لينا\nبص على الكروت، حط كل كارت في مجموعته، وفضّي اللوحة. كل كارت فيه حاجة من مصر.\nجاية على iOS و Android، بالعربي والإنجليزي.",
+    "facebook": "Meet Kinfold, our first game: a bright category card puzzle set in Egypt. Match every card to its group and clear the board.\nComing to iOS and Android, in English and Arabic.\n\nدي Kinfold، أول لعبة لينا: لغز كروت مبهج من مصر. حط كل كارت في مجموعته وفضّي اللوحة. جاية قريب على iOS و Android.",
+    "tiktok": "Our first game: Kinfold. A card puzzle where every card is something from Egypt. Coming to iOS and Android.",
+    "linkedin": "Our first game has a name: Kinfold.\n\nIt's a category card puzzle set in Egypt. Every card shows something from Egypt, and you sort them into their groups to clear the board. Quick levels made for short breaks, in English or Arabic.\n\nComing to iOS and Android. More soon.\n\nhttps://amastudios.net/games/kinfold/"
+  },
+  "hashtags": ["Kinfold", "AmAStudio", "PuzzleGame", "MobileGames", "IndieGame", "MadeInEgypt", "Egypt"],
+  "altText": "Kinfold key art above the words Kinfold is coming on a red background."
+}

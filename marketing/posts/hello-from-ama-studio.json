@@ -1,0 +1,18 @@
+{
+  "template": "announce",
+  "theme": "yellow",
+  "label": "01 / Hello",
+  "headline": ["Serious", "about fun"],
+  "text": "AmA Studio is a new game studio from Cairo. Small, bright games for everyday breaks.",
+  "formats": ["square", "portrait", "story", "landscape"],
+  "videos": ["story", "square"],
+  "duration": 5,
+  "captions": {
+    "instagram": "Hello from Cairo. We're AmA Studio, and AmA stands for AmAzing.\nWe make small, bright games for everyday breaks. Easy to learn in a minute, fun for months.\nOur first game is on its way. Follow to see it first.\n\nأهلاً من القاهرة إحنا AmA Studio.\nبنعمل ألعاب صغيرة ومبهجة لاستراحتك اليومية. أول لعبة جاية قريب، تابعنا علشان تشوفها الأول.",
+    "facebook": "Hello from Cairo. We're AmA Studio: a new game studio making small, bright games for everyday breaks.\nOur first game is on its way. Follow the page to see it first.\n\nأهلاً من القاهرة! إحنا AmA Studio، استوديو ألعاب جديد بيعمل ألعاب صغيرة ومبهجة لاستراحتك اليومية. أول لعبة جاية قريب، تابع الصفحة علشان تعرف أول واحد.",
+    "tiktok": "A new game studio from Cairo. Small games, big breaks. Follow for our first game.",
+    "linkedin": "AmA Studio is open.\n\nWe're a game studio based in Cairo, Egypt, making small, bright games for everyday breaks: easy to learn in a minute, fun for months. Built in Unity and tested until they feel just right.\n\nOur first game, Kinfold, is on its way. Follow the page for the launch, and say hi if you're a player, press or a partner.\n\nhttps://amastudios.net/"
+  },
+  "hashtags": ["AmAStudio", "SeriousAboutFun", "IndieGame", "GameDev", "MadeInEgypt", "Cairo", "MobileGames"],
+  "altText": "Yellow post with the words Serious about fun and the AmA Studio logo."
+}

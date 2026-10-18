@@ -1,0 +1,7 @@
+{
+  "template": "cover",
+  "theme": "cream",
+  "headline": ["Serious", "about fun"],
+  "text": "Game studio · Cairo",
+  "formats": ["fb-cover", "linkedin-cover", "youtube-banner", "x-header"]
+}

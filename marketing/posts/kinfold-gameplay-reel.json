@@ -1,0 +1,20 @@
+{
+  "template": "clip",
+  "theme": "yellow",
+  "label": "Play it",
+  "headline": ["Clear", "the board"],
+  "text": "Every card belongs somewhere.",
+  "cta": "Coming soon",
+  "video": "/videos/kinfold-trailer.mp4",
+  "videoStart": 2,
+  "formats": ["story", "square"],
+  "videos": ["story"],
+  "duration": 12,
+  "stillAt": 4,
+  "captions": {
+    "instagram": "One card, one group, one clear board. Kinfold is coming to iOS and Android.\n\nكارت واحد، مجموعة واحدة، ولوحة فاضية. Kinfold جاية قريب.",
+    "tiktok": "Would you clear this board? Kinfold, coming soon to iOS and Android."
+  },
+  "hashtags": ["Kinfold", "PuzzleGame", "MobileGames", "IndieGame", "Satisfying"],
+  "altText": "Kinfold gameplay in a phone frame on a yellow background."
+}

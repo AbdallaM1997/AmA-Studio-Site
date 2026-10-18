@@ -11,6 +11,7 @@ npm run dev          # local site at http://localhost:4321
 npm run build        # production build into dist/
 npm run preview      # serve the built site
 npm run check:data   # validate src/data/*.json (run after every content edit)
+npm run social -- <id>  # social post images/videos → marketing/out/ (see marketing/PLAN.md)
 ```
 
 Always run `npm run check:data && npm run build` before saying a change is done.
@@ -28,6 +29,7 @@ Always run `npm run check:data && npm run build` before saying a change is done.
 | Logo (built from type, not an image) | `src/components/Logo.astro` |
 | Pages | `src/pages/` (home, games, games/[slug], news, news/[slug], support, privacy, terms, 404) |
 | Images, videos, favicon | `public/` (reference as `/images/...`) |
+| Social media plan, post files, templates | `marketing/` (`PLAN.md`, `posts/`, `templates/`), generator `scripts/social.mjs`, skill `social-post` |
 
 **Internal links and media paths:** wrap them in `url()` from `src/lib/url.ts` (e.g. `href={url("/games/")}`) so they work under the GitHub Pages sub-path. JSON keeps plain `/images/...` paths.
 

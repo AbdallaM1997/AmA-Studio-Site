@@ -1,0 +1,15 @@
+{
+  "template": "screens",
+  "theme": "cream",
+  "label": "Can you solve it?",
+  "headline": ["Where does", "it go"],
+  "text": "Pick the right group for every card. Answer in the comments.",
+  "images": ["/images/games/kinfold/screenshot-02.jpg", "/images/games/kinfold/screenshot-03.jpg", "/images/games/kinfold/screenshot-04.jpg"],
+  "formats": ["portrait", "square", "story"],
+  "captions": {
+    "instagram": "Can you solve it? Tell us which group each card goes in. Answer in Stories tomorrow.\n\nتقدر تحلها؟ قولنا كل كارت يروح أنهي مجموعة الإجابة بكرة في الستوري.",
+    "facebook": "Can you solve it? Which group does each card belong to? Answer in the comments.\n\nتقدر تحلها؟ كل كارت يروح أنهي مجموعة؟ اكتب إجابتك في الكومنتات."
+  },
+  "hashtags": ["Kinfold", "PuzzleGame", "CanYouSolveIt", "Egypt"],
+  "altText": "Three Kinfold screenshots in phone frames with the question Where does it go."
+}
