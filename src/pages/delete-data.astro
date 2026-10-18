@@ -6,23 +6,33 @@ import site from '../data/site.json';
 const supportEmail = site.supportEmail || site.email;
 const mailto = `mailto:${supportEmail}?subject=${encodeURIComponent('Delete my data')}`;
 ---
-<Prose title="Delete your data" label="Players / Data deletion" updated="18 October 2026" description={`How to delete your ${site.name} game data, including Kinfold.`}>
-  <p>This page is for players of games by {site.name}, including <strong>Kinfold</strong> on Google Play and the App Store. You don't need a name, email or password to play our games. Your progress is linked to a random player ID, and you can ask us to delete everything linked to it.</p>
+<Prose title="Delete your data" label="Players / Data deletion" updated="18 October 2026" description={`How to delete your ${site.name} game data and account, including Kinfold.`}>
+  <p>This page is for players of games by {site.name}, including <strong>Kinfold</strong> on Google Play and the App Store. Players 13 and over can sign in to get an account and cloud saves. Players under 13 can't sign in, and their progress stays on their device.</p>
 
-  <h2>How to ask</h2>
+  <h2>Delete your account in the game</h2>
+  <p>If you're signed in, this is the fastest way:</p>
+  <ol>
+    <li>Open the game and tap <strong>Profile</strong>.</li>
+    <li>Tap <strong>Delete account</strong>.</li>
+    <li>Confirm.</li>
+  </ol>
+  <p>Your account and cloud save are deleted right away, and you're signed out. This can't be undone. You can keep playing without an account, and your progress then stays on your device only.</p>
+
+  <h2>Or ask us</h2>
+  <p>If you can't open the game, or you never signed in:</p>
   <ol>
     <li>Email <a href={mailto}>{supportEmail}</a> with the subject <strong>Delete my data</strong>.</li>
     <li>Tell us the game (for example Kinfold) and the device you play on.</li>
-    <li>If the game's settings show a player ID, add it. It helps us find your data fast.</li>
+    <li>If you signed in, add the email or sign-in you used (Apple, Google, Unity or email). If the game shows a player ID, add it too. It helps us find your data fast.</li>
   </ol>
   <p>You can also use the <a href={url('/support/#message')}>support form</a>. Pick the topic "Delete my data".</p>
   <p>We reply to confirm, then delete your data within 30 days. Parents can ask for their child's data to be deleted the same way.</p>
 
   <h2>What we delete</h2>
   <ul>
+    <li><strong>Your account:</strong> the account ID and any email address linked to it.</li>
     <li><strong>Game progress:</strong> your online backup of levels, progress and settings (Unity cloud saves).</li>
-    <li><strong>Player ID:</strong> the random ID that links your progress to you.</li>
-    <li><strong>Gameplay and usage data:</strong> in-game events and analytics linked to your player ID (Unity Analytics).</li>
+    <li><strong>Gameplay statistics:</strong> in-game events and analytics linked to your account (Unity Analytics). We don't collect these from players under 13.</li>
     <li><strong>Your messages:</strong> support emails from you, once your request is done.</li>
   </ul>
 
@@ -30,11 +40,11 @@ const mailto = `mailto:${supportEmail}?subject=${encodeURIComponent('Delete my d
   <ul>
     <li><strong>Purchase records:</strong> Apple and Google keep these, not us. Purchases you made may not come back after your progress is deleted.</li>
     <li><strong>Ad data:</strong> held by Unity LevelPlay and its ad networks under their own policies. You can reset your advertising ID in your device settings.</li>
-    <li><strong>Crash reports:</strong> these aren't linked to your player ID, so they can't be traced back to you.</li>
+    <li><strong>Your Apple or Google account:</strong> deleting your game account doesn't touch it. To stop the game using it, you can also remove the game from your Apple or Google account's sign-in settings.</li>
   </ul>
 
-  <h2>Delete it yourself</h2>
-  <p>Uninstalling the game deletes the progress saved on your phone. Your online backup stays until you ask us to delete it, so you can get your progress back if you reinstall.</p>
+  <h2>Progress on your device</h2>
+  <p>Uninstalling the game deletes the progress saved on your phone. For players under 13, that's everything: nothing is stored online.</p>
 
   <h2>Questions</h2>
   <p>Email <a href={`mailto:${supportEmail}`}>{supportEmail}</a> or read our <a href={url('/privacy/')}>privacy policy</a>. {site.name}, {site.location}.</p>

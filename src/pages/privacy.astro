@@ -3,16 +3,24 @@ import Prose from '../layouts/Prose.astro';
 import site from '../data/site.json';
 import { url } from '../lib/url';
 ---
-<Prose title="Privacy policy" label="Players / Privacy" updated="16 October 2026" description={`How ${site.name} handles your data.`}>
+<Prose title="Privacy policy" label="Players / Privacy" updated="18 October 2026" description={`How ${site.name} handles your data.`}>
   <p>{site.name} ("we", "us") makes mobile games. This policy explains what data our games and this website collect, why, and the choices you have.</p>
+
+  <h2>One question first</h2>
+  <p>Our games are for all ages. When you first open a game, it asks your age in a neutral way, without suggesting an answer. Your answer decides how the game works for you:</p>
+  <ul>
+    <li><strong>Under 13:</strong> only non-personalised, child-directed ads. No gameplay statistics and no accounts. Progress stays on the device.</li>
+    <li><strong>13 and over:</strong> you can sign in to get an account and cloud saves, and we collect gameplay statistics to improve the game.</li>
+  </ul>
 
   <h2>What we collect</h2>
   <ul>
-    <li><strong>Gameplay data:</strong> progress, levels and settings. They're stored on your device and backed up online with a random player ID, so your progress is safe if you change phones. We don't ask for your name to play.</li>
-    <li><strong>Device and usage data:</strong> device model, system version, app version, crash reports and in-game events, used to fix bugs and improve the games.</li>
-    <li><strong>Advertising data:</strong> our free games show ads through Unity LevelPlay and its partner ad networks. They may collect your device's advertising ID, IP address and ad interactions to show and measure ads. Players under 13 only see non-personalised ads (see Children below).</li>
+    <li><strong>Gameplay data:</strong> progress, levels and settings, stored on your device. If you're 13 or over and sign in, they're also backed up online so you can keep playing on a new phone.</li>
+    <li><strong>Account data (13 and over, only if you sign in):</strong> you can sign in with Apple, Google, a Unity player account or your email. We get an account ID, and your email address if the sign-in shares it or you sign in with email. We use it only to run your account and cloud saves.</li>
+    <li><strong>Device and usage data (13 and over):</strong> device model, system version, app version, crash reports and in-game events, used to fix bugs and improve the games.</li>
+    <li><strong>Advertising data:</strong> our free games show ads through Unity LevelPlay and its partner ad networks. They may collect your device's advertising ID, IP address and ad interactions to show and measure ads. For players under 13, ads are child-directed and non-personalised (see Children below).</li>
     <li><strong>Purchases:</strong> in-app purchases are processed by Apple or Google. We receive a confirmation of the purchase, never your payment details.</li>
-    <li><strong>Email:</strong> only if you contact us or join our newsletter.</li>
+    <li><strong>Email:</strong> only if you contact us, sign in with email or join our newsletter.</li>
   </ul>
 
   <h2>This website</h2>
@@ -24,26 +32,28 @@ import { url } from '../lib/url';
 
   <h2>Your choices</h2>
   <ul>
-    <li>You can reset or limit your advertising ID in your device settings. On iOS, we ask for permission before tracking.</li>
-    <li>You can ask us to delete data linked to you. See <a href={url('/delete-data/')}>Delete your data</a> for how.</li>
+    <li>You can delete your account and cloud save at any time in the game: <strong>Profile ▸ Delete account</strong>. See <a href={url('/delete-data/')}>Delete your data</a> for the steps and other ways to ask.</li>
+    <li>You can play without signing in. Your progress then stays on your device only.</li>
+    <li>You can reset or limit your advertising ID in your device settings. On iOS, players 13 and over are asked for permission before any tracking.</li>
     <li>You can unsubscribe from the newsletter at any time using the link in every email.</li>
   </ul>
 
   <h2>Third-party services</h2>
   <p>These services handle data for us. Each has its own privacy policy.</p>
   <ul>
-    <li><strong>Unity Gaming Services</strong> (analytics and cloud saves): <a href="https://unity.com/legal/game-player-and-app-user-privacy-policy">Unity privacy policy</a>.</li>
+    <li><strong>Unity Gaming Services</strong> (player accounts, cloud saves and gameplay statistics): <a href="https://unity.com/legal/game-player-and-app-user-privacy-policy">Unity privacy policy</a>.</li>
     <li><strong>Unity LevelPlay</strong> (ads) and its partner ad networks: <a href="https://unity.com/legal/game-player-and-app-user-privacy-policy">Unity privacy policy</a>.</li>
-    <li><strong>Apple App Store</strong> (downloads and purchases): <a href="https://www.apple.com/legal/privacy/">Apple privacy policy</a>.</li>
-    <li><strong>Google Play</strong> (downloads and purchases): <a href="https://policies.google.com/privacy">Google privacy policy</a>.</li>
+    <li><strong>Apple</strong> (App Store, purchases and Sign in with Apple): <a href="https://www.apple.com/legal/privacy/">Apple privacy policy</a>.</li>
+    <li><strong>Google</strong> (Google Play, purchases and Google sign-in): <a href="https://policies.google.com/privacy">Google privacy policy</a>.</li>
     <li><strong>FormSubmit</strong> (website contact and support forms): <a href="https://formsubmit.co/privacy.pdf">FormSubmit privacy policy</a>.</li>
   </ul>
 
   <h2>Children</h2>
   <p>Our games are made for everyone, kids included. We don't knowingly collect personal information from children under 13, or the minimum age in your country.</p>
   <ul>
-    <li>Players under 13 see only non-personalised ads, and their advertising ID isn't used for tracking.</li>
-    <li>Kids don't need an account, a name or an email to play.</li>
+    <li>Players under 13 see only child-directed, non-personalised ads, and their advertising ID isn't used for tracking.</li>
+    <li>We don't collect gameplay statistics from players under 13.</li>
+    <li>Players under 13 can't create an account or sign in. They don't need a name, email or password to play.</li>
     <li>Parents can ask us to delete any data linked to their child by emailing <a href={`mailto:${site.email}`}>{site.email}</a>.</li>
   </ul>
   <p>Some future games may be made for older players. Each game's store page shows its age rating, and we'll update this policy when that happens.</p>
