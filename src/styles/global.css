@@ -305,3 +305,9 @@ html.splash-on .pager { display: none; }
 @media (prefers-reduced-motion: reduce) {
   .cform input, .cform textarea, .cform select, .cform__chip span, .cform__chip span::before { transition: none; }
 }
+
+/* Bigger tap areas for short standalone links (emails, back links) without moving the layout:
+   the padding grows the hit area to ~44px and the matching negative margin cancels it out */
+:is(.footer__email, .phero__email, .shero__email, .smsg__mail, .contact__mail, .post-hero__crumb, .g-crumb) {
+  display: inline-block; padding-block: 12px; margin-block: -12px;
+}
