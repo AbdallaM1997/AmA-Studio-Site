@@ -1,6 +1,7 @@
 ---
 import Prose from '../layouts/Prose.astro';
 import site from '../data/site.json';
+import { url } from '../lib/url';
 ---
 <Prose title="Privacy policy" label="Players / Privacy" updated="16 October 2026" description={`How ${site.name} handles your data.`}>
   <p>{site.name} ("we", "us") makes mobile games. This policy explains what data our games and this website collect, why, and the choices you have.</p>
@@ -24,7 +25,7 @@ import site from '../data/site.json';
   <h2>Your choices</h2>
   <ul>
     <li>You can reset or limit your advertising ID in your device settings. On iOS, we ask for permission before tracking.</li>
-    <li>You can ask us to delete data linked to you by emailing <a href={`mailto:${site.email}`}>{site.email}</a>.</li>
+    <li>You can ask us to delete data linked to you. See <a href={url('/delete-data/')}>Delete your data</a> for how.</li>
     <li>You can unsubscribe from the newsletter at any time using the link in every email.</li>
   </ul>
 

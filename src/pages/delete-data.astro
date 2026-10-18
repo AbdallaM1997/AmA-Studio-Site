@@ -1,0 +1,41 @@
+---
+import Prose from '../layouts/Prose.astro';
+import { url } from '../lib/url';
+import site from '../data/site.json';
+
+const supportEmail = site.supportEmail || site.email;
+const mailto = `mailto:${supportEmail}?subject=${encodeURIComponent('Delete my data')}`;
+---
+<Prose title="Delete your data" label="Players / Data deletion" updated="18 October 2026" description={`How to delete your ${site.name} game data, including Kinfold.`}>
+  <p>This page is for players of games by {site.name}, including <strong>Kinfold</strong> on Google Play and the App Store. You don't need a name, email or password to play our games. Your progress is linked to a random player ID, and you can ask us to delete everything linked to it.</p>
+
+  <h2>How to ask</h2>
+  <ol>
+    <li>Email <a href={mailto}>{supportEmail}</a> with the subject <strong>Delete my data</strong>.</li>
+    <li>Tell us the game (for example Kinfold) and the device you play on.</li>
+    <li>If the game's settings show a player ID, add it. It helps us find your data fast.</li>
+  </ol>
+  <p>You can also use the <a href={url('/support/#message')}>support form</a>. Pick the topic "Delete my data".</p>
+  <p>We reply to confirm, then delete your data within 30 days. Parents can ask for their child's data to be deleted the same way.</p>
+
+  <h2>What we delete</h2>
+  <ul>
+    <li><strong>Game progress:</strong> your online backup of levels, progress and settings (Unity cloud saves).</li>
+    <li><strong>Player ID:</strong> the random ID that links your progress to you.</li>
+    <li><strong>Gameplay and usage data:</strong> in-game events and analytics linked to your player ID (Unity Analytics).</li>
+    <li><strong>Your messages:</strong> support emails from you, once your request is done.</li>
+  </ul>
+
+  <h2>What we keep</h2>
+  <ul>
+    <li><strong>Purchase records:</strong> Apple and Google keep these, not us. Purchases you made may not come back after your progress is deleted.</li>
+    <li><strong>Ad data:</strong> held by Unity LevelPlay and its ad networks under their own policies. You can reset your advertising ID in your device settings.</li>
+    <li><strong>Crash reports:</strong> these aren't linked to your player ID, so they can't be traced back to you.</li>
+  </ul>
+
+  <h2>Delete it yourself</h2>
+  <p>Uninstalling the game deletes the progress saved on your phone. Your online backup stays until you ask us to delete it, so you can get your progress back if you reinstall.</p>
+
+  <h2>Questions</h2>
+  <p>Email <a href={`mailto:${supportEmail}`}>{supportEmail}</a> or read our <a href={url('/privacy/')}>privacy policy</a>. {site.name}, {site.location}.</p>
+</Prose>

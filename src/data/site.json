@@ -47,7 +47,7 @@
   },
   "supportForm": {
     "formAction": "https://formsubmit.co/support@amastudios.net",
-    "topics": ["Bug", "Purchase", "Account or progress", "Idea", "Other"]
+    "topics": ["Bug", "Purchase", "Account or progress", "Delete my data", "Idea", "Other"]
   },
   "contactForm": {
     "formAction": "https://formsubmit.co/info@amastudios.net",
