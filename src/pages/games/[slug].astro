@@ -70,7 +70,7 @@ const poster = ('trailerPoster' in game && game.trailerPoster) || game.keyArt;
     </div>
     <ol class="how" data-stagger="0.12">
       {game.howToPlay.map((step, i) => (
-        <li class:list={['how__step', ['yellow', 'cream', 'dark'][i % 3]]} data-reveal>
+        <li class:list={['how__step', ['yellow', 'plain', 'dark'][i % 3]]} data-reveal>
           <span class="display how__num">{String(i + 1).padStart(2, '0')}</span>
           <h3 class="display how__h">{step.title}<span class="dot">.</span></h3>
           <p>{step.text}</p>
@@ -174,9 +174,10 @@ const poster = ('trailerPoster' in game && game.trailerPoster) || game.keyArt;
   .how__step { padding: clamp(32px, 4vw, 56px) clamp(24px, 3vw, 48px) clamp(40px, 5vw, 72px); display: flex; flex-direction: column; gap: 14px; min-height: 340px; border-right: var(--rule); }
   .how__step:last-child { border-right: 0; }
   .how__step p { margin: 0; font-size: 18px; max-width: 380px; }
-  .cream { background: var(--cream); }
+  /* Middle step follows the page: cream in light mode, black in dark mode (the dark step flips the other way) */
+  .how__step.plain { background: var(--bg); color: var(--ink); }
   .how__num { font-size: clamp(72px, 8vw, 120px); line-height: .9; }
-  .how__step.cream .how__num { color: var(--red); }
+  .how__step.plain .how__num { color: var(--red); }
   .how__step.dark .how__num { color: var(--hi); }
   .how__h { font-size: clamp(32px, 3vw, 44px); }
 

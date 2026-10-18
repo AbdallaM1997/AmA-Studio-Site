@@ -60,7 +60,7 @@ const faqs = [
     </div>
     <ol class="send" data-stagger="0.12">
       {steps.map((s, i) => (
-        <li class:list={['send__step', ['yellow', 'cream', 'dark'][i % 3]]} data-reveal>
+        <li class:list={['send__step', ['yellow', 'plain', 'dark'][i % 3]]} data-reveal>
           <span class="display send__num">{String(i + 1).padStart(2, '0')}</span>
           <h3 class="display send__h">{s.title}<span class="dot">.</span></h3>
           <p>{s.text}</p>
@@ -226,9 +226,10 @@ const faqs = [
   .send__step { padding: clamp(32px, 4vw, 56px) clamp(24px, 3vw, 48px) clamp(40px, 5vw, 72px); display: flex; flex-direction: column; gap: 14px; min-height: 320px; border-right: var(--rule); }
   .send__step:last-child { border-right: 0; }
   .send__step p { margin: 0; font-size: 18px; max-width: 380px; }
-  .cream { background: var(--cream); }
+  /* Middle step follows the page: cream in light mode, black in dark mode (the dark step flips the other way) */
+  .send__step.plain { background: var(--bg); color: var(--ink); }
   .send__num { font-size: clamp(72px, 8vw, 120px); line-height: .9; }
-  .send__step.cream .send__num { color: var(--red); }
+  .send__step.plain .send__num { color: var(--red); }
   .send__step.dark .send__num { color: var(--hi); }
   .send__h { font-size: clamp(32px, 3vw, 44px); }
 
