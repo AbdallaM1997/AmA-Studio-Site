@@ -1,0 +1,39 @@
+{
+  "template": "clip",
+  "theme": "yellow",
+  "label": "Play it",
+  "headline": [
+    "One card",
+    "at a time"
+  ],
+  "text": "Tap a card, find its group, clear the board.",
+  "cta": "Coming soon",
+  "video": "marketing/clips/reel/level-08.webm",
+  "videoStart": 0,
+  "videoEnd": 14.5,
+  "formats": [
+    "story"
+  ],
+  "videos": [
+    "story"
+  ],
+  "duration": 14.5,
+  "stillAt": 6,
+  "captions": {
+    "instagram": "Level 8, cleared one card at a time. Kinfold is coming to iOS and Android. Follow to play it first.\n\nالمستوى ٨ اتحل كارت كارت. Kinfold جاية قريب على iOS و Android. تابعنا علشان تلعبها الأول.",
+    "facebook": "Level 8, cleared one card at a time. Kinfold is coming to iOS and Android. Follow to play it first.\n\nالمستوى ٨ اتحل كارت كارت. Kinfold جاية قريب على iOS و Android. تابعنا علشان تلعبها الأول.",
+    "tiktok": "Level 8, one card at a time. Kinfold is coming to iOS and Android."
+  },
+  "hashtags": [
+    "Kinfold",
+    "PuzzleGame",
+    "MobileGames",
+    "IndieGame",
+    "MadeInEgypt"
+  ],
+  "altText": "Kinfold level 8 gameplay in a phone frame, ending on the Level complete screen.",
+  "videoMeta": {
+    "source": "marketing/clips/kinfold-level-08-20261019-120936.mp4",
+    "trimStart": 0.8
+  }
+}

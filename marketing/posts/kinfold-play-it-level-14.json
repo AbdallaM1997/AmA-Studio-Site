@@ -1,0 +1,39 @@
+{
+  "template": "clip",
+  "theme": "black",
+  "label": "Play it",
+  "headline": [
+    "Last card",
+    "wins"
+  ],
+  "text": "Pyramids, scarabs, ankhs. Every card is from Egypt.",
+  "cta": "Coming soon",
+  "video": "marketing/clips/reel/level-14.webm",
+  "videoStart": 0,
+  "videoEnd": 12.8,
+  "formats": [
+    "story"
+  ],
+  "videos": [
+    "story"
+  ],
+  "duration": 12.8,
+  "stillAt": 5,
+  "captions": {
+    "instagram": "Pyramids, scarabs and ankhs. Every card in Kinfold is something from Egypt. Coming to iOS and Android. Follow to play it first.\n\nأهرامات وجعارين ومفاتيح حياة. كل كارت في Kinfold حاجة من مصر. جاية قريب على iOS و Android. تابعنا علشان تلعبها الأول.",
+    "facebook": "Pyramids, scarabs and ankhs. Every card in Kinfold is something from Egypt. Coming to iOS and Android. Follow to play it first.\n\nأهرامات وجعارين ومفاتيح حياة. كل كارت في Kinfold حاجة من مصر. جاية قريب على iOS و Android. تابعنا علشان تلعبها الأول.",
+    "tiktok": "Every card is something from Egypt. Kinfold, coming to iOS and Android."
+  },
+  "hashtags": [
+    "Kinfold",
+    "PuzzleGame",
+    "MobileGames",
+    "IndieGame",
+    "MadeInEgypt"
+  ],
+  "altText": "Kinfold level 14 gameplay in a phone frame, ending on the Level complete screen.",
+  "videoMeta": {
+    "source": "marketing/clips/kinfold-level-14-20261019-121109.mp4",
+    "trimStart": 0.6
+  }
+}

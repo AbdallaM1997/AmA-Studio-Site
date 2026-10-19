@@ -1,0 +1,39 @@
+{
+  "template": "clip",
+  "theme": "red",
+  "label": "Play it",
+  "headline": [
+    "Watch it",
+    "clear"
+  ],
+  "text": "From a full board to three stars.",
+  "cta": "Coming soon",
+  "video": "marketing/clips/reel/level-10.webm",
+  "videoStart": 0,
+  "videoEnd": 14.5,
+  "formats": [
+    "story"
+  ],
+  "videos": [
+    "story"
+  ],
+  "duration": 14.5,
+  "stillAt": 6,
+  "captions": {
+    "instagram": "From a full board to three stars in one go. Kinfold is coming to iOS and Android. Follow to play it first.\n\nمن لوحة مليانة لتلات نجوم مرة واحدة. Kinfold جاية قريب على iOS و Android. تابعنا علشان تلعبها الأول.",
+    "facebook": "From a full board to three stars in one go. Kinfold is coming to iOS and Android. Follow to play it first.\n\nمن لوحة مليانة لتلات نجوم مرة واحدة. Kinfold جاية قريب على iOS و Android. تابعنا علشان تلعبها الأول.",
+    "tiktok": "Full board to three stars. Kinfold is coming to iOS and Android."
+  },
+  "hashtags": [
+    "Kinfold",
+    "PuzzleGame",
+    "MobileGames",
+    "IndieGame",
+    "MadeInEgypt"
+  ],
+  "altText": "Kinfold level 10 gameplay in a phone frame, ending on the Level complete screen.",
+  "videoMeta": {
+    "source": "marketing/clips/kinfold-level-10-20261019-121011.mp4",
+    "trimStart": 0.8
+  }
+}

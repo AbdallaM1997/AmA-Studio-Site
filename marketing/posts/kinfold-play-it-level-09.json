@@ -1,0 +1,39 @@
+{
+  "template": "clip",
+  "theme": "cream",
+  "label": "Play it",
+  "headline": [
+    "Every card",
+    "has a home"
+  ],
+  "text": "A full board, sorted into its groups.",
+  "cta": "Coming soon",
+  "video": "marketing/clips/reel/level-09.webm",
+  "videoStart": 0,
+  "videoEnd": 15,
+  "formats": [
+    "story"
+  ],
+  "videos": [
+    "story"
+  ],
+  "duration": 15,
+  "stillAt": 5,
+  "captions": {
+    "instagram": "A full board, and every card has a home. Can you sort it faster? Kinfold is coming to iOS and Android. Follow for more.\n\nلوحة مليانة، وكل كارت ليه مكانه. تقدر ترتبها أسرع؟ Kinfold جاية قريب على iOS و Android. تابعنا علشان تشوف أكتر.",
+    "facebook": "A full board, and every card has a home. Can you sort it faster? Kinfold is coming to iOS and Android. Follow for more.\n\nلوحة مليانة، وكل كارت ليه مكانه. تقدر ترتبها أسرع؟ Kinfold جاية قريب على iOS و Android. تابعنا علشان تشوف أكتر.",
+    "tiktok": "A full board. Can you sort it faster? Kinfold, coming to iOS and Android."
+  },
+  "hashtags": [
+    "Kinfold",
+    "PuzzleGame",
+    "MobileGames",
+    "IndieGame",
+    "MadeInEgypt"
+  ],
+  "altText": "Kinfold level 9 gameplay in a phone frame, ending on the Level complete screen.",
+  "videoMeta": {
+    "source": "marketing/clips/kinfold-level-09-20261019-120952.mp4",
+    "trimStart": 3.0
+  }
+}
