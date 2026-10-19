@@ -127,3 +127,9 @@ body { background: var(--bg); color: var(--ink); font-family: var(--font-body); 
 .t-cover.align-top #post { align-items: flex-start; padding-top: calc(var(--u) * 12); gap: calc(var(--u) * 7); }
 .t-cover.align-top .logo { --s: calc(var(--u) * 24); }
 .t-cover.align-top .headline { font-size: calc(var(--u) * 16); }
+
+/* YouTube banner: phones show only the middle 1546×423 of 2560×1440, so keep logo and slogan inside it */
+.t-cover.align-safe #post { gap: calc(var(--u) * 5); padding: 0; }
+.t-cover.align-safe .logo { --s: calc(var(--u) * 15); }
+.t-cover.align-safe .headline { font-size: calc(var(--u) * 10); }
+.t-cover.align-safe .sub { font-size: calc(var(--u) * 2.6); margin-top: calc(var(--u) * 1.5); }
