@@ -22,7 +22,7 @@ Goal for now: **build a small, real audience before Kinfold launches**, so launc
 ## 2. Setting up the pages (one afternoon)
 
 1. **Profile picture:** the AmA logo on yellow. Generate it: `npm run social -- profile-picture` → `marketing/out/profile-picture/avatar.png`. It is safe for circle crops.
-2. **Covers / banners:** `npm run social -- page-covers` makes the Facebook cover, LinkedIn cover and X header; `npm run social -- youtube-banner` makes the YouTube banner (kept inside the strip phones show). Channel setup: `marketing/youtube-channel.md`.
+2. **Covers / banners:** `npm run social -- page-covers` makes the Facebook cover, LinkedIn cover and X header; `npm run social -- youtube-banner` makes the YouTube banner (kept inside the strip phones show). Channel setup: `marketing/youtube-channel.md`. TikTok setup: `marketing/tiktok-account.md`.
 3. **Name:** AmA Studio. **Category:** Video game developer (Facebook / LinkedIn: "Computer games").
 4. **Bio (EN):** `Game studio from Cairo. Small, bright games for everyday breaks. Serious about fun.`
    **Bio (AR):** `استوديو ألعاب من القاهرة. ألعاب صغيرة ومبهجة لاستراحتك اليومية.`
