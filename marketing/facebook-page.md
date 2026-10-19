@@ -50,16 +50,13 @@ Page → **Edit details** / **About** → **Contact and basic info**.
 | Location / address | City only: `Cairo, Egypt`. Don't add a street address unless people can visit. |
 | Hours | `No hours available`. |
 | Price range | Skip. |
-| Social links | Add Instagram, TikTok, LinkedIn and YouTube when they exist. |
+| Social links | Instagram: `https://www.instagram.com/amastudio.games/`. Add TikTok, LinkedIn and YouTube when they exist. |
 
-**Username** (Settings → Username). Try them in this order; the first matches the website:
+**Username** (Settings → Username). Use the Instagram one so people find you the same way everywhere:
 ```
-amastudios
-ama.studio
 amastudio.games
-amastudioeg
 ```
-Use the same one on Instagram and TikTok if it is free there.
+If it is taken on Facebook, try `amastudios`, then `amastudioeg`.
 
 **Longer description** (if Facebook shows an "About" / "Additional information" box):
 ```
