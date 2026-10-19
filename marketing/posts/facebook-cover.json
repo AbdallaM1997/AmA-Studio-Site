@@ -1,0 +1,8 @@
+{
+  "template": "cover",
+  "theme": "cream",
+  "align": "top",
+  "headline": ["Serious", "about fun"],
+  "squaresAt": [[7, 58, 7, -14, 1], [15, 22, 3.5, 18, 2], [26, 76, 3, 12, 3], [79, 70, 5, 16, 2], [88, 30, 7, -10, 1], [93, 72, 3, 20, 1]],
+  "formats": ["fb-cover"]
+}

@@ -21,6 +21,7 @@
     { "label": "Contact", "href": "/#contact" }
   ],
   "socials": [
+    { "label": "Facebook", "url": "https://www.facebook.com/profile.php?id=61595191246107" },
     { "label": "Instagram", "url": "" },
     { "label": "TikTok", "url": "" },
     { "label": "YouTube", "url": "" },

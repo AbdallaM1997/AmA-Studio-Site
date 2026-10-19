@@ -11,7 +11,7 @@
   const template = P.template || 'announce';
   const theme = P.theme || (template === 'profile' ? 'yellow' : 'cream');
   document.documentElement.style.setProperty('--u', Math.min(F.w, F.h) / 100 + 'px');
-  document.body.className = `t-${template} th-${theme} a-${aspect === 'strip' ? 'wide a-strip' : aspect} f-${F.name}`;
+  document.body.className = `t-${template} th-${theme} a-${aspect === 'strip' ? 'wide a-strip' : aspect} f-${F.name}${P.align ? " align-" + P.align : ""}`;
 
   const asset = (p) => /^(https?:|file:|data:)/.test(p) ? p : p.startsWith('/') ? ROOT + 'public' + p : ROOT + p;
   const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
@@ -53,7 +53,7 @@
       wide: [[90, 9, 6, -14, 1], [95, 22, 3, 18, 2], [52, 6, 2.6, 12, 3]],
       strip: [[4, 18, 9, -14, 1], [12, 62, 5, 18, 2], [92, 22, 7, 12, 3], [85, 66, 4, -10, 1]],
     };
-    (sets[aspect] || sets.box).forEach(([x, y, size, rot, c], i) => {
+    (P.squaresAt || sets[aspect] || sets.box).forEach(([x, y, size, rot, c], i) => {
       const s = delay(el('span', 'sq'), .35 + i * .12);
       s.style.cssText += `left:${x}%;top:${y}%;width:${size * Math.min(F.w, F.h) / 100}px;height:${size * Math.min(F.w, F.h) / 100}px;rotate:${rot}deg;`;
       const inner = el('i');

@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    AmA Studio — social post templates
    Same brand as the site: four colors, three fonts, tilted squares, red full stop.
    Sizes use --u (1% of the shorter side) so one layout works at every format.
@@ -122,3 +122,8 @@ body { background: var(--bg); color: var(--ink); font-family: var(--font-body); 
 .phone { animation: pop-in .7s var(--ease-pop) both; animation-delay: var(--d, .3s); }
 .sq { animation: pop .6s var(--ease-pop) both; animation-delay: var(--d, .4s); }
 .sq > i { animation: float var(--dur, 5s) ease-in-out infinite; animation-delay: var(--fd, 0s); }
+
+/* Covers with the profile picture over the bottom middle (Facebook): keep everything in the top half */
+.t-cover.align-top #post { align-items: flex-start; padding-top: calc(var(--u) * 12); gap: calc(var(--u) * 7); }
+.t-cover.align-top .logo { --s: calc(var(--u) * 24); }
+.t-cover.align-top .headline { font-size: calc(var(--u) * 16); }
