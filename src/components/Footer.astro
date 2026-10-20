@@ -80,8 +80,8 @@ const cols = [
   .footer { background: var(--red); color: var(--black); --ink: var(--black); --bg: var(--cream); --rule: 2px solid var(--black); container-type: inline-size; }
 
   /* Giant slogan: "Serious about fun." is about 7.1em wide in Anton, so this fills the footer edge to edge */
-  .footer__mark { background: var(--bg-page); color: var(--ink-page); border-bottom: var(--rule); overflow: hidden; padding: clamp(24px, 3vw, 44px) var(--gutter) clamp(12px, 1.5vw, 24px); }
-  .footer__big { font-size: calc((100cqi - 2 * var(--gutter)) / 7.3); line-height: .9; margin: 0; white-space: nowrap; text-align: center; letter-spacing: -.01em; color: var(--ink-page); }
+  .footer__mark { background: var(--bg-page); color: var(--ink-page); border-bottom: var(--rule); overflow: hidden; padding: 0 var(--gutter); }
+  .footer__big { font-size: calc((100cqi - 2 * var(--gutter)) / 7.3); line-height: .9; margin: 0; padding: .17em 0 .16em; white-space: nowrap; text-align: center; letter-spacing: -.01em; color: var(--ink-page); }
   .fw { display: inline-block; overflow: hidden; vertical-align: top; padding: .12em 0 .26em; margin: -.12em 0 -.26em; }
   .fw > span:first-child { display: inline-block; }
   :global(.js) .footer__big[data-reveal] { opacity: 1; transform: none; }
