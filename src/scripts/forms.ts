@@ -51,6 +51,7 @@ export function setupMailForms() {
         });
         const json = await res.json().catch(() => ({}));
         if (!res.ok || String(json.success) !== 'true') throw new Error(json.message || 'Send failed');
+        if (form.dataset.event) (window as any).umami?.track(form.dataset.event, { topic: field('topic') });
         form.reset();
         say(form.dataset.thanks?.replace('{name}', name) || `Thanks${name ? ', ' + name : ''}. Your message is on its way.`);
       } catch {

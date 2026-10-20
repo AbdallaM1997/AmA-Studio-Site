@@ -8,6 +8,11 @@
   "location": "Cairo, Egypt",
   "url": "https://amastudios.net/",
   "email": "info@amastudios.net",
+  "analytics": {
+    "umamiSrc": "https://cloud.umami.is/script.js",
+    "umamiId": "44ef1c35-1bbd-4270-9e9f-438793eccec4",
+    "domain": "amastudios.net"
+  },
   "supportEmail": "support@amastudios.net",
   "splash": {
     "enabled": true,

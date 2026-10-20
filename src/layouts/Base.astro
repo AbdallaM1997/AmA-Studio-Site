@@ -64,6 +64,10 @@ const splashCfg = JSON.stringify({ on: splash && site.splash.enabled, variant: s
         } catch (e) {}
       })();
     </script>
+    <!-- Umami Cloud: cookieless visit counts; data-domains keeps local and preview visits out -->
+    {site.analytics?.umamiId && (
+      <script is:inline defer src={site.analytics.umamiSrc} data-website-id={site.analytics.umamiId} data-domains={site.analytics.domain}></script>
+    )}
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>

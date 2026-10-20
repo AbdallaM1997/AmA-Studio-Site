@@ -26,7 +26,7 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
         </h1>
         <p class="lead hero__sub" data-reveal style="--d:.3s">{site.subline}</p>
         <div class="hero__ctas" data-reveal style="--d:.42s">
-          <a href={url('/games/')} class="btn"><Icon name="games" /> See our games</a>
+          <a href={url('/games/')} class="btn" data-umami-event="See our games (hero)"><Icon name="games" /> See our games</a>
           <a href="#newsletter" class="btn btn--ghost"><Icon name="news" /> Get game news</a>
         </div>
       </div>
@@ -88,7 +88,7 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
           <p class="hband__desc" data-reveal style="--d:.2s">{featured.description}</p>
           <div class="hband__ctas" data-reveal style="--d:.26s">
             <a href={url(`/games/${featured.slug}/`)} class="btn"><Icon name="play" /> See the game</a>
-            {!featured.stores.appStore && !featured.stores.googlePlay && <a class="btn btn--ghost" href="#newsletter"><Icon name="mail" /> Tell me when it's out</a>}
+            {!featured.stores.appStore && !featured.stores.googlePlay && <a class="btn btn--ghost" href="#newsletter" data-umami-event="Tell me when it's out" data-umami-event-game={featured.title}><Icon name="mail" /> Tell me when it's out</a>}
           </div>
         </div>
       </div>
@@ -245,7 +245,7 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
       </div>
 
       <div class="hsplit__right contact__right" data-reveal="wipe">
-        <form class="cform" data-mail-form data-email={site.email} data-subject="{topic} from {name} (website)" data-thanks="Thanks, {name}. Your message is on its way. We reply within a few days." action={site.contactForm.formAction || undefined} method="post" novalidate={false}>
+        <form class="cform" data-mail-form data-event="Contact form sent" data-email={site.email} data-subject="{topic} from {name} (website)" data-thanks="Thanks, {name}. Your message is on its way. We reply within a few days." action={site.contactForm.formAction || undefined} method="post" novalidate={false}>
           {site.contactForm.formAction && (
             <Fragment>
               <input type="hidden" name="_subject" value={`New message from ${site.name} website`} />

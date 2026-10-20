@@ -42,11 +42,11 @@ const cols = [
       <span class="sq sq--red footer__spark" aria-hidden="true"></span>
       <a href={url('/')} aria-label={`${site.name} home`} class="footer__logo"><Logo size="64px" align="start" /></a>
       <p class="footer__line"><Icon name="pin" /> Made in {site.location}.</p>
-      <a href={`mailto:${site.email}`} class="footer__line footer__email"><Icon name="mail" /> {site.email}</a>
+      <a href={`mailto:${site.email}`} class="footer__line footer__email" data-umami-event="Email (footer)"><Icon name="mail" /> {site.email}</a>
       {socials.length > 0 && (
         <ul class="footer__social" aria-label="Follow us">
           {socials.map((s) => (
-            <li><a href={s.url} rel="noopener" target="_blank" aria-label={s.label} title={s.label}><Icon name={socialIcon(s.label)} /></a></li>
+            <li><a href={s.url} rel="noopener" target="_blank" aria-label={s.label} title={s.label} data-umami-event="Social" data-umami-event-network={s.label}><Icon name={socialIcon(s.label)} /></a></li>
           ))}
         </ul>
       )}

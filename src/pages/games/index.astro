@@ -75,9 +75,9 @@ const platforms = [...new Set(games.flatMap((g) => g.platforms))];
           )}
           <div class="gband__ctas" data-reveal style="--d:.26s">
             <a href={url(`/games/${g.slug}/`)} class="btn"><Icon name="play" /> See the game</a>
-            {g.stores.appStore && <a class="btn btn--ghost" href={g.stores.appStore} target="_blank" rel="noopener">App Store</a>}
-            {g.stores.googlePlay && <a class="btn btn--ghost" href={g.stores.googlePlay} target="_blank" rel="noopener">Google Play</a>}
-            {!g.stores.appStore && !g.stores.googlePlay && <a class="btn btn--red" href={url('/#newsletter')}><Icon name="mail" /> Tell me when it's out</a>}
+            {g.stores.appStore && <a class="btn btn--ghost" href={g.stores.appStore} target="_blank" rel="noopener" data-umami-event="Store: App Store" data-umami-event-game={g.title}>App Store</a>}
+            {g.stores.googlePlay && <a class="btn btn--ghost" href={g.stores.googlePlay} target="_blank" rel="noopener" data-umami-event="Store: Google Play" data-umami-event-game={g.title}>Google Play</a>}
+            {!g.stores.appStore && !g.stores.googlePlay && <a class="btn btn--red" href={url('/#newsletter')} data-umami-event="Tell me when it's out" data-umami-event-game={g.title}><Icon name="mail" /> Tell me when it's out</a>}
           </div>
         </div>
       </div>

@@ -3,7 +3,7 @@ import Prose from '../layouts/Prose.astro';
 import site from '../data/site.json';
 import { url } from '../lib/url';
 ---
-<Prose title="Privacy policy" label="Players / Privacy" updated="18 October 2026" description={`How ${site.name} handles your data.`}>
+<Prose title="Privacy policy" label="Players / Privacy" updated="21 October 2026" description={`How ${site.name} handles your data.`}>
   <p>{site.name} ("we", "us") makes mobile games. This policy explains what data our games and this website collect, why, and the choices you have.</p>
 
   <h2>One question first</h2>
@@ -25,8 +25,10 @@ import { url } from '../lib/url';
 
   <h2>This website</h2>
   <ul>
-    <li>No ads, no tracking and no analytics.</li>
+    <li>No ads and no cookies.</li>
+    <li>We count visits with Umami, a privacy-friendly analytics tool. It records which pages are viewed, the referring site, browser, device type and country, plus clicks on a few buttons (for example Play now or a store link). It sets no cookies, doesn't follow you to other sites and doesn't identify you.</li>
     <li>Your browser remembers two small settings on your device: your light or dark theme, and that you've already seen the intro. They never leave your device.</li>
+    <li>If you join the newsletter, your email address is stored with MailerLite so we can send it. Every email has an unsubscribe link.</li>
     <li>When you send the contact or support form, what you type (your name, email, message, and for support the game, device and topic) is delivered to our inbox through FormSubmit.</li>
   </ul>
 

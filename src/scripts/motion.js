@@ -373,6 +373,7 @@ function setupNewsletter() {
         const json = await res.json().catch(() => ({}));
         if (!res.ok || json.success === false) throw new Error('rejected');
         form.reset();
+        window.umami?.track('Newsletter sign-up');
         say("You're in. Check your inbox to confirm.");
       } catch (err) {
         say("That didn't go through. Check the email and try again.");

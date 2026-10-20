@@ -29,7 +29,7 @@ const isActive = (href: string) => !href.includes('#') && href !== '/' && path.s
           </li>
         ))}
       </ul>
-      <div class="nav__cta"><a href={url('/games/')} class="btn btn--red btn--small"><Icon name="play" /> Play now</a></div>
+      <div class="nav__cta"><a href={url('/games/')} class="btn btn--red btn--small" data-umami-event="Play now (nav)"><Icon name="play" /> Play now</a></div>
     </div>
   </nav>
 </header>

@@ -34,9 +34,9 @@ const poster = ('trailerPoster' in game && game.trailerPoster) || game.keyArt;
           {game.price && <li data-reveal="pop">{game.price}</li>}
         </ul>
         <div class="stores" data-reveal style="--d:.3s">
-          {game.stores.appStore && <a class="btn" href={game.stores.appStore} target="_blank" rel="noopener">App Store</a>}
-          {game.stores.googlePlay && <a class="btn" href={game.stores.googlePlay} target="_blank" rel="noopener">Google Play</a>}
-          {!hasStores && <a class="btn btn--red" href={url('/#newsletter')}><Icon name="mail" /> Tell me when it's out</a>}
+          {game.stores.appStore && <a class="btn" href={game.stores.appStore} target="_blank" rel="noopener" data-umami-event="Store: App Store" data-umami-event-game={game.title}>App Store</a>}
+          {game.stores.googlePlay && <a class="btn" href={game.stores.googlePlay} target="_blank" rel="noopener" data-umami-event="Store: Google Play" data-umami-event-game={game.title}>Google Play</a>}
+          {!hasStores && <a class="btn btn--red" href={url('/#newsletter')} data-umami-event="Tell me when it's out" data-umami-event-game={game.title}><Icon name="mail" /> Tell me when it's out</a>}
           <a class="btn btn--ghost" href="#shots"><Icon name="image" /> Screenshots</a>
         </div>
       </div>
@@ -53,7 +53,7 @@ const poster = ('trailerPoster' in game && game.trailerPoster) || game.keyArt;
           </div>
         </div>
         {game.trailer && (
-          <button type="button" class="btn btn--small phone__sound" data-sound-toggle aria-pressed="false">
+          <button type="button" class="btn btn--small phone__sound" data-sound-toggle data-umami-event="Trailer sound" data-umami-event-game={game.title} aria-pressed="false">
             <span class="phone__sound-sq" aria-hidden="true"></span><span data-sound-label>Sound on</span>
           </button>
         )}
@@ -93,7 +93,7 @@ const poster = ('trailerPoster' in game && game.trailerPoster) || game.keyArt;
       {shots.map((src, i) => (
         <div class="shot" data-reveal="pop">
           {src
-            ? <button type="button" class="shot__screen" data-shot={url(src)} aria-label={`Open ${game.title} screenshot ${i + 1}`}><img src={url(src)} alt={`${game.title} screenshot ${i + 1}`} loading="lazy" /></button>
+            ? <button type="button" class="shot__screen" data-shot={url(src)} data-umami-event="Screenshot open" data-umami-event-game={game.title} aria-label={`Open ${game.title} screenshot ${i + 1}`}><img src={url(src)} alt={`${game.title} screenshot ${i + 1}`} loading="lazy" /></button>
             : <div class:list={['shot__screen', i % 2 ? 'red' : '']}><span class="label">Screen {i + 1}</span></div>}
         </div>
       ))}

@@ -86,7 +86,7 @@ const faqs = [
       </div>
 
       <div class="smsg__right" data-reveal="wipe">
-        <form class="cform" data-mail-form data-email={supportEmail} data-subject="Support: {topic} - {game} - from {name}" data-thanks="Thanks, {name}. We got your message and will reply within a few days." action={form.formAction || undefined} method="post">
+        <form class="cform" data-mail-form data-event="Support form sent" data-email={supportEmail} data-subject="Support: {topic} - {game} - from {name}" data-thanks="Thanks, {name}. We got your message and will reply within a few days." action={form.formAction || undefined} method="post">
           {form.formAction && (
             <Fragment>
               <input type="hidden" name="_template" value="table" />
