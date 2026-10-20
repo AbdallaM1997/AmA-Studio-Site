@@ -122,7 +122,6 @@ function setupNav() {
   window.addEventListener('keydown', (e) => { if (e.key === 'Escape') set(false); });
 }
 
-/* ---------- Newsletter (until a sign-up service is connected) ---------- */
 function setupTheme() {
   const root = document.documentElement;
   const btns = document.querySelectorAll('[data-theme-toggle]');
@@ -329,13 +328,46 @@ function setupSections() {
   secs.forEach((s) => io.observe(s));
 }
 
+/* ---------- Newsletter ----------
+   No formAction in site.json: shows a "coming soon" note.
+   A MailerLite form URL (assets.mailerlite.com/jsonp/.../subscribe): sends in the background
+   and answers on the page. Any other URL: a normal form post. */
 function setupNewsletter() {
   document.querySelectorAll('form[data-newsletter]').forEach((form) => {
-    if (form.getAttribute('action')) return;
-    form.addEventListener('submit', (e) => {
+    const action = form.getAttribute('action') || '';
+    const note = form.querySelector('[data-note]');
+    const say = (t) => { if (note) note.textContent = t; };
+
+    if (!action) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        say('Sign-up opens soon. Thanks for the interest!');
+      });
+      return;
+    }
+    if (!action.includes('mailerlite.com')) return;
+
+    const btn = form.querySelector('button[type="submit"]');
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const note = form.querySelector('[data-note]');
-      if (note) note.textContent = 'Sign-up opens soon. Thanks for the interest!';
+      const email = form.querySelector('input[type="email"]');
+      const data = new FormData();
+      data.append('fields[email]', email ? email.value.trim() : '');
+      data.append('ml-submit', '1');
+      data.append('anticsrf', 'true');
+      if (btn) btn.disabled = true;
+      say('Sending.');
+      try {
+        const res = await fetch(action, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok || json.success === false) throw new Error('rejected');
+        form.reset();
+        say("You're in. Check your inbox to confirm.");
+      } catch (err) {
+        say("That didn't go through. Check the email and try again.");
+      } finally {
+        if (btn) btn.disabled = false;
+      }
     });
   });
 }

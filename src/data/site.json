@@ -43,7 +43,7 @@
   },
   "newsletter": {
     "enabled": true,
-    "formAction": "",
+    "formAction": "https://assets.mailerlite.com/jsonp/2726919/forms/201829570191557940/subscribe",
     "text": "New games, beta invites and devlogs. One short email when there's something worth playing."
   },
   "supportForm": {
