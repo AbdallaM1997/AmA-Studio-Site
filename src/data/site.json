@@ -15,10 +15,10 @@
     "oncePerSession": true
   },
   "nav": [
-    { "label": "Games", "href": "/games/" },
-    { "label": "Studio", "href": "/#studio" },
-    { "label": "News", "href": "/news/" },
-    { "label": "Contact", "href": "/#contact" }
+    { "label": "Games", "href": "/games/", "icon": "games" },
+    { "label": "Studio", "href": "/#studio", "icon": "studio" },
+    { "label": "News", "href": "/news/", "icon": "news" },
+    { "label": "Contact", "href": "/#contact", "icon": "mail" }
   ],
   "socials": [
     { "label": "Facebook", "url": "https://www.facebook.com/amastudio.games/" },

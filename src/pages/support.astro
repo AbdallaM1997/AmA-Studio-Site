@@ -4,6 +4,7 @@ import Base from '../layouts/Base.astro';
 import Checker from '../components/Checker.astro';
 import site from '../data/site.json';
 import games from '../data/games.json';
+import Icon from '../components/Icon.astro';
 
 const statusLabel: Record<string, string> = { 'coming-soon': 'Coming soon', live: 'Out now', 'in-lab': 'In the lab' };
 const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', black: 'var(--black)' } as Record<string, string>)[t] ?? 'var(--red)';
@@ -30,8 +31,8 @@ const faqs = [
         <h1 class="display shero__title" data-reveal style="--d:.08s">Support<span class="dot">.</span></h1>
         <p class="lead shero__lead" data-reveal style="--d:.18s">Stuck on a level, found a bug or have an idea? We read every message.</p>
         <div class="shero__ctas" data-reveal style="--d:.28s">
-          <a href="#message" class="btn">Send a message</a>
-          <a href="#faq" class="btn btn--ghost">Good to know</a>
+          <a href="#message" class="btn"><Icon name="mail" /> Send a message</a>
+          <a href="#faq" class="btn btn--ghost"><Icon name="terms" /> Good to know</a>
         </div>
       </div>
 
@@ -42,8 +43,8 @@ const faqs = [
           <span class="label">Email us</span>
           <a href={`mailto:${supportEmail}`} class="display shero__email">{supportEmail}</a>
           <div class="shero__card-btns">
-            <a href="#message" class="btn">Write to us</a>
-            <button type="button" class="btn btn--ghost" data-copy-email={supportEmail}>Copy address</button>
+            <a href="#message" class="btn"><Icon name="mail" /> Write to us</a>
+            <button type="button" class="btn btn--ghost" data-copy-email={supportEmail}><Icon name="copy" /> <span data-copy-label>Copy address</span></button>
           </div>
         </div>
       </div>
@@ -316,14 +317,15 @@ const faqs = [
   setupMailForms();
 
   document.querySelectorAll<HTMLButtonElement>('[data-copy-email]').forEach((btn) => {
+    const label = btn.querySelector<HTMLElement>('[data-copy-label]') || btn;
     btn.addEventListener('click', async () => {
       try {
         await navigator.clipboard.writeText(btn.dataset.copyEmail || '');
-        btn.textContent = 'Copied.';
+        label.textContent = 'Copied.';
       } catch {
-        btn.textContent = 'Copy failed';
+        label.textContent = 'Copy failed';
       }
-      setTimeout(() => { btn.textContent = 'Copy address'; }, 1800);
+      setTimeout(() => { label.textContent = 'Copy address'; }, 1800);
     });
   });
 </script>

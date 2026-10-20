@@ -1,6 +1,7 @@
 ---
 import { url } from '../lib/url';
 import Logo from './Logo.astro';
+import Icon from './Icon.astro';
 import site from '../data/site.json';
 
 const path = Astro.url.pathname;
@@ -23,12 +24,12 @@ const isActive = (href: string) => !href.includes('#') && href !== '/' && path.s
         {site.nav.map((item, i) => (
           <li>
             <a href={url(item.href)} class:list={['nav__link', { 'is-active': isActive(item.href) }]}>
-              <span class="nav__num">{String(i + 1).padStart(2, '0')}</span> <span class="nav__label">{item.label}</span>
+              {item.icon && <span class="nav__ico"><Icon name={item.icon} /></span>}<span class="nav__num">{String(i + 1).padStart(2, '0')}</span> <span class="nav__label">{item.label}</span>
             </a>
           </li>
         ))}
       </ul>
-      <div class="nav__cta"><a href={url('/games/')} class="btn btn--red btn--small">Play now</a></div>
+      <div class="nav__cta"><a href={url('/games/')} class="btn btn--red btn--small"><Icon name="play" /> Play now</a></div>
     </div>
   </nav>
 </header>
@@ -51,6 +52,10 @@ const isActive = (href: string) => !href.includes('#') && href !== '/' && path.s
   }
   .nav__link > * { position: relative; }
   .nav__num { font-family: inherit; }
+  /* Small line icon before each link; it tips over a little on hover */
+  .nav__ico { display: inline-grid; place-items: center; margin-right: 4px; transition: transform .35s var(--ease-pop); }
+  .nav__ico :global(.icon) { width: 17px; height: 17px; }
+  .nav__link:hover .nav__ico { transform: rotate(-10deg) scale(1.12); }
   /* Hover: yellow rises up through the cell */
   .nav__link::before { content: ''; position: absolute; inset: 0; background: var(--yellow); transform: scaleY(0); transform-origin: bottom; transition: transform .4s var(--ease-out); }
   .nav__link:hover { color: var(--black); }
@@ -83,6 +88,9 @@ const isActive = (href: string) => !href.includes('#') && href !== '/' && path.s
   @media (max-width: 1100px) and (min-width: 861px) {
     .nav__num { display: none; }
   }
+  @media (max-width: 1240px) and (min-width: 861px) {
+    .nav__ico { display: none; }
+  }
 
   @media (max-width: 860px) {
     .nav__bar { min-height: 68px; }
@@ -100,11 +108,13 @@ const isActive = (href: string) => !href.includes('#') && href !== '/' && path.s
     .nav__link { font-family: var(--font-display); font-size: 40px; letter-spacing: 0; text-transform: none; min-height: 64px; border-left: 0; border-bottom: var(--rule); width: 100%; gap: 14px; padding: 0; }
     .nav__link::before, .nav__link::after { display: none; }
     .nav__num { font-family: var(--font-label); font-size: 13px; }
+    .nav__ico { order: 3; margin: 0 0 0 auto; width: 44px; height: 44px; border: 2px solid var(--black); background: var(--cream); transform: rotate(-6deg); }
+    .nav__ico :global(.icon) { width: 22px; height: 22px; }
     .nav__cta { border-left: 0; padding: 0; }
     .nav__cta .btn { margin-top: 20px; min-height: 54px; width: 100%; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .nav__theme-sq, .nav__link::before, .nav__link::after { transition: none; }
+    .nav__theme-sq, .nav__link::before, .nav__link::after, .nav__ico { transition: none; }
   }
 </style>

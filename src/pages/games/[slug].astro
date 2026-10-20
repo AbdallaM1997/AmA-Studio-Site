@@ -4,6 +4,7 @@ import Base from '../../layouts/Base.astro';
 import GameCard from '../../components/GameCard.astro';
 import Checker from '../../components/Checker.astro';
 import games from '../../data/games.json';
+import Icon from '../../components/Icon.astro';
 
 export function getStaticPaths() {
   return games.map((game) => ({ params: { slug: game.slug }, props: { game } }));
@@ -35,8 +36,8 @@ const poster = ('trailerPoster' in game && game.trailerPoster) || game.keyArt;
         <div class="stores" data-reveal style="--d:.3s">
           {game.stores.appStore && <a class="btn" href={game.stores.appStore} target="_blank" rel="noopener">App Store</a>}
           {game.stores.googlePlay && <a class="btn" href={game.stores.googlePlay} target="_blank" rel="noopener">Google Play</a>}
-          {!hasStores && <a class="btn btn--red" href={url('/#newsletter')}>Tell me when it's out</a>}
-          <a class="btn btn--ghost" href="#shots">Screenshots</a>
+          {!hasStores && <a class="btn btn--red" href={url('/#newsletter')}><Icon name="mail" /> Tell me when it's out</a>}
+          <a class="btn btn--ghost" href="#shots"><Icon name="image" /> Screenshots</a>
         </div>
       </div>
 
@@ -120,9 +121,9 @@ const poster = ('trailerPoster' in game && game.trailerPoster) || game.keyArt;
         <p data-reveal style="--d:.08s">Need help with {game.title}? Visit support or read the privacy policy.</p>
       </div>
       <div class="more__btns" data-reveal style="--d:.12s">
-        <a href={url('/games/')} class="btn">All games</a>
-        <a href={url('/support/')} class="btn btn--ghost">Support</a>
-        <a href={url('/privacy/')} class="btn btn--ghost">Privacy</a>
+        <a href={url('/games/')} class="btn"><Icon name="games" /> All games</a>
+        <a href={url('/support/')} class="btn btn--ghost"><Icon name="support" /> Support</a>
+        <a href={url('/privacy/')} class="btn btn--ghost"><Icon name="privacy" /> Privacy</a>
       </div>
     </div>
     {others.length > 0 && (

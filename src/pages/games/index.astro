@@ -5,6 +5,7 @@ import Checker from '../../components/Checker.astro';
 import Logo from '../../components/Logo.astro';
 import site from '../../data/site.json';
 import games from '../../data/games.json';
+import Icon from '../../components/Icon.astro';
 
 const statusLabel: Record<string, string> = { 'coming-soon': 'Coming soon', live: 'Out now', 'in-lab': 'In the lab' };
 const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', black: 'var(--black)' } as Record<string, string>)[t] ?? 'var(--red)';
@@ -73,10 +74,10 @@ const platforms = [...new Set(games.flatMap((g) => g.platforms))];
             </div>
           )}
           <div class="gband__ctas" data-reveal style="--d:.26s">
-            <a href={url(`/games/${g.slug}/`)} class="btn">See the game</a>
+            <a href={url(`/games/${g.slug}/`)} class="btn"><Icon name="play" /> See the game</a>
             {g.stores.appStore && <a class="btn btn--ghost" href={g.stores.appStore} target="_blank" rel="noopener">App Store</a>}
             {g.stores.googlePlay && <a class="btn btn--ghost" href={g.stores.googlePlay} target="_blank" rel="noopener">Google Play</a>}
-            {!g.stores.appStore && !g.stores.googlePlay && <a class="btn btn--red" href={url('/#newsletter')}>Tell me when it's out</a>}
+            {!g.stores.appStore && !g.stores.googlePlay && <a class="btn btn--red" href={url('/#newsletter')}><Icon name="mail" /> Tell me when it's out</a>}
           </div>
         </div>
       </div>
@@ -92,7 +93,7 @@ const platforms = [...new Set(games.flatMap((g) => g.platforms))];
         <span class="label" data-reveal>In the lab</span>
         <h2 id="glab-title" class="display glab__title" data-reveal style="--d:.08s">{site.inTheLab.title}<span class="dot">.</span></h2>
         <p class="lead glab__text" data-reveal style="--d:.16s">{site.inTheLab.text}</p>
-        <div data-reveal style="--d:.24s"><a href={url('/#newsletter')} class="btn">Get game news</a></div>
+        <div data-reveal style="--d:.24s"><a href={url('/#newsletter')} class="btn"><Icon name="news" /> Get game news</a></div>
         <span class="label glab__hint" data-reveal style="--d:.32s">Tap anywhere to take a play break</span>
       </div>
     </section>

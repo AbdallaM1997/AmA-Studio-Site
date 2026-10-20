@@ -2,6 +2,7 @@
 import { url } from '../lib/url';
 import Base from '../layouts/Base.astro';
 import Checker from '../components/Checker.astro';
+import Icon from '../components/Icon.astro';
 ---
 <Base title="Page not found">
   <section class="lost">
@@ -12,9 +13,9 @@ import Checker from '../components/Checker.astro';
         <h1 class="display lost__title" data-reveal style="--d:.08s">Oops<span class="dot">.</span><br />Wrong level<span class="dot">.</span></h1>
         <p class="lead lost__lead" data-reveal style="--d:.16s">This page doesn't exist. Tap around for a quick play break, then head home.</p>
         <div class="lost__ctas" data-reveal style="--d:.24s">
-          <a href={url('/')} class="btn">Back home</a>
-          <a href={url('/games/')} class="btn btn--ghost">Our games</a>
-          <a href={url('/news/')} class="btn btn--ghost">News</a>
+          <a href={url('/')} class="btn"><Icon name="studio" /> Back home</a>
+          <a href={url('/games/')} class="btn btn--ghost"><Icon name="games" /> Our games</a>
+          <a href={url('/news/')} class="btn btn--ghost"><Icon name="news" /> News</a>
         </div>
       </div>
 

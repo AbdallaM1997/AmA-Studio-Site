@@ -7,6 +7,7 @@ import Checker from '../components/Checker.astro';
 import NewsRow from '../components/NewsRow.astro';
 import site from '../data/site.json';
 import games from '../data/games.json';
+import Icon from '../components/Icon.astro';
 
 const featured = games.find((g) => g.featured) ?? games[0];
 const others = games.filter((g) => g !== featured).slice(0, 2);
@@ -25,8 +26,8 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
         </h1>
         <p class="lead hero__sub" data-reveal style="--d:.3s">{site.subline}</p>
         <div class="hero__ctas" data-reveal style="--d:.42s">
-          <a href={url('/games/')} class="btn">See our games</a>
-          <a href="#newsletter" class="btn btn--ghost">Get game news</a>
+          <a href={url('/games/')} class="btn"><Icon name="games" /> See our games</a>
+          <a href="#newsletter" class="btn btn--ghost"><Icon name="news" /> Get game news</a>
         </div>
       </div>
 
@@ -86,8 +87,8 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
           <p class="lead hband__tagline" data-reveal style="--d:.14s">{featured.tagline}</p>
           <p class="hband__desc" data-reveal style="--d:.2s">{featured.description}</p>
           <div class="hband__ctas" data-reveal style="--d:.26s">
-            <a href={url(`/games/${featured.slug}/`)} class="btn">See the game</a>
-            {!featured.stores.appStore && !featured.stores.googlePlay && <a class="btn btn--ghost" href="#newsletter">Tell me when it's out</a>}
+            <a href={url(`/games/${featured.slug}/`)} class="btn"><Icon name="play" /> See the game</a>
+            {!featured.stores.appStore && !featured.stores.googlePlay && <a class="btn btn--ghost" href="#newsletter"><Icon name="mail" /> Tell me when it's out</a>}
           </div>
         </div>
       </div>
@@ -156,8 +157,8 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
         <p class="hstudio__intro" data-reveal style="--d:.08s">{site.studio.intro}</p>
         {site.studio.founderNote && <p data-reveal style="--d:.14s">{site.studio.founderNote}</p>}
         <div class="hstudio__ctas" data-reveal style="--d:.2s">
-          <a href="#contact" class="btn">Say hi</a>
-          <a href={url('/games/')} class="btn btn--ghost">See our games</a>
+          <a href="#contact" class="btn"><Icon name="mail" /> Say hi</a>
+          <a href={url('/games/')} class="btn btn--ghost"><Icon name="games" /> See our games</a>
         </div>
       </div>
       <div class="hsplit__right yellow hstudio__panel" data-reveal="wipe" data-parallax data-toy>
