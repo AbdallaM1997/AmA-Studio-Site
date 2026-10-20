@@ -48,6 +48,8 @@ import { url } from '../lib/url';
     <li><strong>Apple</strong> (App Store, purchases and Sign in with Apple): <a href="https://www.apple.com/legal/privacy/">Apple privacy policy</a>.</li>
     <li><strong>Google</strong> (Google Play, purchases and Google sign-in): <a href="https://policies.google.com/privacy">Google privacy policy</a>.</li>
     <li><strong>FormSubmit</strong> (website contact and support forms): <a href="https://formsubmit.co/privacy.pdf">FormSubmit privacy policy</a>.</li>
+    <li><strong>Umami</strong> (cookieless website visit counts): <a href="https://umami.is/privacy">Umami privacy policy</a>.</li>
+    <li><strong>MailerLite</strong> (newsletter): <a href="https://www.mailerlite.com/legal/privacy-policy">MailerLite privacy policy</a>.</li>
   </ul>
 
   <h2>Children</h2>
@@ -64,5 +66,5 @@ import { url } from '../lib/url';
   <p>If we change this policy, we'll update it here and change the date at the top.</p>
 
   <h2>Contact</h2>
-  <p>{site.name}, {site.location}. Email: <a href={`mailto:${site.email}`}>{site.email}</a></p>
+  <p>{site.name}, {site.location}. Email: <a href={`mailto:${site.email}`}>{site.email}</a>. Help with a game: <a href={`mailto:${site.supportEmail}`}>{site.supportEmail}</a></p>
 </Prose>
