@@ -425,6 +425,12 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
   .dept__item:first-child { padding-left: calc(max(0px, (100cqi - var(--max)) / 2) + var(--gutter)); }
   .dept__item:last-child { padding-right: calc(max(0px, (100cqi - var(--max)) / 2) + var(--gutter)); }
   .dept__item + .dept__item { border-left: var(--rule); }
+  /* Wide screens: the first and last items also span the empty side tracks, so all three keep the same text width */
+  @media (min-width: 961px) {
+    .dept__grid { grid-template-columns: max(0px, (100% - var(--max)) / 2) repeat(3, 1fr) max(0px, (100% - var(--max)) / 2); }
+    .dept__item:first-child { grid-column: 1 / 3; }
+    .dept__item:last-child { grid-column: 4 / 6; }
+  }
   .dept__num { color: var(--red); font-size: clamp(64px, 7vw, 104px); line-height: .9; }
   .dept__h { font-size: clamp(36px, 3.4vw, 48px); }
   .dept__item p { margin: 0; font-size: 18px; max-width: 380px; }
