@@ -24,6 +24,17 @@ function setupReveal() {
     });
   }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
   items.forEach((el) => io.observe(el));
+
+  // Safety net: anything already on screen that the observer missed (background tab, slow first frame,
+  // page restored from the back/forward cache) is shown anyway
+  const sweep = () => items.forEach((el) => {
+    if (el.classList.contains('is-in')) return;
+    const r = el.getBoundingClientRect();
+    if (r.bottom > 0 && r.top < window.innerHeight && r.height > 0) { el.classList.add('is-in'); io.unobserve(el); }
+  });
+  setTimeout(sweep, 1200);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) setTimeout(sweep, 400); });
+  window.addEventListener('pageshow', (e) => { if (e.persisted) sweep(); });
 }
 
 /* ---------- Squares follow the pointer a little ---------- */
