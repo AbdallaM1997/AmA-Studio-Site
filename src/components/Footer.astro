@@ -25,14 +25,14 @@ const cols = [
   ] },
 ];
 ---
-<!-- The footer is a red panel in both light and dark mode -->
+<!-- The slogan follows light/dark mode; the columns below are red and yellow in both modes -->
 <footer class="footer red">
   <Checker pattern="k2yck3yck2yk" height="36px" />
 
   <!-- Giant slogan, sized to the full width; words rise in one by one -->
   <div class="footer__mark" aria-hidden="true">
     <p class="display footer__big" data-reveal style={`--d:${(sloganWords.length * 0.08 + 0.1).toFixed(2)}s`}>
-      {sloganWords.map((w, i) => <>{i > 0 && ' '}<span class="fw"><span style={`--i:${i}`}>{w}</span>{i === sloganWords.length - 1 && <span class="dot dot--cream">.</span>}</span></>)}
+      {sloganWords.map((w, i) => <>{i > 0 && ' '}<span class="fw"><span style={`--i:${i}`}>{w}</span>{i === sloganWords.length - 1 && <span class="dot">.</span>}</span></>)}
     </p>
   </div>
 
@@ -62,19 +62,6 @@ const cols = [
         </ul>
       </nav>
     ))}
-
-    <nav class="footer__col" aria-label="Follow" data-reveal>
-      <p class="label">Follow</p>
-      {socials.length > 0
-        ? (
-          <ul class="footer__links">
-            {socials.map((s) => (
-              <li><a href={s.url} rel="noopener" target="_blank" class="flink"><span class="flink__ico"><Icon name={socialIcon(s.label)} /></span><span class="flink__t">{s.label}</span><span class="arrow" aria-hidden="true">↗</span></a></li>
-            ))}
-          </ul>
-        )
-        : <p class="footer__soon">Socials coming soon.</p>}
-    </nav>
   </div>
 
   <!-- Black bottom bar -->
@@ -93,8 +80,8 @@ const cols = [
   .footer { background: var(--red); color: var(--black); --ink: var(--black); --bg: var(--cream); --rule: 2px solid var(--black); container-type: inline-size; }
 
   /* Giant slogan: "Serious about fun." is about 7.1em wide in Anton, so this fills the footer edge to edge */
-  .footer__mark { border-bottom: var(--rule); overflow: hidden; padding: clamp(24px, 3vw, 44px) var(--gutter) clamp(12px, 1.5vw, 24px); }
-  .footer__big { font-size: calc((100cqi - 2 * var(--gutter)) / 7.3); line-height: .9; margin: 0; white-space: nowrap; text-align: center; letter-spacing: -.01em; color: var(--black); }
+  .footer__mark { background: var(--bg-page); color: var(--ink-page); border-bottom: var(--rule); overflow: hidden; padding: clamp(24px, 3vw, 44px) var(--gutter) clamp(12px, 1.5vw, 24px); }
+  .footer__big { font-size: calc((100cqi - 2 * var(--gutter)) / 7.3); line-height: .9; margin: 0; white-space: nowrap; text-align: center; letter-spacing: -.01em; color: var(--ink-page); }
   .fw { display: inline-block; overflow: hidden; vertical-align: top; padding: .12em 0 .26em; margin: -.12em 0 -.26em; }
   .fw > span:first-child { display: inline-block; }
   :global(.js) .footer__big[data-reveal] { opacity: 1; transform: none; }
@@ -102,11 +89,11 @@ const cols = [
   :global(.js) .is-in .fw > span:first-child { transform: none; }
 
   /* Columns run edge to edge; the first and last line up with the page column */
-  .footer__cols { --side: max(0px, (100cqi - var(--max)) / 2); display: grid; grid-template-columns: max(0px, (100% - var(--max)) / 2) 1.4fr repeat(3, 1fr) max(0px, (100% - var(--max)) / 2); border-bottom: var(--rule); }
+  .footer__cols { --side: max(0px, (100cqi - var(--max)) / 2); display: grid; grid-template-columns: max(0px, (100% - var(--max)) / 2) 1.4fr repeat(2, 1fr) max(0px, (100% - var(--max)) / 2); border-bottom: var(--rule); }
   .footer__col { padding: clamp(32px, 4vw, 56px) clamp(20px, 2.5vw, 40px); display: flex; flex-direction: column; gap: 12px; position: relative; }
   .footer__col + .footer__col { border-left: var(--rule); }
   .footer__col:first-child { grid-column: 1 / 3; padding-left: calc(var(--side) + var(--gutter)); }
-  .footer__col:last-child { grid-column: 5 / 7; padding-right: calc(var(--side) + var(--gutter)); }
+  .footer__col:last-child { grid-column: 4 / 6; padding-right: calc(var(--side) + var(--gutter)); }
   .footer__col .label { margin: 0 0 8px; font-size: 12px; display: inline-flex; align-items: center; gap: 10px; }
   .footer__col .label::before { content: ''; width: 10px; height: 10px; background: var(--black); transform: rotate(-14deg); }
 
@@ -139,7 +126,6 @@ const cols = [
   .flink:hover .flink__ico, .flink:focus-visible .flink__ico { background: var(--black); color: var(--yellow); transform: rotate(0) scale(1.06); }
   .flink:hover .flink__t, .flink:focus-visible .flink__t { transform: translateX(4px); }
   .flink:hover .arrow, .flink:focus-visible .arrow { opacity: 1; transform: none; }
-  .footer__soon { margin: 0; font-weight: 700; }
 
   /* Bottom bar: black in both modes */
   .footer__bottom {
@@ -159,7 +145,6 @@ const cols = [
     .footer__col.footer__brand { grid-column: 1 / -1; }
     .footer__col + .footer__col { border-left: 0; border-top: var(--rule); }
     .footer__col:nth-child(3) { border-left: var(--rule); }
-    .footer__col:last-child { grid-column: 1 / -1; }
   }
   @media (max-width: 520px) {
     .footer__cols { grid-template-columns: 1fr; }

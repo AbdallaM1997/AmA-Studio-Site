@@ -15,6 +15,7 @@
   --bg: var(--cream);
   --ink: var(--black);
   --ink-page: var(--ink); /* page ink even inside panels, e.g. for hover shadows on the page */
+  --bg-page: var(--bg); /* page background even inside panels */
 
   /* Type */
   --font-display: 'Anton', 'Impact', sans-serif;          /* big headlines */
