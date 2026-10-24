@@ -72,7 +72,7 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
           <span class="stage-sq" aria-hidden="true" data-depth="-10"></span>
           {featured.trailer && (
             <div class="hband__phone" data-depth="14">
-              <video class="hband__media" src={url(featured.trailer)} poster={url(('trailerPoster' in featured && featured.trailerPoster) || featured.keyArt)} autoplay muted loop playsinline preload="metadata"></video>
+              <video class="hband__media" src={url(featured.trailer)} poster={url(('trailerPoster' in featured && featured.trailerPoster) || featured.keyArt)} muted loop playsinline preload="none" data-lazy-video></video>
             </div>
           )}
           <span class="sq-wrap" data-depth="26" style="right:8%;top:10%"><span class="sq sq--yellow float" style="width:54px;height:54px;transform:rotate(16deg)"></span></span>
@@ -553,12 +553,6 @@ const themeBg = (t: string) => ({ red: 'var(--red)', yellow: 'var(--yellow)', bl
   }
 </style>
 
-<script>
-  // Respect reduced motion: hold the looping trailer on its poster frame
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.querySelectorAll<HTMLVideoElement>('.hband__media').forEach((v) => { v.removeAttribute('autoplay'); v.pause(); });
-  }
-</script>
 
 <script>
   import { setupMailForms } from '../scripts/forms';

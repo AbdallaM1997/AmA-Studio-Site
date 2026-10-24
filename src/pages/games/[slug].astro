@@ -48,7 +48,7 @@ const poster = ('trailerPoster' in game && game.trailerPoster) || game.keyArt;
         <div class="phone" data-reveal="pop" style="--d:.45s" data-depth="14">
           <div class="phone__screen on-light">
             {game.trailer
-              ? <video src={url(game.trailer)} poster={url(poster)} autoplay muted loop playsinline preload="metadata" aria-label={`${game.title} gameplay`}></video>
+              ? <video src={url(game.trailer)} poster={url(poster)} muted loop playsinline preload="none" data-lazy-video aria-label={`${game.title} gameplay`}></video>
               : game.keyArt ? <img src={url(game.keyArt)} alt={`${game.title} key art`} /> : <span class="label">Gameplay video</span>}
           </div>
         </div>

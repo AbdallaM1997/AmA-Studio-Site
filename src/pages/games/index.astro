@@ -54,7 +54,7 @@ const platforms = [...new Set(games.flatMap((g) => g.platforms))];
         <a href={url(`/games/${g.slug}/`)} class="gband__art on-light" style={`background:${themeBg(g.theme)}`} data-reveal="wipe" data-parallax tabindex="-1" aria-hidden="true">
           <span class="stage-sq" aria-hidden="true" data-depth="-10"></span>
           {g.trailer
-            ? <div class="gband__phone" data-depth="14"><video class="gband__media" src={url(g.trailer)} poster={url(('trailerPoster' in g && g.trailerPoster) || g.keyArt)} autoplay muted loop playsinline preload="metadata"></video></div>
+            ? <div class="gband__phone" data-depth="14"><video class="gband__media" src={url(g.trailer)} poster={url(('trailerPoster' in g && g.trailerPoster) || g.keyArt)} muted loop playsinline preload="none" data-lazy-video></video></div>
             : !g.keyArt && <span class="ghero__logo" data-depth="10"><Logo size="clamp(90px, 9vw, 130px)" /></span>}
         </a>
         <div class="gband__text">
@@ -184,9 +184,3 @@ const platforms = [...new Set(games.flatMap((g) => g.platforms))];
   }
 </style>
 
-<script>
-  // Respect reduced motion: hold the looping trailers on their poster frame
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.querySelectorAll<HTMLVideoElement>('.gband__media').forEach((v) => { v.removeAttribute('autoplay'); v.pause(); });
-  }
-</script>

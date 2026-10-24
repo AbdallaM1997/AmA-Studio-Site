@@ -8,4 +8,6 @@ export default defineConfig({
   site: process.env.SITE_URL || site.url,
   base: process.env.BASE_PATH || '/',
   trailingSlash: 'always',
+  // The CSS is small: put it in the page so it doesn't block the first paint as extra requests
+  build: { inlineStylesheets: 'always' },
 });

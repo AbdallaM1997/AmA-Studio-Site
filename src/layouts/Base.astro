@@ -1,6 +1,7 @@
 ---
 import { url } from '../lib/url';
 import '@fontsource/anton/400.css';
+import antonLatin from '@fontsource/anton/files/anton-latin-400-normal.woff2?url';
 import '@fontsource/archivo-black/400.css';
 import '@fontsource-variable/archivo/wdth.css';
 import '../styles/global.css';
@@ -40,6 +41,8 @@ const splashCfg = JSON.stringify({ on: splash && site.splash.enabled, variant: s
     <meta name="twitter:image" content={shareImage} />
     <link rel="canonical" href={pageUrl} />
     <link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
+    <!-- Anton draws the logo and headlines (the largest thing on screen): fetch it right away -->
+    <link rel="preload" href={antonLatin} as="font" type="font/woff2" crossorigin />
     <!-- Pick light or dark before first paint: a saved choice, else the system setting -->
     <script is:inline>
       (function () {

@@ -384,11 +384,27 @@ function setupNewsletter() {
   });
 }
 
+/* ---------- Trailers: download and play only near the screen ----------
+   Videos with data-lazy-video ship with preload="none", so nothing downloads until they
+   come close (saves mobile data). Off screen they pause; with reduced motion they stay on the poster. */
+function setupVideos() {
+  const vids = document.querySelectorAll('video[data-lazy-video]');
+  if (reduce || !vids.length) return;
+  const play = (v) => v.play().catch(() => {});
+  if (!('IntersectionObserver' in window)) { vids.forEach(play); return; }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => (e.isIntersecting ? play(e.target) : e.target.pause()));
+  }, { rootMargin: '200px 0px' });
+  vids.forEach((v) => io.observe(v));
+}
+
 export function runMotion() {
   setupNav();
   setupTheme();
   setupCursor();
-  setupSections();
+  // The pager measures every section; doing it after the first paint keeps it off the critical path
+  requestAnimationFrame(() => setTimeout(setupSections));
+  setupVideos();
   setupNewsletter();
   setupParallax();
   setupToy();
