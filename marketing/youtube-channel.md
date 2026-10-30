@@ -1,6 +1,8 @@
 # AmA Studio — YouTube channel kit
 
 Everything to type and upload, in the order YouTube asks for it.
+
+**Live:** https://www.youtube.com/@amastudiogames (name `AmA Studio Games`, handle `@amastudiogames`). Linked in the site footer.
 Pictures and videos are in `marketing/out/youtube-channel/` (make them again with `npm run social -- profile-picture youtube-banner youtube-watermark kinfold-gameplay-reel hello-from-ama-studio`, then copy).
 
 | File | Where it goes |
@@ -20,10 +22,13 @@ Do this on a computer at https://www.youtube.com, signed in with the studio Goog
    This makes a channel with its own name that you can later share with other people as managers. Don't use "Create a channel" on your personal channel, which would use your own name.
 2. **Name:**
    ```
-   AmA Studio
+   AmA Studio Games
    ```
-3. **Handle:** try `@amastudio.games` (same as Instagram and Facebook). If it's taken, try `@amastudio` or `@amastudios`.
+   (YouTube refused plain `AmA Studio` with "This name can't be used". You can try renaming to it later in **Customization → Basic info**.)
+3. **Handle:** `@amastudiogames` (`@amastudio.games`, `@amastudio` and `@amastudios` were taken).
 4. Click **Create**.
+
+**"This account is not yet eligible to use YouTube"?** A new Google Workspace account can't use YouTube until it is 30 days old or Google has charged it at least $30 (https://support.google.com/a/answer/9000768). Create the channel from a normal Google account instead and add the studio account as a manager later (**Settings → Permissions**).
 
 ## 2. Verify the channel
 https://www.youtube.com/verify → enter a phone number → type the code.
@@ -43,8 +48,8 @@ Click **Publish** (top right).
 ## 4. Basic info
 Same page → **Basic info**.
 
-- **Name:** `AmA Studio`
-- **Handle:** the one you chose.
+- **Name:** `AmA Studio Games`
+- **Handle:** `@amastudiogames`
 - **Description** (max 1,000 characters):
   ```
   AmA Studio is a game studio from Cairo, Egypt. AmA stands for AmAzing.
@@ -125,5 +130,5 @@ File: `05-short-hello.mp4`
 - **Devlogs:** a short video about how a level or a feature was made. Record the Unity editor with OBS.
 
 ## 7. Tell people
-- Send the channel link (`https://www.youtube.com/@<handle>`) to Claude and ask: *"Add my YouTube link to the site"*. The footer "Follow" column will show it.
+- The site footer already links to https://www.youtube.com/@amastudiogames (`src/data/site.json → socials`).
 - Add the channel to the Instagram and Facebook links.
