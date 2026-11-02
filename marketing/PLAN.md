@@ -28,7 +28,7 @@ Goal for now: **build a small, real audience before Kinfold launches**, so launc
    **Bio (AR):** `استوديو ألعاب من القاهرة. ألعاب صغيرة ومبهجة لاستراحتك اليومية.`
 5. **Link:** `https://amastudios.net/` (later: a link with `?utm_source=instagram` etc. so you can see visits per platform).
 6. **Contact:** `info@amastudios.net`. Location: Cairo, Egypt.
-7. **LinkedIn company page:** add the studio description from `site.json`, website, industry "Computer Games", size, and link your personal profile as the founder.
+7. **LinkedIn company page:** step-by-step kit (fields, about text, first posts) in `marketing/linkedin-page.md`.
 8. **When the pages exist:** put the URLs in `src/data/site.json → socials` (and add a Facebook entry) so the site links to them. Ask Claude: *"Add my social links to the site: Instagram ..., TikTok ..., Facebook ..., LinkedIn ..., YouTube ..."*.
 
 ## 3. Content pillars (what to post)
